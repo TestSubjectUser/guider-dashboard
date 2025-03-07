@@ -1,12 +1,10 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { data as guideData } from "../../app/data"; // Importing the guide data
+import { data as guideData } from "../../app/data";
 import "./index.css";
 
 const CreateComponent = () => {
-  // State to track steps
   const [activeStep, setActiveStep] = useState(0);
-  // Add refs for image containers
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   // Initialize the refs array with the length of guideData
@@ -14,52 +12,22 @@ const CreateComponent = () => {
     imageRefs.current = imageRefs.current.slice(0, guideData.length);
   }, []);
 
-  // Function to handle step navigation
   const handleStepClick = (index: number) => {
     setActiveStep(index);
   };
 
-  // Function to render blinking bubble based on relative coordinates
   const renderBlinkingBubble = (
     coordinates: { x: number; y: number },
     imageRef: HTMLImageElement | null
   ) => {
     if (!imageRef) return null;
 
-    // Get the image's natural size
-    const imageWidth = imageRef.naturalWidth;
-    const imageHeight = imageRef.naturalHeight;
-
     const imageRect = imageRef.getBoundingClientRect();
 
-    const heightRatio = imageWidth / 500;
-    console.log("imageRect.width", imageRect.width);
-    console.log("imageRect.height", imageRect.height);
-
-    // Get the container's size
-
-    // Calculate the scaling factor based on the container size and the image's natural size
-    // const scaleX = imageRect.width / imageWidth;
-    const scaleX = (imageRect.width * coordinates.x) / 100;
-    // console.log("imageWidth", imageWidth);
-    const scaleY = (imageRect.height * coordinates.y) / 100;
-    // console.log("imageHeight", imageHeight);
-    // console.log("scaleY", scaleY);
-
-    // Adjust the coordinates according to the scale
-    // const adjustedX = (coordinates.x / 100) * imageWidth * scaleX;
-    // const adjustedY = (coordinates.y / 100) * imageHeight * scaleY;
-    const adjustedX = scaleX;
-    const adjustedY = scaleY;
-
-    // console.log(
-    //   `imageWidth: ${imageWidth}, imageHeight: ${imageHeight}, adjustedX: ${adjustedX}, adjustedY: ${adjustedY}`
-    // );
-    // console.log(
-    //   `imageRect: ${JSON.stringify(
-    //     imageRect
-    //   )}, scaleX: ${scaleX}, scaleY: ${scaleY}`
-    // );
+    // console.log("imageRect.width", imageRect.width);
+    // console.log("imageRect.height", imageRect.height);
+    const adjustedX = (imageRect.width * coordinates.x) / 100;
+    const adjustedY = (imageRect.height * coordinates.y) / 100;
 
     return (
       <div
@@ -72,7 +40,7 @@ const CreateComponent = () => {
           backgroundColor: "rgba(255, 0, 0, 0.5)",
           borderRadius: "50%",
           animation: "blink 1s infinite",
-          transform: "translate(-50%, -50%)", // Center the bubble on the coordinates
+          transform: "translate(-50%, -50%)", // Center bubble
           zIndex: 10,
         }}
       ></div>
@@ -93,7 +61,7 @@ const CreateComponent = () => {
               className={activeStep === index ? "active" : ""}
               onClick={() => handleStepClick(index)}
             >
-              {`${step.stepNumber}. ${step.title}`}
+              {`${index + 1}. ${step.title}`}
             </li>
           ))}
         </ul>
@@ -118,13 +86,13 @@ const CreateComponent = () => {
           <p>What is this guide about?</p>
         </div>
 
-        {/* Render Steps */}
+        {/* each step header */}
         <div className="steps">
           {guideData.map((step, index) => {
             return (
               <div className="step" key={index}>
                 <div className="step-header">
-                  <div className="step-number">{step.stepNumber}</div>
+                  <div className="step-number">{index + 1}</div>
                   <h4>{step.title}</h4>
                   <button className="edit-button">
                     <i className="">edit</i>
@@ -132,7 +100,7 @@ const CreateComponent = () => {
                 </div>
                 <p>{step.description}</p>
 
-                {/* Render the image with bubble */}
+                {/* with bubble */}
                 <div
                   className="image-container"
                   style={{ position: "relative" }}
@@ -148,7 +116,6 @@ const CreateComponent = () => {
                       objectFit: "contain",
                     }}
                   ></img>
-                  {/* Render blinking bubble for each step */}
                   {renderBlinkingBubble(
                     step.relativeCoordinates,
                     imageRefs.current[index]
@@ -164,75 +131,3 @@ const CreateComponent = () => {
 };
 
 export default CreateComponent;
-
-// import React from "react";
-// import "./index.css";
-
-// const CreateComponent = () => {
-//   return (
-//     <div className="container">
-//       {/* <!-- Sidebar --> */}
-//       <div className="sidebar">
-//         <div className="sidebar-header">
-//           <h2>Prospecting | HubSpot</h2>
-//         </div>
-//         <ul className="sidebar-list">
-//           <li className="active">1. Navigate to Prospecting | HubSpot</li>
-//           <li>2. Click on Page Section</li>
-//           <li>3. Click on Contacts</li>
-//           <li>4. Click on Companies</li>
-//           <li>5. Click on Pandas Foundation</li>
-//           <li>6. Click on highlighted area</li>
-//           <li>7. Click on highlighted area</li>
-//         </ul>
-//       </div>
-//       {/* <!-- Main Content --> */}
-//       <div className="main-content">
-//         <div className="header">
-//           <button className="exit-button">
-//             <i className="fas fa-arrow-left"></i> Exit
-//           </button>
-//           <div className="header-buttons">
-//             <button className="saved-button">Saved</button>
-//             <button className="publish-button">Publish and share</button>
-//           </div>
-//         </div>
-//         <div className="guide-info">
-//           <h1>Title of the guide</h1>
-//           <h2>Guide - Prospecting | HubSpot</h2>
-//           <h3>Description of the guide</h3>
-//           <p>What is this guide about?</p>
-//         </div>
-//         <div className="steps">
-//           <div className="step">
-//             <div className="step-header">
-//               <div className="step-number">1</div>
-//               <h4>Navigate to Prospecting | HubSpot</h4>
-//               <button className="edit-button">
-//                 <i className="fas fa-pen"></i>
-//               </button>
-//             </div>
-//             <p>Add a description</p>
-//           </div>
-//           <div className="step">
-//             <div className="step-header">
-//               <div className="step-number">2</div>
-//               <h4>Click on Page Section</h4>
-//               <button className="edit-button">
-//                 <i className="fas fa-pen"></i>
-//               </button>
-//             </div>
-//             <p>Add a description</p>
-//             <img
-//               src="https://placehold.co/600x400"
-//               alt="Screenshot of the Prospecting page in HubSpot showing various tabs and options"
-//               className="step-image"
-//             />
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CreateComponent;

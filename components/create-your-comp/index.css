@@ -168,22 +168,6 @@ body {
 .step p {
   color: #6b7280;
 }
-
-/* .step-image {
-  margin-top: 16px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  object-fit: contain;
-  object-position: left;
-}
-
-.image-container {
-  margin-top: 15px;
-  margin-bottom: 20px;
-  width: 100%;
-  max-width: 100%;
-  border: 2px solid red;
-} */
 .image-container {
   display: flex;
   align-items: center;
@@ -191,7 +175,6 @@ body {
 }
 
 .step-image {
-  /* max-width: 100%; */
   height: auto;
 }
 
