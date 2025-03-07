@@ -30,16 +30,36 @@ const CreateComponent = () => {
     const imageWidth = imageRef.naturalWidth;
     const imageHeight = imageRef.naturalHeight;
 
-    // Get the container's size
     const imageRect = imageRef.getBoundingClientRect();
 
+    const heightRatio = imageWidth / 500;
+    console.log("imageRect.width", imageRect.width);
+    console.log("imageRect.height", imageRect.height);
+
+    // Get the container's size
+
     // Calculate the scaling factor based on the container size and the image's natural size
-    const scaleX = imageRect.width / imageWidth;
-    const scaleY = imageRect.height / imageHeight;
+    // const scaleX = imageRect.width / imageWidth;
+    const scaleX = (imageRect.width * coordinates.x) / 100;
+    // console.log("imageWidth", imageWidth);
+    const scaleY = (imageRect.height * coordinates.y) / 100;
+    // console.log("imageHeight", imageHeight);
+    // console.log("scaleY", scaleY);
 
     // Adjust the coordinates according to the scale
-    const adjustedX = (coordinates.x / 100) * imageWidth * scaleX;
-    const adjustedY = (coordinates.y / 100) * imageHeight * scaleY;
+    // const adjustedX = (coordinates.x / 100) * imageWidth * scaleX;
+    // const adjustedY = (coordinates.y / 100) * imageHeight * scaleY;
+    const adjustedX = scaleX;
+    const adjustedY = scaleY;
+
+    // console.log(
+    //   `imageWidth: ${imageWidth}, imageHeight: ${imageHeight}, adjustedX: ${adjustedX}, adjustedY: ${adjustedY}`
+    // );
+    // console.log(
+    //   `imageRect: ${JSON.stringify(
+    //     imageRect
+    //   )}, scaleX: ${scaleX}, scaleY: ${scaleY}`
+    // );
 
     return (
       <div
@@ -107,7 +127,7 @@ const CreateComponent = () => {
                   <div className="step-number">{step.stepNumber}</div>
                   <h4>{step.title}</h4>
                   <button className="edit-button">
-                    <i className="fas fa-pen"></i>
+                    <i className="">edit</i>
                   </button>
                 </div>
                 <p>{step.description}</p>
@@ -124,10 +144,10 @@ const CreateComponent = () => {
                     className="step-image"
                     style={{
                       maxHeight: "600px",
-                      width: "100%",
+                      maxWidth: "100%",
                       objectFit: "contain",
                     }}
-                  />
+                  ></img>
                   {/* Render blinking bubble for each step */}
                   {renderBlinkingBubble(
                     step.relativeCoordinates,
