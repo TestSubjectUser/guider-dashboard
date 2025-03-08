@@ -6,9 +6,11 @@ import "./index.css";
 export const Sidebar = ({
   activeStep,
   handleStepClick,
+  stepsData,
 }: {
   activeStep: number;
   handleStepClick: (index: number) => void;
+  stepsData: any[];
 }) => {
   return (
     <div className="sidebar">
@@ -16,13 +18,14 @@ export const Sidebar = ({
         <h2>SideBar | MyDomain</h2>
       </div>
       <ul className="sidebar-list">
-        {guideData.map((step, index) => (
+        {stepsData.map((step, index) => (
           <li
             key={index}
             className={activeStep === index ? "active" : ""}
             onClick={() => handleStepClick(index)}
           >
-            {`${index + 1}. ${step.title}`}
+            {/* {`${index + 1}. ${step.title}`} */}
+            {`${index + 1}. ${step.id}`}
           </li>
         ))}
       </ul>

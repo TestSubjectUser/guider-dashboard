@@ -16,7 +16,8 @@ function Step({ step, index, imageRefs }: any) {
       <div className="step-header">
         <div className="step-title-with-number">
           <div className="step-number">{index + 1}</div>
-          <h4>{step.title}</h4>
+          {/* <h4>{step.title}</h4> */}
+          <h4>{step.id}</h4>
         </div>
         <button className="edit-button">
           <i className="">edit</i>
@@ -28,7 +29,8 @@ function Step({ step, index, imageRefs }: any) {
         <img
           ref={(el) => (imageRefs.current[index] = el)}
           src={step.screenshotUrl}
-          alt={step.title}
+          // alt={step.title}
+          alt={step.id}
           className="step-image"
           onLoad={() => setImageLoaded(true)}
           style={{
