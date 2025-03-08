@@ -34,13 +34,21 @@ export async function POST(req) {
         timestamp: new Date(),
       });
 
-      savedDocs.push({ id: docRef.id, screenshotUrl });
+      savedDocs.push({ id: docRef.id });
       console.log("Saved document ID:", docRef.id);
     }
     // console.log("Data stored in Firestore:", savedDocs);
+    const url = `/dashboard?${savedDocs
+      .map((item) => "screenshotIds[]=" + item.id)
+      .join("&")}`;
+    console.log("url: ", url);
 
     return NextResponse.json(
-      { message: "Screenshot saved successfully", refids: savedDocs },
+      {
+        message: "Screenshot saved successfully",
+        refids: savedDocs,
+        urlToVists: url,
+      },
       { status: 200 }
     );
   } catch (error) {

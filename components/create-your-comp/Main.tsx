@@ -7,15 +7,20 @@ import GuideInfo from "./GuideInfo";
 import Step from "./Step";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
+import { useSearchParams } from "next/navigation";
 
-const screenshotIds: any = [
-  "cTejWKDik7SE6r66B80a",
-  "GuC6SqMGxr7vnOH761Eq",
-  "nbgmoPY9Wn2vhaQ5fsGI",
-  "K7vI1esEApOvbqTahYuB",
-];
+// const screenshotIds: any = [
+//   "cTejWKDik7SE6r66B80a",
+//   "GuC6SqMGxr7vnOH761Eq",
+//   "nbgmoPY9Wn2vhaQ5fsGI",
+//   "K7vI1esEApOvbqTahYuB",
+// ];
 
 const CreateComponent = () => {
+  const searchParams = useSearchParams();
+  const screenshotIds = searchParams.getAll("screenshotIds[]");
+  // console.log("search", search);
+
   const [activeStep, setActiveStep] = useState(0);
   const [stepsData, setStepsData] = useState<any[]>([]);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
