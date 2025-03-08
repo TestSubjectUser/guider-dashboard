@@ -7,26 +7,40 @@ export async function POST(req) {
     const body = await req.json();
     console.log("Receiving request...");
 
-    const { mouseCoordinates, pageSize, relativeCoordinates, screenshotUrl } =
-      body[0];
-    console.log("relativeCoordinates: ", JSON.stringify(relativeCoordinates));
-    // console.log("screenshotUrl: ", screenshotUrl);
-
-    if (!screenshotUrl) {
+    if (body.length === 0) {
       return NextResponse.json(
-        { error: "No screenshot provided" },
+        { error: "Invalid data format, nothing received." },
         { status: 400 }
       );
     }
-    const docRef = await addDoc(collection(db, "screenshots"), {
-      relativeCoordinates,
-      screenshotUrl,
-      timestamp: new Date(),
-    });
-    console.log("Data stored in Firestore:", docRef.id);
+
+    // const { relativeCoordinates, screenshotUrl } = body[0];
+    // console.log("relativeCoordinates: ", JSON.stringify(relativeCoordinates));
+    // console.log("screenshotUrl: ", screenshotUrl);
+
+    const savedDocs = [];
+
+    for (const item of body) {
+      const { relativeCoordinates, screenshotUrl } = item;
+
+      if (!screenshotUrl) {
+        console.warn("missing screenshot:", item);
+        continue;
+      }
+
+      const docRef = await addDoc(collection(db, "screenshots"), {
+        relativeCoordinates,
+        screenshotUrl,
+        timestamp: new Date(),
+      });
+
+      savedDocs.push({ id: docRef.id, screenshotUrl });
+      console.log("Saved document ID:", docRef.id);
+    }
+    // console.log("Data stored in Firestore:", savedDocs);
 
     return NextResponse.json(
-      { message: "Screenshot saved successfully", refid: docRef.id },
+      { message: "Screenshot saved successfully", refids: savedDocs },
       { status: 200 }
     );
   } catch (error) {
