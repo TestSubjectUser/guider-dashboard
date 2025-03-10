@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { data as guideData } from "../../app/data";
+import React from "react";
 import "./index.css";
 
 export const Sidebar = ({
@@ -12,6 +11,18 @@ export const Sidebar = ({
   handleStepClick: (index: number) => void;
   stepsData: any[];
 }) => {
+  const handleClick = (index: number) => {
+    window.location.hash = `#${index}`;
+    handleStepClick(index);
+    scrollToStep(index);
+  };
+  const scrollToStep = (index: number) => {
+    const stepElement = document.getElementById(index.toString());
+    if (stepElement) {
+      stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar-header">
@@ -29,7 +40,7 @@ export const Sidebar = ({
               id={index.toString()}
               key={index}
               className={activeStep === index ? "active" : ""}
-              onClick={() => handleStepClick(index)}
+              onClick={() => handleClick(index)}
             >
               {`${index + 1}. ${step.title}`}
             </li>
