@@ -92,12 +92,15 @@ body {
 }
 
 .publish-button {
-  background-color: #ef4444;
+  background-color: #f56565;
   color: #ffffff;
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+.publish-button:hover {
+  background-color: #dc4646;
 }
 
 .guide-info h1 {

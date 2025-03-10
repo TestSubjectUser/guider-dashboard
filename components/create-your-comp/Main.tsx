@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Sidebar } from "./Sidebar";
 // import { data as guideData } from "../../app/data";
-import Header from "./Header";
-import GuideInfo from "./GuideInfo";
+// import Header from "./Header";
+// import GuideInfo from "./GuideInfo";
 import Step from "./Step";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -64,8 +64,17 @@ const CreateComponent = () => {
         stepsData={stepsData}
       />
       <div className="main-content">
-        <Header />
-        <GuideInfo />
+        {/* <Header /> */}
+        <div className="header">
+          <button className="exit-button"></button>
+          <div className="header-buttons">
+            <button className="publish-button">Publish and share</button>
+          </div>
+        </div>
+        <div className="guide-info">
+          <h1>Title of the guide</h1>
+          <p>What is this guide about?</p>
+        </div>
         <div className="steps">
           {stepsData.map((step, index) => (
             <Step key={index} step={step} index={index} imageRefs={imageRefs} />

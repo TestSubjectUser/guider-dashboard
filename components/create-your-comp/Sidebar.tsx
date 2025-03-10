@@ -19,14 +19,21 @@ export const Sidebar = ({
       </div>
       <ul className="sidebar-list">
         {stepsData.map((step, index) => (
-          <li
+          <a
             key={index}
-            className={activeStep === index ? "active" : ""}
-            onClick={() => handleStepClick(index)}
+            id={step.id}
+            href={`#${step.id}`}
+            style={{ textDecoration: "none", color: "black", cursor: "auto" }}
           >
-            {/* {`${index + 1}. ${step.title}`} */}
-            {`${index + 1}. ${step.id}`}
-          </li>
+            <li
+              id={step.id}
+              key={index}
+              className={activeStep === index ? "active" : ""}
+              onClick={() => handleStepClick(index)}
+            >
+              {`${index + 1}. ${step.title}`}
+            </li>
+          </a>
         ))}
       </ul>
     </div>

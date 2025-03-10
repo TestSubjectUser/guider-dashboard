@@ -21,7 +21,7 @@ export async function POST(req) {
     const savedDocs = [];
 
     for (const item of body) {
-      const { relativeCoordinates, screenshotUrl } = item;
+      const { title, relativeCoordinates, screenshotUrl } = item;
 
       if (!screenshotUrl) {
         console.warn("missing screenshot:", item);
@@ -29,6 +29,7 @@ export async function POST(req) {
       }
 
       const docRef = await addDoc(collection(db, "screenshots"), {
+        title,
         relativeCoordinates,
         screenshotUrl,
         timestamp: new Date(),
