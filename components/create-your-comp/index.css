@@ -103,6 +103,23 @@ body {
   background-color: #dc4646;
 }
 
+.guide-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+}
+.guide-info-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.guide-info-description p {
+  font-size: 1.25rem;
+  color: #2563eb;
+  margin: 5px 0;
+}
+
 .guide-info h1 {
   font-size: 1.5rem;
   font-weight: 600;
@@ -122,11 +139,6 @@ body {
   margin-top: 16px;
 }
 
-.guide-info p {
-  font-size: 1.25rem;
-  color: #2563eb;
-}
-
 .steps {
   margin-top: 32px;
 }
@@ -143,7 +155,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .step-number {
@@ -157,6 +169,16 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+.step-description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.step-description p {
+  margin: 0px;
 }
 
 .step-header h4 {

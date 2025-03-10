@@ -21,12 +21,12 @@ export const Sidebar = ({
         {stepsData.map((step, index) => (
           <a
             key={index}
-            id={step.id}
-            href={`#${step.id}`}
+            id={index.toString()}
+            href={`#${index.toString()}`}
             style={{ textDecoration: "none", color: "black", cursor: "auto" }}
           >
             <li
-              id={step.id}
+              id={index.toString()}
               key={index}
               className={activeStep === index ? "active" : ""}
               onClick={() => handleStepClick(index)}

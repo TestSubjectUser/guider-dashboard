@@ -9,7 +9,7 @@ import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 
-// const screenshotIds: any = [
+// const screenshotId: any = [
 //   "cTejWKDik7SE6r66B80a",
 //   "GuC6SqMGxr7vnOH761Eq",
 //   "nbgmoPY9Wn2vhaQ5fsGI",
@@ -18,30 +18,42 @@ import { useSearchParams } from "next/navigation";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
-  const screenshotIds = searchParams.getAll("screenshotIds[]");
+  const screenshotId = searchParams.get("screenshotId");
   // console.log("search", search);
 
   const [activeStep, setActiveStep] = useState(0);
   const [stepsData, setStepsData] = useState<any[]>([]);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const [guideTitle, setGuideTitle] = useState("");
+  const [guideDescription, setGuideDescription] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedData = await Promise.all(
-        screenshotIds.map(async (id: string) => {
-          const docRef = doc(db, "screenshots", id);
-          const docins = await getDoc(docRef);
+      const docRef = doc(db, "guides", screenshotId);
+      const docins = await getDoc(docRef);
+      setGuideTitle(docins.data()?.guideTitle);
+      setGuideDescription(docins.data()?.guideDescription);
+      if (docins.exists()) {
+        setStepsData(docins.data().guideImages);
+      } else {
+        console.warn(`Document with ID ${screenshotId} 404`);
+        return null;
+      }
+      // const fetchedData = await Promise.all(
+      //   screenshotId.map(async (id: string) => {
+      //     const docRef = doc(db, "screenshots", id);
+      //     const docins = await getDoc(docRef);
 
-          if (docins.exists()) {
-            return { id, ...docins.data() };
-          } else {
-            console.warn(`Document with ID ${id} 404`);
-            return null;
-          }
-        })
-      );
+      //     if (docins.exists()) {
+      //       return { id, ...docins.data() };
+      //     } else {
+      //       console.warn(`Document with ID ${id} 404`);
+      //       return null;
+      //     }
+      //   })
+      // );
 
-      setStepsData(fetchedData.filter((data) => data !== null));
+      // setStepsData(fetchedData.filter((data) => data !== null));
     };
 
     fetchData();
@@ -72,8 +84,22 @@ const CreateComponent = () => {
           </div>
         </div>
         <div className="guide-info">
-          <h1>Title of the guide</h1>
-          <p>What is this guide about?</p>
+          <div className="guide-info-header">
+            <h1>{guideTitle ? guideTitle : "Title of the guide"}</h1>
+            <button className="edit-button">
+              <i className="">edit</i>
+            </button>
+          </div>
+          <div className="guide-info-description">
+            <p>
+              {guideDescription
+                ? guideDescription
+                : "What is this guide about?"}
+            </p>
+            <button className="edit-button">
+              <i className="">edit</i>
+            </button>
+          </div>
         </div>
         <div className="steps">
           {stepsData.map((step, index) => (

@@ -12,7 +12,7 @@ function Step({ step, index, imageRefs }: any) {
   }, [imageRefs.current[index]]);
 
   return (
-    <div className="step">
+    <div className="step" id={index.toString()}>
       <div className="step-header">
         <div className="step-title-with-number">
           <div className="step-number">{index + 1}</div>
@@ -23,7 +23,12 @@ function Step({ step, index, imageRefs }: any) {
           <i className="">edit</i>
         </button>
       </div>
-      <p>add description</p>
+      <div className="step-description">
+        <p>add description</p>
+        <button className="edit-button">
+          <i className="">edit</i>
+        </button>
+      </div>
 
       <div className="image-container" style={{ position: "relative" }}>
         <img

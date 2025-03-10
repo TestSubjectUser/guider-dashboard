@@ -18,36 +18,32 @@ export async function POST(req) {
     // console.log("relativeCoordinates: ", JSON.stringify(relativeCoordinates));
     // console.log("screenshotUrl: ", screenshotUrl);
 
-    const savedDocs = [];
+    const guideTitle = "Guide Title: Defautl";
+    const guideDescription = "Guide Description: Defautl";
 
-    for (const item of body) {
-      const { title, relativeCoordinates, screenshotUrl } = item;
-
-      if (!screenshotUrl) {
-        console.warn("missing screenshot:", item);
-        continue;
-      }
-
-      const docRef = await addDoc(collection(db, "screenshots"), {
+    const guideImages = body.map(
+      ({ title, relativeCoordinates, screenshotUrl }) => ({
         title,
+        description: "Description",
         relativeCoordinates,
         screenshotUrl,
-        timestamp: new Date(),
-      });
+      })
+    );
 
-      savedDocs.push({ id: docRef.id });
-      console.log("Saved document ID:", docRef.id);
-    }
-    // console.log("Data stored in Firestore:", savedDocs);
-    const url = `/dashboard?${savedDocs
-      .map((item) => "screenshotIds[]=" + item.id)
-      .join("&")}`;
-    console.log("url: ", url);
+    const docRef = await addDoc(collection(db, "guides"), {
+      guideTitle,
+      guideDescription,
+      guideImages,
+      timestamp: new Date(),
+    });
+
+    console.log("Guide saved with ID:", docRef.id);
+    const url = `/dashboard?screenshotId=${docRef.id}`;
 
     return NextResponse.json(
       {
         message: "Screenshot saved successfully",
-        refids: savedDocs,
+        refids: docRef.id,
         urlToVists: url,
       },
       { status: 200 }
@@ -60,3 +56,19 @@ export async function POST(req) {
     );
   }
 }
+
+// Current - in screenshot collection each document carries
+/*
+ * relativeCoordinates: {x: 50, y: 50}
+ * screenshotUrl: "data:image/png;base64,iVBORw0KGgoA..."
+ * timestamp: 10 March 2025 at 13:34:27 UTC+5:30
+ * title: "Clicked on button"
+ */
+
+// Updated - return document id only
+// document carries
+/*
+ * guideTitle: "title of the guide"
+ * guideDescription: "description of the guide"
+ * guideImages: [title: "Clicked on button", description: "description", relativeCoordinates: {x: 50, y: 50}, screenshotUrl: "data:image/png;base64,iVBORw0KGgoA..."]
+ */
