@@ -18,17 +18,20 @@ export async function POST(req) {
     // console.log("relativeCoordinates: ", JSON.stringify(relativeCoordinates));
     // console.log("screenshotUrl: ", screenshotUrl);
 
-    const guideTitle = "Guide Title: Defautl";
-    const guideDescription = "Guide Description: Defautl";
+    const guideTitle = body[body.length - 1].urlWeAreOn;
+    console.log("guideTitle: ", guideTitle);
 
-    const guideImages = body.map(
-      ({ title, relativeCoordinates, screenshotUrl }) => ({
+    // const guideTitle = "Guide Title: Default";
+    const guideDescription = "Guide Description: Default";
+    // console.log("body: ", body[0].urlWeAreOn);
+    const guideImages = body
+      .slice(0, -1)
+      .map(({ title, relativeCoordinates, screenshotUrl }) => ({
         title,
         description: "Description",
         relativeCoordinates,
         screenshotUrl,
-      })
-    );
+      }));
 
     const docRef = await addDoc(collection(db, "guides"), {
       guideTitle,
