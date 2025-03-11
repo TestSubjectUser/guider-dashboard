@@ -20,6 +20,7 @@ interface StepProps {
     screenshotUrl: string,
     relativeCoordinates: { x: number; y: number }
   ) => void;
+  deleteStep: (index: number) => void;
 }
 
 const Step: React.FC<StepProps> = ({
@@ -28,6 +29,7 @@ const Step: React.FC<StepProps> = ({
   imageRefs,
   updateStep,
   addStep,
+  deleteStep,
 }) => {
   const [imageLoaded, setImageLoaded] = React.useState(false);
 
@@ -42,6 +44,9 @@ const Step: React.FC<StepProps> = ({
     <>
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div className="step" id={index.toString()} key={index}>
+        <div className="delete-button" onClick={() => deleteStep(index)}>
+          delete
+        </div>
         <div className="step-header">
           <div className="step-number">{index + 1}</div>
           <EditableHeader

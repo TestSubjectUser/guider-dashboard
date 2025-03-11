@@ -43,7 +43,7 @@ function AddComp({
         }}
         onClick={() => handleAddComp()}
       >
-        Add Guide
+        Add Step
       </button>
       --------------------------
     </div>

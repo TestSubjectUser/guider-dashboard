@@ -87,7 +87,11 @@ const CreateComponent = () => {
     });
     setStepsData(updatedSteps);
   };
-
+  const deleteStep = (index: number) => {
+    const updatedSteps = [...stepsData];
+    updatedSteps.splice(index, 1);
+    setStepsData(updatedSteps);
+  };
   // Title, desc, guideImages(title, desc) will be updateeedd
   const handleGuidetitleordescPublish = async () => {
     if (!screenshotId) return;
@@ -151,6 +155,7 @@ const CreateComponent = () => {
               imageRefs={imageRefs}
               updateStep={updateStep}
               addStep={addStep}
+              deleteStep={deleteStep}
             />
           ))}
         </div>
@@ -160,3 +165,10 @@ const CreateComponent = () => {
 };
 
 export default CreateComponent;
+
+/*
+ * TODO:
+ * 1. Delete Step
+ * 2. Dragable Blinking Bubble
+ * 3. Add Step Button Styling
+ */

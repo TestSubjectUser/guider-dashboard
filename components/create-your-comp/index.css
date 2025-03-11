@@ -151,7 +151,14 @@ body {
   /* margin-bottom: 32px; */
   margin: 10px 0;
 }
-
+.delete-button {
+  color: #f56565;
+  display: flex;
+  justify-content: flex-end;
+  font-size: small;
+  font-weight: bolder;
+  cursor: pointer;
+}
 .step-header {
   display: flex;
   justify-content: space-between;
