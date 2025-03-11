@@ -5,6 +5,7 @@ import Step from "./Step";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
+import EditableHeader from "./EditableHeader";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -116,84 +117,17 @@ const CreateComponent = () => {
 
         {/* Guide Title */}
         <div className="guide-info">
-          <div className="guide-info-header">
-            {isEditingTitle ? (
-              <input
-                type="text"
-                value={guideTitle}
-                onChange={(e) => setGuideTitle(e.target.value)}
-                onBlur={saveTitle} // Save on blur
-                onKeyDown={(e) => e.key === "Enter" && saveTitle()} // Save on Enter
-                autoFocus
-                style={{
-                  fontSize: "1.5rem",
-                  fontWeight: "bold",
-                  border: "none",
-                  borderBottom: "1px solid #f56565",
-                  outline: "none",
-                  background: "none",
-                  width: "100%",
-                }}
-              />
-            ) : (
-              <h1
-                onClick={() =>
-                  setIsEditingTitle((prev) => {
-                    return !prev;
-                  })
-                }
-              >
-                {guideTitle ? guideTitle : "Title of the guide"}
-              </h1>
-            )}
-            <button
-              className="edit-button"
-              onClick={() => isEditingTitle && saveTitle()}
-            >
-              <i className="">saved</i>
-            </button>
-          </div>
-
-          {/* Guide Description */}
-          <div className="guide-info-description">
-            {isEditingDescription ? (
-              <input
-                type="text"
-                value={guideDescription}
-                onChange={(e) => setGuideDescription(e.target.value)}
-                onBlur={saveDescription} // Save on blur
-                onKeyDown={(e) => e.key === "Enter" && saveDescription()} // Save on Enter
-                autoFocus
-                style={{
-                  fontSize: "1.25rem",
-                  border: "none",
-                  borderBottom: "1px solid #f56565",
-                  outline: "none",
-                  background: "none",
-                  color: "#2563eb",
-                  width: "100%",
-                }}
-              />
-            ) : (
-              <p
-                onClick={() =>
-                  setIsEditingDescription((prev) => {
-                    return !prev;
-                  })
-                }
-              >
-                {guideDescription
-                  ? guideDescription
-                  : "What is this guide about?"}
-              </p>
-            )}
-            <button
-              className="edit-button"
-              onClick={() => isEditingDescription && saveDescription()}
-            >
-              <i className="">saved</i>
-            </button>
-          </div>
+          <EditableHeader
+            textValue={guideTitle}
+            textColor=""
+            textSize="1.5rem"
+          />
+          <EditableHeader
+            textValue={guideDescription}
+            textColor="#2563eb"
+            textSize="1.25rem"
+          />
+          <div>{/* <EditableHeader /> */}</div>
         </div>
 
         {/* Steps */}
