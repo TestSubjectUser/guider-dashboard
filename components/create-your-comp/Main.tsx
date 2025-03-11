@@ -71,6 +71,23 @@ const CreateComponent = () => {
     setStepsData(updatedSteps);
   };
 
+  const addStep = (
+    index: number,
+    newTitle: string,
+    newDescription: string,
+    screenshotUrl: string,
+    relativeCoordinates: { x: number; y: number }
+  ) => {
+    const updatedSteps = [...stepsData];
+    updatedSteps.splice(index, 0, {
+      title: newTitle,
+      description: newDescription,
+      screenshotUrl: screenshotUrl,
+      relativeCoordinates: relativeCoordinates,
+    });
+    setStepsData(updatedSteps);
+  };
+
   // Title, desc, guideImages(title, desc) will be updateeedd
   const handleGuidetitleordescPublish = async () => {
     if (!screenshotId) return;
@@ -94,6 +111,7 @@ const CreateComponent = () => {
         activeStep={activeStep}
         handleStepClick={handleStepClick}
         stepsData={stepsData}
+        imageRefs={imageRefs}
       />
       <div className="main-content">
         <div className="header">
@@ -132,6 +150,7 @@ const CreateComponent = () => {
               index={index}
               imageRefs={imageRefs}
               updateStep={updateStep}
+              addStep={addStep}
             />
           ))}
         </div>

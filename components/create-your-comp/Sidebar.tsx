@@ -6,10 +6,12 @@ export const Sidebar = ({
   activeStep,
   handleStepClick,
   stepsData,
+  imageRefs,
 }: {
   activeStep: number;
   handleStepClick: (index: number) => void;
   stepsData: any[];
+  imagerefs: any;
 }) => {
   const handleClick = (index: number) => {
     window.location.hash = `#${index}`;
@@ -17,10 +19,14 @@ export const Sidebar = ({
     scrollToStep(index);
   };
   const scrollToStep = (index: number) => {
-    const stepElement = document.getElementById(index.toString());
-    if (stepElement) {
-      stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    imageRefs.current[index]?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    // const stepElement = document.getElementById(index.toString());
+    // if (stepElement) {
+    //   stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    // }
   };
 
   return (
