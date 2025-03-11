@@ -4,14 +4,13 @@ function EditableHeader({
   textValue = "enter text...",
   textColor = "black",
   textSize = "1rem",
+  setText,
 }: {
   textValue: string;
   textColor: string;
   textSize: string;
+  setText: (newText: string) => void;
 }) {
-  const [text, setText] = React.useState<string>(
-    textValue || "some initial text..."
-  );
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -28,7 +27,6 @@ function EditableHeader({
     setIsEditing(false);
     inputRef.current?.blur();
   };
-  console.log("EditableHeader rendered, Title: ", text);
 
   return (
     <div
@@ -37,6 +35,7 @@ function EditableHeader({
         alignItems: "center",
         justifyContent: "space-between",
         margin: "2px",
+        width: "100%",
       }}
     >
       <input
@@ -53,7 +52,7 @@ function EditableHeader({
           width: "100%",
           borderBottom: isEditing ? "2px solid #f56565" : "none",
         }}
-        value={text}
+        value={textValue}
         onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsEditing(true)}
         onBlur={() => {

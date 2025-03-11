@@ -1,9 +1,21 @@
 import React from "react";
 import { BlinkingBubble } from "./BlinkingBubble";
+import EditableHeader from "./EditableHeader";
 
-function Step({ step, index, imageRefs }: any) {
+interface StepProps {
+  step: any;
+  // step: {
+  //   title: string;
+  //   description: string;
+  //   imageUrl?: string; // Optional step image
+  // };
+  index: number;
+  imageRefs: any;
+  updateStep: (index: number, newTitle: string, newDescription: string) => void;
+}
+
+const Step: React.FC<StepProps> = ({ step, index, imageRefs, updateStep }) => {
   const [imageLoaded, setImageLoaded] = React.useState(false);
-  // const [zoomLevel, setZoomLevel] = React.useState(1);
 
   React.useEffect(() => {
     const img = imageRefs.current[index];
@@ -12,32 +24,24 @@ function Step({ step, index, imageRefs }: any) {
     }
   }, [imageRefs.current[index]]);
 
-  // // Zoom In
-  // const handleZoomIn = () => {
-  //   setZoomLevel((prevZoom) => Math.min(prevZoom + 0.2, 3)); // Max zoom level: 3x
-  // };
-  // // Zoom Out
-  // const handleZoomOut = () => {
-  //   setZoomLevel((prevZoom) => Math.max(prevZoom - 0.2, 1)); // Min zoom level: 1x (original size)
-  // };
-
   return (
     <div className="step" id={index.toString()} key={index}>
       <div className="step-header">
-        <div className="step-title-with-number">
-          <div className="step-number">{index + 1}</div>
-          <h4>{step.title}</h4>
-          {/* <h4>{step.id}</h4> */}
-        </div>
-        <button className="edit-button">
-          <i className="">edit</i>
-        </button>
+        <div className="step-number">{index + 1}</div>
+        <EditableHeader
+          textValue={step.title}
+          textColor=""
+          textSize=""
+          setText={(newText) => updateStep(index, newText, step.description)}
+        />
       </div>
       <div className="step-description">
-        <p>add description</p>
-        <button className="edit-button">
-          <i className="">edit</i>
-        </button>
+        <EditableHeader
+          textValue={step.description}
+          textColor="gray"
+          textSize=""
+          setText={(newText) => updateStep(index, step.title, newText)}
+        />
       </div>
 
       <div
@@ -47,7 +51,6 @@ function Step({ step, index, imageRefs }: any) {
         <img
           ref={(el) => (imageRefs.current[index] = el)}
           src={step.screenshotUrl}
-          // alt={step.title}
           alt={step.id}
           className="step-image"
           onLoad={() => setImageLoaded(true)}
@@ -55,9 +58,6 @@ function Step({ step, index, imageRefs }: any) {
             maxHeight: "600px",
             maxWidth: "100%",
             objectFit: "contain",
-            // transform: `scale(${zoomLevel})`,
-            // transformOrigin: "center center",
-            // transition: "transform 0.2s ease-in-out",
           }}
         />
         {imageLoaded && (
@@ -65,23 +65,13 @@ function Step({ step, index, imageRefs }: any) {
             coordinates={{
               x: step.relativeCoordinates.x,
               y: step.relativeCoordinates.y,
-              // x: step.relativeCoordinates.x * zoomLevel,
-              // y: step.relativeCoordinates.y * zoomLevel,
             }}
             imageRef={imageRefs.current[index]}
           />
         )}
       </div>
-      {/* <div className="zoom-controls">
-        <button onClick={handleZoomOut} className="zoom-button">
-          ➖ Zoom Out
-        </button>
-        <button onClick={handleZoomIn} className="zoom-button">
-          ➕ Zoom In
-        </button>
-      </div> */}
     </div>
   );
-}
+};
 
 export default Step;
