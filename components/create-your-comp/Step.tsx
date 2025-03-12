@@ -43,9 +43,7 @@ const Step: React.FC<StepProps> = ({
     if (img && img.complete) {
       setImageLoaded(true);
     }
-    {
-      console.log("step.relativeCoordinates ", step.relativeCoordinates);
-    }
+    // console.log("step.relativeCoordinates ", step.relativeCoordinates);
   }, [imageRefs.current[index]]);
 
   return (
@@ -78,7 +76,9 @@ const Step: React.FC<StepProps> = ({
           style={{ position: "relative", overflow: "hidden" }}
         >
           <img
-            ref={(el) => (imageRefs.current[index] = el)}
+            ref={(el) => {
+              imageRefs.current[index] = el;
+            }}
             src={step.screenshotUrl}
             alt={step.id}
             className="step-image"
@@ -98,7 +98,7 @@ const Step: React.FC<StepProps> = ({
               }}
               imageRef={imageRefs.current[index]}
               updateCoordinates={(newCoordinates) => {
-                console.log("newCoordinates", newCoordinates);
+                // console.log("newCoordinates", newCoordinates);
                 updateStep(index, step.title, step.description, newCoordinates);
               }}
             />

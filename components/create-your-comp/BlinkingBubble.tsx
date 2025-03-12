@@ -77,7 +77,7 @@ export const BlinkingBubble = ({
 
   const handleDragEnd = () => {
     setDragging(false);
-    console.log("Drag ended, Position", percPosition);
+    // console.log("Drag ended, Position", percPosition);
     updateCoordinates(percPosition!);
   };
 

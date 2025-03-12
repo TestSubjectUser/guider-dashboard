@@ -106,7 +106,9 @@ const CreateComponent = () => {
                   style={{ position: "relative" }}
                 >
                   <img
-                    ref={(el) => (imageRefs.current[index] = el)}
+                    ref={(el) => {
+                      imageRefs.current[index] = el;
+                    }}
                     src={step.screenshotUrl}
                     alt={step.title}
                     className="step-image"

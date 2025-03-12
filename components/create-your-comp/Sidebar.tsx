@@ -6,7 +6,7 @@ export const Sidebar = ({
   activeStep,
   handleStepClick,
   stepsData,
-  imageRefs,
+  imagerefs,
 }: {
   activeStep: number;
   handleStepClick: (index: number) => void;
@@ -19,7 +19,7 @@ export const Sidebar = ({
     scrollToStep(index);
   };
   const scrollToStep = (index: number) => {
-    imageRefs.current[index]?.scrollIntoView({
+    imagerefs.current[index]?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });

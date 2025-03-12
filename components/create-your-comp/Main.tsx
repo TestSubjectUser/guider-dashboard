@@ -22,18 +22,21 @@ const CreateComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      const docRef = doc(db, "guides", screenshotId);
-      const docSnap = await getDoc(docRef);
+      if (screenshotId) {
+        const docRef = doc(db, "guides", screenshotId);
+        const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        setGuideTitle(docSnap.data()?.guideTitle);
-        setGuideDescription(docSnap.data()?.guideDescription);
-        setStepsData(docSnap.data().guideImages);
+        if (docSnap.exists()) {
+          setGuideTitle(docSnap.data()?.guideTitle);
+          setGuideDescription(docSnap.data()?.guideDescription);
+          setStepsData(docSnap.data().guideImages);
+        } else {
+          console.warn(`Document with ID ${screenshotId} not found.`);
+        }
       } else {
-        console.warn(`Document with ID ${screenshotId} not found.`);
+        console.warn("screenshotId is null.");
       }
     };
-
     fetchData();
   }, [screenshotId]);
 
@@ -120,7 +123,7 @@ const CreateComponent = () => {
         activeStep={activeStep}
         handleStepClick={handleStepClick}
         stepsData={stepsData}
-        imageRefs={imageRefs}
+        imagerefs={imageRefs}
       />
       <div className="main-content">
         <div className="header">
@@ -180,7 +183,14 @@ export default CreateComponent;
 
 /*
  * TODO:
- * 1. Delete Step
- * 2. Dragable Blinking Bubble
- * 3. Add Step Button Styling
+ * 1. ✅ Delete Step
+ * 2. ✅ Dragable Blinking Bubble
+ * 3. ✅ Add Step Button Styling
+ * 4. placeholder for empty input fields
+ * 6. display final page(popup to copy link or visit viewOnly page)
+ * 5. Upload custom image
+ * 7. convert base64 image to jpeg/png
+ * 8. Migrate to AWS
+ * 9. sidebar view optimization
+ * 10. extension optimization
  */
