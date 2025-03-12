@@ -12,7 +12,12 @@ interface StepProps {
   // };
   index: number;
   imageRefs: any;
-  updateStep: (index: number, newTitle: string, newDescription: string) => void;
+  updateStep: (
+    index: number,
+    newTitle: string,
+    newDescription: string,
+    newCoordinates?: { x: number; y: number }
+  ) => void;
   addStep: (
     index: number,
     newTitle: string,
@@ -37,6 +42,9 @@ const Step: React.FC<StepProps> = ({
     const img = imageRefs.current[index];
     if (img && img.complete) {
       setImageLoaded(true);
+    }
+    {
+      console.log("step.relativeCoordinates ", step.relativeCoordinates);
     }
   }, [imageRefs.current[index]]);
 
@@ -81,6 +89,7 @@ const Step: React.FC<StepProps> = ({
               objectFit: "contain",
             }}
           />
+
           {imageLoaded && (
             <BlinkingBubble
               coordinates={{
@@ -88,6 +97,10 @@ const Step: React.FC<StepProps> = ({
                 y: step.relativeCoordinates.y,
               }}
               imageRef={imageRefs.current[index]}
+              updateCoordinates={(newCoordinates) => {
+                console.log("newCoordinates", newCoordinates);
+                updateStep(index, step.title, step.description, newCoordinates);
+              }}
             />
           )}
         </div>

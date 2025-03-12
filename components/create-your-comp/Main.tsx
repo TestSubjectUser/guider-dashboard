@@ -61,13 +61,16 @@ const CreateComponent = () => {
   const updateStep = (
     index: number,
     newTitle: string,
-    newDescription: string
+    newDescription: string,
+    newCoordinates?: { x: number; y: number }
   ) => {
     const updatedSteps = [...stepsData];
     updatedSteps[index] = {
       ...updatedSteps[index],
       title: newTitle,
       description: newDescription,
+      relativeCoordinates:
+        newCoordinates ?? updatedSteps[index].relativeCoordinates,
     };
     setStepsData(updatedSteps);
   };
