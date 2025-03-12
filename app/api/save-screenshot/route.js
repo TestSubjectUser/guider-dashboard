@@ -33,12 +33,28 @@ export async function POST(req) {
         screenshotUrl,
       }));
 
-    const docRef = await addDoc(collection(db, "guides"), {
-      guideTitle,
-      guideDescription,
-      guideImages,
-      timestamp: new Date(),
-    });
+    let docRef;
+    try {
+      docRef = await addDoc(collection(db, "guides"), {
+        guideTitle,
+        guideDescription,
+        guideImages,
+        timestamp: new Date(),
+      });
+    } catch (e) {
+      // console.log("e.code: --- ", e.code);
+      // console.log("e.message: --- ", e.message);
+      if (
+        e.code === "invalid-argument" &&
+        e.message.includes("exceeds the maximum allowed size")
+      ) {
+        return NextResponse.json(
+          { error: "Document size exceeds 1MB limit." },
+          { status: 400 }
+        );
+      }
+      throw e;
+    }
 
     console.log("Guide saved with ID:", docRef.id);
     const url = `/dashboard?screenshotId=${docRef.id}`;

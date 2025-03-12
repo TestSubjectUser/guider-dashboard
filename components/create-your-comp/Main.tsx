@@ -19,6 +19,7 @@ const CreateComponent = () => {
   const [guideTitle, setGuideTitle] = useState("");
   const [guideDescription, setGuideDescription] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const docRef = doc(db, "guides", screenshotId);
@@ -70,7 +71,6 @@ const CreateComponent = () => {
     };
     setStepsData(updatedSteps);
   };
-
   const addStep = (
     index: number,
     newTitle: string,
@@ -94,6 +94,7 @@ const CreateComponent = () => {
   };
   // Title, desc, guideImages(title, desc) will be updateeedd
   const handleGuidetitleordescPublish = async () => {
+    setIsLoading(true);
     if (!screenshotId) return;
 
     try {
@@ -107,6 +108,7 @@ const CreateComponent = () => {
     } catch (e) {
       console.error("Error updating document: ", e);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -122,10 +124,17 @@ const CreateComponent = () => {
           <button className="exit-button"></button>
           <div className="header-buttons">
             <button
-              className="publish-button"
+              disabled={isLoading}
+              className={`publish-button ${isLoading ? "disabled" : ""}`}
+              // className="publish-button"
               onClick={handleGuidetitleordescPublish}
+              // title={
+              //   isLoading
+              //     ? "Button is disabled while updating"
+              //     : "Publish your guide"
+              // }
             >
-              Publish and share
+              {isLoading ? "Updating..." : "Publish and share"}
             </button>
           </div>
         </div>

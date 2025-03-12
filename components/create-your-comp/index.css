@@ -102,6 +102,10 @@ body {
 .publish-button:hover {
   background-color: #dc4646;
 }
+.publish-button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 
 .guide-info-header {
   display: flex;
@@ -227,4 +231,20 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+@keyframes blinking {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blinking {
+  animation: blinking 1s infinite;
 }

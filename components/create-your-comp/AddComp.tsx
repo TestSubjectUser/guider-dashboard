@@ -31,21 +31,24 @@ function AddComp({
         alignItems: "center",
       }}
     >
-      --------------------------
+      <hr style={{ flex: 1, border: "1px solid #ccc", margin: "0 5px" }} />
       <button
         style={{
-          background: "white",
-          // textDecoration: "none",
-          // border: "none",
-          // color: "gray",
-          borderRadius: "50%",
-          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "7px 14px",
+          border: "1px solid #ccc",
+          borderRadius: "9999px",
+          color: "#007bff",
+          textDecoration: "none",
+          margin: "0 5px",
         }}
         onClick={() => handleAddComp()}
       >
         Add Step
       </button>
-      --------------------------
+      <hr style={{ flex: 1, border: "1px solid #ccc", margin: "0 5px" }} />
     </div>
   );
 }
