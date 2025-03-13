@@ -7,6 +7,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import EditableHeader from "./EditableHeader";
 import ImageWithBubble from "./ImageWithBubble";
+import Popup from "./Popup";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -19,6 +20,9 @@ const CreateComponent = () => {
   // Editable states
   const [guideTitle, setGuideTitle] = useState("");
   const [guideDescription, setGuideDescription] = useState("");
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupUrl, setPopupUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -98,7 +102,9 @@ const CreateComponent = () => {
         guideDescription,
         guideImages: stepsData,
       });
-      alert("Guide updated successfully!");
+      // alert("Guide updated successfully!");
+      setPopupUrl("http://localhost:3000/view-guide?id=" + screenshotId);
+      setShowPopup(true);
     } catch (e) {
       console.error("Error updating document: ", e);
     }
@@ -134,6 +140,11 @@ const CreateComponent = () => {
     };
   }, [stepsData]);
 
+  const closePopup = () => {
+    setShowPopup(false);
+    // setPopupMessage("");
+  };
+
   return (
     <div className="container">
       <Sidebar
@@ -143,6 +154,7 @@ const CreateComponent = () => {
         imagerefs={imageRefs}
       />
       <div className="main-content">
+        {showPopup && <Popup popupUrl={popupUrl} onClose={closePopup} />}
         <div className="header">
           <button className="exit-button"></button>
           <div className="header-buttons">
@@ -212,11 +224,11 @@ export default CreateComponent;
  * 2. ✅ Dragable Blinking Bubble
  * 3. ✅ Add Step Button Styling
  * 4. placeholder for empty input fields
- * 6. display final page(popup to copy link or visit viewOnly page)
+ * 6. ✅ display final page(popup to copy link or visit viewOnly page)
  * 5. Upload custom image
  * 7. convert base64 image to jpeg/png
  * 8. Migrate to AWS
- * 9. sidebar view optimization
+ * 9. ✅ sidebar view optimization
  * 10. extension optimization
  * 11. remove hydration
  */
