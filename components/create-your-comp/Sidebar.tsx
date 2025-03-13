@@ -4,25 +4,29 @@ import "./index.css";
 
 export const Sidebar = ({
   activeStep,
-  handleStepClick,
+  // handleStepClick,
   stepsData,
   imagerefs,
 }: {
   activeStep: number;
-  handleStepClick: (index: number) => void;
+  // handleStepClick: (index: number) => void;
   stepsData: any[];
   imagerefs: any;
 }) => {
   const handleClick = (index: number) => {
     window.location.hash = `#${index}`;
-    handleStepClick(index);
+    // handleStepClick(index);
     scrollToStep(index);
   };
   const scrollToStep = (index: number) => {
-    imagerefs.current[index]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    const stepElement = document.getElementById(`step-${index}`);
+    if (stepElement) {
+      stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    // imagerefs.current[index]?.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "start",
+    // });
     // const stepElement = document.getElementById(index.toString());
     // if (stepElement) {
     //   stepElement.scrollIntoView({ behavior: "smooth", block: "start" });

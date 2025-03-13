@@ -49,7 +49,7 @@ const Step: React.FC<StepProps> = ({
   return (
     <>
       {index === 0 && <AddComp index={0} addStep={addStep} />}
-      <div className="step" id={index.toString()} key={index}>
+      <div className={`step`} id={index.toString()} key={index}>
         <div className="delete-button" onClick={() => deleteStep(index)}>
           delete
         </div>

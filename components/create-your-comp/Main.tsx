@@ -6,6 +6,7 @@ import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import EditableHeader from "./EditableHeader";
+import ImageWithBubble from "./ImageWithBubble";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -43,23 +44,10 @@ const CreateComponent = () => {
   useEffect(() => {
     imageRefs.current = imageRefs.current.slice(0, stepsData.length);
   }, [stepsData]);
-  useEffect(() => {
-    const hash = window.location.hash.replace("#", "");
-    if (hash) {
-      const index = parseInt(hash, 10);
-      scrollToStep(index);
-    }
-  }, []);
-  const scrollToStep = (index: number) => {
-    const stepElement = document.getElementById(index.toString());
-    if (stepElement) {
-      stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
 
-  const handleStepClick = (index: number) => {
-    setActiveStep(index);
-  };
+  // const handleStepClick = (index: number) => {
+  //   setActiveStep(index);
+  // };
 
   const updateStep = (
     index: number,
@@ -117,11 +105,40 @@ const CreateComponent = () => {
     setIsLoading(false);
   };
 
+  // IntersectionObserver to track the currently visible step
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Set the active step when the entry is in the viewport
+            const stepIndex = parseInt(entry.target.id.replace("step-", ""));
+            setActiveStep(stepIndex);
+          }
+        });
+      },
+      { threshold: 0.5 } // Trigger when 50% of the step is in view
+    );
+
+    // Observe each step
+    stepsData.forEach((_, index) => {
+      const stepElement = document.getElementById(`step-${index}`);
+      if (stepElement) {
+        observer.observe(stepElement);
+      }
+    });
+
+    // Cleanup observer on component unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, [stepsData]);
+
   return (
     <div className="container">
       <Sidebar
         activeStep={activeStep}
-        handleStepClick={handleStepClick}
+        // handleStepClick={handleStepClick}
         stepsData={stepsData}
         imagerefs={imageRefs}
       />
@@ -163,16 +180,24 @@ const CreateComponent = () => {
 
         <div className="steps">
           {stepsData.map((step, index) => (
-            <Step
-              key={index}
-              step={step}
-              index={index}
-              imageRefs={imageRefs}
-              updateStep={updateStep}
-              addStep={addStep}
-              deleteStep={deleteStep}
-            />
+            <div id={`step-${index}`} key={index}>
+              <Step
+                key={index}
+                step={step}
+                index={index}
+                imageRefs={imageRefs}
+                updateStep={updateStep}
+                addStep={addStep}
+                deleteStep={deleteStep}
+              />
+            </div>
           ))}
+          {/* {stepsData.map((step, index) => (
+            <ImageWithBubble
+              imageUrl={step.screenshotUrl}
+              relativeCoordinates={step.relativeCoordinates}
+            />
+          ))} */}
         </div>
       </div>
     </div>
@@ -193,4 +218,5 @@ export default CreateComponent;
  * 8. Migrate to AWS
  * 9. sidebar view optimization
  * 10. extension optimization
+ * 11. remove hydration
  */
