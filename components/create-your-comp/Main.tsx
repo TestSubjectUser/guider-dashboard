@@ -156,7 +156,6 @@ const CreateComponent = () => {
       <div className="main-content">
         {showPopup && <Popup popupUrl={popupUrl} onClose={closePopup} />}
         <div className="header">
-          <button className="exit-button"></button>
           <div className="header-buttons">
             <button
               disabled={isLoading}
@@ -184,7 +183,7 @@ const CreateComponent = () => {
           />
           <EditableHeader
             textValue={guideDescription}
-            textColor="#2563eb"
+            textColor="rgb(44, 169, 225)"
             textSize="1.25rem"
             setText={setGuideDescription}
           />
@@ -231,4 +230,11 @@ export default CreateComponent;
  * 9. ✅ sidebar view optimization
  * 10. extension optimization
  * 11. remove hydration
+ */
+
+/*
+ * CRMOne Colors
+ * rgb(44, 169, 225) - blue
+ * rgb(255, 89, 66) - Orange
+ * rgb(238, 48, 27) - hover Orange
  */

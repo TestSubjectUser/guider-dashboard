@@ -40,7 +40,7 @@ function AddComp({
           padding: "7px 14px",
           border: "1px solid #ccc",
           borderRadius: "9999px",
-          color: "#007bff",
+          color: "rgb(44, 169, 225)",
           textDecoration: "none",
           margin: "0 5px",
         }}
