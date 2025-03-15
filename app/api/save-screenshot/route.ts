@@ -2,9 +2,35 @@ import { NextResponse } from "next/server";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
-export async function POST(req) {
+interface RelativeCoordinates {
+  x: number;
+  y: number;
+}
+
+interface GuideImage {
+  title: string;
+  description: string;
+  relativeCoordinates: RelativeCoordinates;
+  screenshotUrl: string;
+}
+
+interface Guide {
+  guideTitle: string;
+  guideDescription: string;
+  guideImages: GuideImage[];
+  timestamp: Date;
+}
+
+interface RequestBody {
+  title: string;
+  relativeCoordinates: RelativeCoordinates;
+  screenshotUrl: string;
+  urlWeAreOn: string;
+}
+
+export async function POST(req: Request): Promise<NextResponse> {
   try {
-    const body = await req.json();
+    const body: RequestBody[] = await req.json();
     console.log("Receiving request...");
 
     if (body.length === 0) {
@@ -14,17 +40,11 @@ export async function POST(req) {
       );
     }
 
-    // const { relativeCoordinates, screenshotUrl } = body[0];
-    // console.log("relativeCoordinates: ", JSON.stringify(relativeCoordinates));
-    // console.log("screenshotUrl: ", screenshotUrl);
-
-    const guideTitle = body[body.length - 1].urlWeAreOn;
+    const guideTitle: string = body[body.length - 1].urlWeAreOn;
     console.log("guideTitle: ", guideTitle);
 
-    // const guideTitle = "Guide Title: Default";
-    const guideDescription = "Guide Description: Default";
-    // console.log("body: ", body[0].urlWeAreOn);
-    const guideImages = body
+    const guideDescription: string = "Guide Description: Default";
+    const guideImages: GuideImage[] = body
       .slice(0, -1)
       .map(({ title, relativeCoordinates, screenshotUrl }) => ({
         title,
@@ -40,10 +60,8 @@ export async function POST(req) {
         guideDescription,
         guideImages,
         timestamp: new Date(),
-      });
-    } catch (e) {
-      // console.log("e.code: --- ", e.code);
-      // console.log("e.message: --- ", e.message);
+      } as Guide);
+    } catch (e: any) {
       if (
         e.code === "invalid-argument" &&
         e.message.includes("exceeds the maximum allowed size")
@@ -67,7 +85,7 @@ export async function POST(req) {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error saving screenshot:", error);
     return NextResponse.json(
       { error: "Error saving screenshot", message: error.message },
