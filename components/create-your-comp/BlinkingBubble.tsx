@@ -9,16 +9,11 @@ export const BlinkingBubble = ({
   imageRef: HTMLImageElement | null;
   updateCoordinates: (newCoordinates: { x: number; y: number }) => void;
 }) => {
-  // in pixels
   const [position, setPosition] = useState<{ x: number; y: number } | null>(
     null
   );
-  const [percPosition, setPercPosition] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
-  const bubbleRef = useRef<HTMLDivElement | null>(null); // Reference to bubble
   const [dragging, setDragging] = useState(false);
+  const bubbleRef = useRef<HTMLDivElement | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -39,67 +34,74 @@ export const BlinkingBubble = ({
     }
   }, [imageRef, coordinates]);
 
-  const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    if (bubbleRef.current) {
-      const rect = bubbleRef.current.getBoundingClientRect();
-      setOffset({
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-      });
-    }
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!bubbleRef.current) return;
+
+    const rect = bubbleRef.current.getBoundingClientRect();
+    setOffset({
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    });
+
     setDragging(true);
   };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault(); // Required to allow dragging
+  const handleMouseMove = (event: MouseEvent) => {
+    if (!dragging || !imageRef) return;
 
-    if (dragging && imageRef) {
-      const imgRect = imageRef.getBoundingClientRect();
-      let newX = event.clientX - imgRect.left - offset.x;
-      let newY = event.clientY - imgRect.top - offset.y;
+    const imgRect = imageRef.getBoundingClientRect();
+    let newX = event.clientX - imgRect.left - offset.x;
+    let newY = event.clientY - imgRect.top - offset.y;
 
-      // Keep the bubble within image boundaries
-      newX = Math.max(0, Math.min(newX, imgRect.width));
-      newY = Math.max(0, Math.min(newY, imgRect.height));
+    // within image boundaries
+    newX = Math.max(0, Math.min(newX, imgRect.width - 25));
+    newY = Math.max(0, Math.min(newY, imgRect.height - 25));
 
-      // - in pixels
-      setPosition({ x: newX, y: newY });
+    setPosition({ x: newX, y: newY });
 
-      const percentageX = (newX / imgRect.width) * 100;
-      const percentageY = (newY / imgRect.height) * 100;
-      setPercPosition({ x: percentageX, y: percentageY });
-      // console.log("Bubble Position (Percentage):", {
-      //   x: percentageX,
-      //   y: percentageY,
-      // });
-    }
+    const percentageX = (newX / imgRect.width) * 100;
+    const percentageY = (newY / imgRect.height) * 100;
+
+    updateCoordinates({ x: percentageX, y: percentageY });
   };
 
-  const handleDragEnd = () => {
+  const handleMouseUp = () => {
     setDragging(false);
-    // console.log("Drag ended, Position", percPosition);
-    updateCoordinates(percPosition!);
   };
+
+  useEffect(() => {
+    if (dragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [dragging]);
 
   if (!position) return null;
 
   return (
     <div
-      draggable="true"
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragOver={handleDragOver}
+      ref={bubbleRef}
+      onMouseDown={handleMouseDown}
       style={{
         position: "absolute",
         top: `${position.y}px`,
         left: `${position.x}px`,
-        width: "30px",
-        height: "30px",
+        width: "25px",
+        height: "25px",
         backgroundColor: "rgba(255, 0, 0, 0.5)",
         borderRadius: "50%",
         animation: "blink 1s infinite",
         transform: "translate(-50%, -50%)",
         zIndex: 10,
+        cursor: "grab",
       }}
     ></div>
   );
