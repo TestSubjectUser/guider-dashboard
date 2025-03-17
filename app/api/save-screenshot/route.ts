@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import { uploadImageToCloudinary } from "./cloudinaryUpload";
 
 interface RelativeCoordinates {
   x: number;
@@ -44,15 +45,37 @@ export async function POST(req: Request): Promise<NextResponse> {
     console.log("guideTitle: ", guideTitle);
 
     const guideDescription: string = "";
-    const guideImages: GuideImage[] = body
-      .slice(0, -1)
-      .map(({ title, relativeCoordinates, screenshotUrl }) => ({
-        title,
-        description: "",
-        relativeCoordinates,
-        screenshotUrl,
-      }));
+    // const guideImages: GuideImage[] = body
+    //   .slice(0, -1)
+    //   .map(({ title, relativeCoordinates, screenshotUrl }) => ({
+    //     title,
+    //     description: "",
+    //     relativeCoordinates,
+    //     screenshotUrl,
+    //   }));
 
+    const guideImages: GuideImage[] = await Promise.all(
+      body
+        .slice(0, -1)
+        .map(async ({ title, relativeCoordinates, screenshotUrl }) => {
+          try {
+            console.log("Uploading image to Cloudinary...");
+            const cloudinaryUrl = await uploadImageToCloudinary(screenshotUrl);
+            console.log("Image uploaded:", cloudinaryUrl);
+
+            return {
+              title,
+              description: "",
+              relativeCoordinates,
+              // Store Cloudinary URL, not base64
+              screenshotUrl: cloudinaryUrl,
+            };
+          } catch (error) {
+            console.error("Image upload failed:", error);
+            throw new Error("Failed to upload image to Cloudinary");
+          }
+        })
+    );
     let docRef;
     try {
       docRef = await addDoc(collection(db, "guides"), {

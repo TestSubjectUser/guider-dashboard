@@ -85,10 +85,31 @@ const CreateComponent = () => {
     });
     setStepsData(updatedSteps);
   };
-  const deleteStep = (index: number) => {
-    const updatedSteps = [...stepsData];
-    updatedSteps.splice(index, 1);
-    setStepsData(updatedSteps);
+  const deleteStep = async (index: number) => {
+    const imageUrl = stepsData[index].screenshotUrl;
+
+    try {
+      if (imageUrl.includes("cloudinary", "guide-screenshots")) {
+        await fetch("/api/cloudinary", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageUrl }),
+        });
+
+        console.log("Image deleted from Cloudinary");
+      }
+
+      const updatedSteps = [...stepsData];
+      updatedSteps.splice(index, 1);
+      setStepsData(updatedSteps);
+    } catch (error) {
+      console.error("Failed to delete image:", error);
+    }
+    // by doing this need fs lib cause clodinary works on srver side like on nodejs
+    // deleteImageFromCloudinary(stepsData[index].screenshotUrl);
+    // const updatedSteps = [...stepsData];
+    // updatedSteps.splice(index, 1);
+    // setStepsData(updatedSteps);
   };
   // Title, desc, guideImages(title, desc) will be updateeedd
   const handleGuidetitleordescPublish = async () => {
