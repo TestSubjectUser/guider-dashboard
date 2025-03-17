@@ -4,11 +4,13 @@ function EditableHeader({
   textValue = "enter text...",
   textColor = "black",
   textSize = "1rem",
+  placeholderValue = "enter text...",
   setText,
 }: {
   textValue: string;
   textColor: string;
   textSize: string;
+  placeholderValue: string;
   setText: (newText: string) => void;
 }) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
@@ -53,6 +55,7 @@ function EditableHeader({
           borderBottom: isEditing ? "2px solid #f56565" : "none",
         }}
         value={textValue}
+        placeholder={placeholderValue}
         onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsEditing(true)}
         onBlur={() => {

@@ -140,11 +140,6 @@ const CreateComponent = () => {
     };
   }, [stepsData]);
 
-  const closePopup = () => {
-    setShowPopup(false);
-    // setPopupMessage("");
-  };
-
   return (
     <div className="container">
       <Sidebar
@@ -154,7 +149,9 @@ const CreateComponent = () => {
         imagerefs={imageRefs}
       />
       <div className="main-content">
-        {showPopup && <Popup popupUrl={popupUrl} onClose={closePopup} />}
+        {showPopup && (
+          <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
+        )}
         <div className="header">
           <div className="header-buttons">
             <button
@@ -179,12 +176,14 @@ const CreateComponent = () => {
             textValue={guideTitle}
             textColor=""
             textSize="1.5rem"
+            placeholderValue="add title of your guide..."
             setText={setGuideTitle}
           />
           <EditableHeader
             textValue={guideDescription}
             textColor="rgb(44, 169, 225)"
-            textSize="1.25rem"
+            textSize="1.15rem"
+            placeholderValue="add description of your guide..."
             setText={setGuideDescription}
           />
         </div>
@@ -222,7 +221,7 @@ export default CreateComponent;
  * 1. ✅ Delete Step
  * 2. ✅ Dragable Blinking Bubble
  * 3. ✅ Add Step Button Styling
- * 4. placeholder for empty input fields
+ * 4. ✅ placeholder for empty input fields
  * 6. ✅ display final page(popup to copy link or visit viewOnly page)
  * 5. Upload custom image
  * 7. convert base64 image to jpeg/png

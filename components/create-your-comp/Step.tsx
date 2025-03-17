@@ -4,6 +4,7 @@ import EditableHeader from "./EditableHeader";
 import AddComp from "./AddComp";
 import swapIcon from "../../public/swapIcon.png";
 import Image from "next/image";
+import ChangeImagePopup from "./ChangeImagePopup";
 interface StepProps {
   step: any;
   // step: {
@@ -40,6 +41,9 @@ const Step: React.FC<StepProps> = ({
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [showPopover, setShowPopover] = React.useState(false);
 
+  const [showChangeImagePopup, setShowChangeImagePopup] = React.useState(false);
+  const [popupChangeImageUrl, setPopupChangeImageUrl] = React.useState("");
+
   React.useEffect(() => {
     const img = imageRefs.current[index];
     if (img && img.complete) {
@@ -50,10 +54,28 @@ const Step: React.FC<StepProps> = ({
 
   const handleSwapClick = () => {
     console.log("Swap icon clicked for step:", index);
+    console.log("image: ", step.screenshotUrl);
+    setShowChangeImagePopup(true);
+    // step.screenshotUrl =
+    //   "https://media.istockphoto.com/id/2153573059/photo/mountain-covered-with-a-coniferous-fir-tree-forest-scenic-landscape-from-carpathian-mountains.jpg?s=1024x1024&w=is&k=20&c=hwDTriUtxDP_4A6jQKVRWTTTXLf8jim4w3w1K2dcaHU=";
   };
+
+  function handleImageUpload(imageLink: string) {
+    step.screenshotUrl = imageLink;
+    console.log("imageLink", imageLink);
+    console.log("after update image: ", step.screenshotUrl);
+    setShowChangeImagePopup(false);
+  }
 
   return (
     <>
+      {showChangeImagePopup && (
+        <ChangeImagePopup
+          handleImageUpload={handleImageUpload}
+          // setPopupChangeImageUrl={setPopupChangeImageUrl}
+          setShowChangeImagePopup={setShowChangeImagePopup}
+        />
+      )}
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div className={`step`} id={index.toString()} key={index}>
         <div className="delete-button" onClick={() => deleteStep(index)}>
@@ -65,6 +87,7 @@ const Step: React.FC<StepProps> = ({
             textValue={step.title}
             textColor=""
             textSize=""
+            placeholderValue="enter title for this step..."
             setText={(newText) => updateStep(index, newText, step.description)}
           />
         </div>
@@ -73,6 +96,7 @@ const Step: React.FC<StepProps> = ({
             textValue={step.description}
             textColor="gray"
             textSize=""
+            placeholderValue="add description for this step..."
             setText={(newText) => updateStep(index, step.title, newText)}
           />
         </div>
@@ -85,7 +109,10 @@ const Step: React.FC<StepProps> = ({
             ref={(el) => {
               imageRefs.current[index] = el;
             }}
-            src={step.screenshotUrl}
+            src={
+              step.screenshotUrl ||
+              "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
+            }
             alt={step.id}
             className="step-image"
             onLoad={() => setImageLoaded(true)}
@@ -95,28 +122,6 @@ const Step: React.FC<StepProps> = ({
               objectFit: "contain",
             }}
           />
-
-          {/* {imageLoaded && (
-            <Image
-              src={swapIcon.src}
-              alt="Swap"
-              className="swap-icon"
-              width={40}
-              height={40}
-              onClick={handleSwapClick}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                width: "30px",
-                height: "30px",
-                cursor: "pointer",
-                backgroundColor: "rgba(255, 255, 255, 1)",
-                borderRadius: "50%",
-                padding: "5px",
-              }}
-            />
-          )} */}
 
           {imageLoaded && (
             <div

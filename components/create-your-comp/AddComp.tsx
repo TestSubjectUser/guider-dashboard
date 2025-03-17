@@ -43,6 +43,7 @@ function AddComp({
           color: "rgb(44, 169, 225)",
           textDecoration: "none",
           margin: "0 5px",
+          cursor: "pointer",
         }}
         onClick={() => handleAddComp()}
       >

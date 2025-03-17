@@ -1,12 +1,11 @@
 body {
   background-color: #f3f4f6;
   font-family: Arial, sans-serif;
-  margin: 0;
+  margin: 10;
   padding: 0;
 }
 
 .container {
-  width: 75%;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -58,8 +57,15 @@ body {
   margin-left: 15px;
   color: gray;
 }
+.step-image {
+  display: flex;
+  justify-content: center;
+}
 img {
-  max-width: 500px;
+  max-width: 75vw;
+  object-fit: contain;
+  /* height: auto; */
+  max-height: 450px;
 }
 .step {
   position: relative;
@@ -68,7 +74,7 @@ img {
 .bubble {
   width: 20px;
   height: 20px;
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.5);
   border-radius: 50%;
   position: absolute;
   transform: translate(-50%, -50%);
@@ -78,11 +84,14 @@ img {
 @keyframes blink {
   0% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.3;
+    transform: scale(1.5);
   }
   100% {
     opacity: 1;
+    transform: scale(1);
   }
 }

@@ -43,12 +43,12 @@ export async function POST(req: Request): Promise<NextResponse> {
     const guideTitle: string = body[body.length - 1].urlWeAreOn;
     console.log("guideTitle: ", guideTitle);
 
-    const guideDescription: string = "Guide Description: Default";
+    const guideDescription: string = "";
     const guideImages: GuideImage[] = body
       .slice(0, -1)
       .map(({ title, relativeCoordinates, screenshotUrl }) => ({
         title,
-        description: "Description",
+        description: "",
         relativeCoordinates,
         screenshotUrl,
       }));

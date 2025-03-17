@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 function Popup({
   popupUrl,
@@ -16,7 +15,7 @@ function Popup({
     window.open(popupUrl, "_blank");
   };
 
-  return ReactDOM.createPortal(
+  return (
     <div className="model">
       <div className="modal">
         <div className="modal-header">
@@ -54,9 +53,10 @@ function Popup({
           </button>
         </div>
       </div>
-    </div>,
-    // document.getElementById("popup") as HTMLElement
-    document.querySelector(".popup") as HTMLElement
+    </div>
+    // ,
+    // // document.getElementById("popup") as HTMLElement
+    // document.querySelector(".popup") as HTMLElement
   );
 }
 
