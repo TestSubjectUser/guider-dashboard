@@ -1,15 +1,7 @@
-import { v2 as cloudinary } from "cloudinary";
-import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import { uploadImageToS3 } from "../save-screenshot/s3Upload";
-
-const s3Client = new S3Client({
-  region: "eu-north-1",
-  credentials: {
-    accessKeyId: "AKIAYS2NVH7EDTOAGAWU",
-    secretAccessKey: "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",
-  },
-});
+import s3Client from "../save-screenshot/aws";
 
 export async function POST(req: Request) {
   try {

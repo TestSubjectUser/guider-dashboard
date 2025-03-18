@@ -1,16 +1,6 @@
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
+import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import s3Client from "./aws";
 
-const s3Client = new S3Client({
-  region: "eu-north-1",
-  credentials: {
-    accessKeyId: "AKIAYS2NVH7EDTOAGAWU",
-    secretAccessKey: "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",
-  },
-});
 // Upload image to S3
 export const uploadImageToS3 = async (base64Image: string) => {
   try {
