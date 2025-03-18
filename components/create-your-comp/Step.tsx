@@ -42,7 +42,6 @@ const Step: React.FC<StepProps> = ({
   const [showPopover, setShowPopover] = React.useState(false);
 
   const [showChangeImagePopup, setShowChangeImagePopup] = React.useState(false);
-  const [popupChangeImageUrl, setPopupChangeImageUrl] = React.useState("");
 
   React.useEffect(() => {
     const img = imageRefs.current[index];
@@ -61,9 +60,11 @@ const Step: React.FC<StepProps> = ({
   };
 
   function handleImageUpload(imageLink: string) {
+    // implement updating step in here
+    console.log("stepData State changed");
     step.screenshotUrl = imageLink;
-    console.log("imageLink", imageLink);
-    console.log("after update image: ", step.screenshotUrl);
+    // console.log("imageLink", imageLink);
+    // console.log("after update image: ", step.screenshotUrl);
     setShowChangeImagePopup(false);
   }
 
@@ -78,8 +79,11 @@ const Step: React.FC<StepProps> = ({
       )}
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div className={`step`} id={index.toString()} key={index}>
-        <div className="delete-button" onClick={() => deleteStep(index)}>
-          delete
+        <div className="del_move-devider">
+          <div className="move_icon">::</div>
+          <button className="delete-button" onClick={() => deleteStep(index)}>
+            delete
+          </button>
         </div>
         <div className="step-header">
           <div className="step-number">{index + 1}</div>

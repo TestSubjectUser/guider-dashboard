@@ -93,6 +93,13 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin: 10px 0;
 }
+.del_move-devider {
+  display: flex;
+  justify-content: space-between;
+}
+.move_icon {
+  cursor: pointer;
+}
 .delete-button {
   color: rgb(255, 89, 66);
   display: flex;

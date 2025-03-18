@@ -10,6 +10,53 @@ function ChangeImagePopup({
   setShowChangeImagePopup: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const imageLink = React.useRef<HTMLInputElement | null>(null);
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
+
+  const handleImageSelection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result) {
+          setSelectedImage(reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleSubmit = async () => {
+    if (!selectedImage) {
+      console.log("No image selected.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/cloudinary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          base64Image: selectedImage,
+        }),
+      });
+
+      const data = await response.json();
+      // console.log("data after image upload: ", data);
+
+      if (response.ok) {
+        console.log("image uploaded from popup to cloudinary...");
+        // console.log("Image uploaded successfully:", data.imageUrl);
+        handleImageUpload(data.imageUrl);
+      } else {
+        console.error("Image upload failed:", data.error);
+      }
+    } catch (error) {
+      console.error("Error during image upload:", error);
+    } finally {
+      setShowChangeImagePopup(false);
+    }
+  };
 
   return (
     // <div className="model">
@@ -27,7 +74,10 @@ function ChangeImagePopup({
           ref={imageLink}
         />
         <div>OR</div>
-        <button disabled>Select My Image(coming soon...)</button>
+        {/* <input type="file" /> */}
+        <div>Choose an image to upload</div>
+        <input type="file" accept="image/*" onChange={handleImageSelection} />
+        {/* <button disabled>Select My Image(coming soon...)</button> */}
       </div>
       <div className="modal-footer">
         <button
@@ -39,8 +89,12 @@ function ChangeImagePopup({
         <button
           className="publish-btn"
           onClick={() => {
-            console.log("imageLink.current!.value", imageLink.current!.value);
-            handleImageUpload(imageLink.current!.value);
+            // console.log("imageLink.current!.value", imageLink.current!.value);
+            if (imageLink.current!.value) {
+              handleImageUpload(imageLink.current!.value);
+            } else {
+              handleSubmit();
+            }
             setShowChangeImagePopup(false);
           }}
         >
