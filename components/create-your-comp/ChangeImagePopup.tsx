@@ -42,11 +42,8 @@ function ChangeImagePopup({
       });
 
       const data = await response.json();
-      // console.log("data after image upload: ", data);
-
       if (response.ok) {
-        console.log("image uploaded from popup to cloudinary...");
-        // console.log("Image uploaded successfully:", data.imageUrl);
+        console.log("Image uploaded to S3 successfully:", data.imageUrl);
         handleImageUpload(data.imageUrl);
       } else {
         console.error("Image upload failed:", data.error);

@@ -1,31 +1,28 @@
 import { NextResponse } from "next/server";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
-import { uploadImageToCloudinary } from "./cloudinaryUpload";
+import { uploadImageToS3 } from "./s3Upload"; // Assuming you have an S3 upload utility
 
 interface RelativeCoordinates {
   x: number;
   y: number;
 }
-
 interface GuideImage {
   title: string;
   description: string;
   relativeCoordinates: RelativeCoordinates;
-  screenshotUrl: string;
+  screenshotUrl: string; // This will be the S3 URL after uploading
 }
-
 interface Guide {
   guideTitle: string;
   guideDescription: string;
   guideImages: GuideImage[];
   timestamp: Date;
 }
-
 interface RequestBody {
   title: string;
   relativeCoordinates: RelativeCoordinates;
-  screenshotUrl: string;
+  screenshotUrl: string; // Base64 image data or URL of the image
   urlWeAreOn: string;
 }
 
@@ -45,37 +42,21 @@ export async function POST(req: Request): Promise<NextResponse> {
     console.log("guideTitle: ", guideTitle);
 
     const guideDescription: string = "";
-    // const guideImages: GuideImage[] = body
-    //   .slice(0, -1)
-    //   .map(({ title, relativeCoordinates, screenshotUrl }) => ({
-    //     title,
-    //     description: "",
-    //     relativeCoordinates,
-    //     screenshotUrl,
-    //   }));
+    const guideImages: GuideImage[] = [];
 
-    const guideImages: GuideImage[] = await Promise.all(
-      body
-        .slice(0, -1)
-        .map(async ({ title, relativeCoordinates, screenshotUrl }) => {
-          try {
-            console.log("Uploading image to Cloudinary...");
-            const cloudinaryUrl = await uploadImageToCloudinary(screenshotUrl);
-            console.log("Image uploaded:", cloudinaryUrl);
+    for (const { title, relativeCoordinates, screenshotUrl } of body.slice(
+      0,
+      -1
+    )) {
+      const uploadedImageUrl = await uploadImageToS3(screenshotUrl);
+      guideImages.push({
+        title,
+        description: "",
+        relativeCoordinates,
+        screenshotUrl: uploadedImageUrl,
+      });
+    }
 
-            return {
-              title,
-              description: "",
-              relativeCoordinates,
-              // Store Cloudinary URL, not base64
-              screenshotUrl: cloudinaryUrl,
-            };
-          } catch (error) {
-            console.error("Image upload failed:", error);
-            throw new Error("Failed to upload image to Cloudinary");
-          }
-        })
-    );
     let docRef;
     try {
       docRef = await addDoc(collection(db, "guides"), {
@@ -116,19 +97,3 @@ export async function POST(req: Request): Promise<NextResponse> {
     );
   }
 }
-
-// Current - in screenshot collection each document carries
-/*
- * relativeCoordinates: {x: 50, y: 50}
- * screenshotUrl: "data:image/png;base64,iVBORw0KGgoA..."
- * timestamp: 10 March 2025 at 13:34:27 UTC+5:30
- * title: "Clicked on button"
- */
-
-// Updated - return document id only
-// document carries
-/*
- * guideTitle: "title of the guide"
- * guideDescription: "description of the guide"
- * guideImages: [title: "Clicked on button", description: "description", relativeCoordinates: {x: 50, y: 50}, screenshotUrl: "data:image/png;base64,iVBORw0KGgoA..."]
- */

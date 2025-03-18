@@ -49,10 +49,6 @@ const CreateComponent = () => {
     imageRefs.current = imageRefs.current.slice(0, stepsData.length);
   }, [stepsData]);
 
-  // const handleStepClick = (index: number) => {
-  //   setActiveStep(index);
-  // };
-
   const updateStep = (
     index: number,
     newTitle: string,
@@ -89,7 +85,7 @@ const CreateComponent = () => {
     const imageUrl = stepsData[index].screenshotUrl;
 
     try {
-      if (imageUrl.includes("cloudinary", "guide-screenshots")) {
+      if (imageUrl.includes("amazonaws", "guider-extension")) {
         await fetch("/api/cloudinary", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -111,7 +107,6 @@ const CreateComponent = () => {
     // updatedSteps.splice(index, 1);
     // setStepsData(updatedSteps);
   };
-  // Title, desc, guideImages(title, desc) will be updateeedd
   const handleGuidetitleordescPublish = async () => {
     setIsLoading(true);
     if (!screenshotId) return;
@@ -132,19 +127,17 @@ const CreateComponent = () => {
     setIsLoading(false);
   };
 
-  // IntersectionObserver to track the currently visible step
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Set the active step when the entry is in the viewport
             const stepIndex = parseInt(entry.target.id.replace("step-", ""));
             setActiveStep(stepIndex);
           }
         });
       },
-      { threshold: 0.5 } // Trigger when 50% of the step is in view
+      { threshold: 0.5 }
     );
 
     // Observe each step
@@ -165,7 +158,6 @@ const CreateComponent = () => {
     <div className="container">
       <Sidebar
         activeStep={activeStep}
-        // handleStepClick={handleStepClick}
         stepsData={stepsData}
         imagerefs={imageRefs}
       />
@@ -178,13 +170,7 @@ const CreateComponent = () => {
             <button
               disabled={isLoading}
               className={`publish-button ${isLoading ? "disabled" : ""}`}
-              // className="publish-button"
               onClick={handleGuidetitleordescPublish}
-              // title={
-              //   isLoading
-              //     ? "Button is disabled while updating"
-              //     : "Publish your guide"
-              // }
             >
               {isLoading ? "Updating..." : "Publish and share"}
             </button>
@@ -223,12 +209,6 @@ const CreateComponent = () => {
               />
             </div>
           ))}
-          {/* {stepsData.map((step, index) => (
-            <ImageWithBubble
-              imageUrl={step.screenshotUrl}
-              relativeCoordinates={step.relativeCoordinates}
-            />
-          ))} */}
         </div>
       </div>
     </div>
@@ -244,12 +224,13 @@ export default CreateComponent;
  * 3. ✅ Add Step Button Styling
  * 4. ✅ placeholder for empty input fields
  * 6. ✅ display final page(popup to copy link or visit viewOnly page)
- * 5. Upload custom image
+ * 5. ✅ Upload custom image
  * 7. convert base64 image to jpeg/png
- * 8. Migrate to AWS
+ * 8. ✅ Migrate to AWS
  * 9. ✅ sidebar view optimization
  * 10. extension optimization
  * 11. remove hydration
+ * 12. DELETE image or switch as well
  */
 
 /*
