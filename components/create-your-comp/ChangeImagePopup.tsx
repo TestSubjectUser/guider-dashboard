@@ -2,9 +2,11 @@
 import React from "react";
 
 function ChangeImagePopup({
+  oldImageUrl,
   handleImageUpload,
   setShowChangeImagePopup,
 }: {
+  oldImageUrl: string;
   handleImageUpload: (imageLink: string) => void;
   setShowChangeImagePopup: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
@@ -42,6 +44,25 @@ function ChangeImagePopup({
 
       const data = await response.json();
       if (response.ok) {
+        // if image uploaded to s3 than delete older image which was swaped withthis new one....
+        try {
+          console.log("oldUrl receided in popup: ", oldImageUrl);
+          if (
+            oldImageUrl.includes("amazonaws") ||
+            oldImageUrl.includes("guider-extension")
+          ) {
+            await fetch("/api/cloudinary", {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ imageUrl: oldImageUrl }),
+            });
+
+            console.log("Image deleted from AWS");
+          }
+        } catch (error) {
+          console.error("Failed to delete image:", error);
+        }
+
         console.log("Image uploaded to S3 successfully:", data.imageUrl);
         handleImageUpload(data.imageUrl);
       } else {

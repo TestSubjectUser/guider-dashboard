@@ -80,7 +80,7 @@ const CreateComponent = () => {
   }, [stepsData]);
 
   // Func: update step
-  const updateStep = (
+  const updateStep = async (
     index: number,
     newTitle: string,
     newDescription: string,
@@ -231,12 +231,14 @@ export default CreateComponent;
  * 4. ✅ placeholder for empty input fields
  * 6. ✅ display final page(popup to copy link or visit viewOnly page)
  * 5. ✅ Upload custom image
- * 7. convert base64 image to jpeg/png
+ * 7. ✅ convert base64 image to jpeg/png
  * 8. ✅ Migrate to AWS
  * 9. ✅ sidebar view optimization
  * 10. extension optimization
  * 11. remove hydration
- * 12. DELETE image on switch as well
+ * 12. ✅ DELETE image on switch as well
+ * 13. FIX: Step.tsx:34L converts external image url into bas64 as well
+ * 14. scenario where uploaded image is from aws as well
  */
 
 /*

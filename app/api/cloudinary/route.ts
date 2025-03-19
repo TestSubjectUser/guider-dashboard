@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const { imageUrl } = await req.json();
-
+    console.log("imageUrl received in DEL route", imageUrl);
     if (!imageUrl) {
       return NextResponse.json(
         { error: "Image URL is missing" },

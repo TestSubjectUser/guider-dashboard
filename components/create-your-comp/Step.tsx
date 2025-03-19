@@ -40,7 +40,7 @@ const Step = ({
   function handleImageUpload(imageLink: string) {
     // implement updating step in here
     console.log("stepData State changed");
-    step.screenshotUrl = imageLink;
+    // step.screenshotUrl = imageLink;
     updateStep(
       index,
       step.title,
@@ -57,6 +57,7 @@ const Step = ({
     <>
       {showChangeImagePopup && (
         <ChangeImagePopup
+          oldImageUrl={step.screenshotUrl}
           handleImageUpload={handleImageUpload}
           // setPopupChangeImageUrl={setPopupChangeImageUrl}
           setShowChangeImagePopup={setShowChangeImagePopup}
