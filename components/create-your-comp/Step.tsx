@@ -1,43 +1,21 @@
 import React from "react";
-import { BlinkingBubble } from "./BlinkingBubble";
-import EditableHeader from "./EditableHeader";
-import AddComp from "./AddComp";
-import swapIcon from "../../public/swapIcon.png";
 import Image from "next/image";
+import AddComp from "./AddComp";
+import { StepProps } from "./types";
+import EditableHeader from "./EditableHeader";
+import swapIcon from "../../public/swapIcon.png";
+import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
-interface StepProps {
-  step: any;
-  // step: {
-  //   title: string;
-  //   description: string;
-  //   imageUrl?: string; // Optional step image
-  // };
-  index: number;
-  imageRefs: any;
-  updateStep: (
-    index: number,
-    newTitle: string,
-    newDescription: string,
-    newCoordinates?: { x: number; y: number }
-  ) => void;
-  addStep: (
-    index: number,
-    newTitle: string,
-    newDescription: string,
-    screenshotUrl: string,
-    relativeCoordinates: { x: number; y: number }
-  ) => void;
-  deleteStep: (index: number) => void;
-}
 
-const Step: React.FC<StepProps> = ({
+// const Step: React.FC<StepProps> = ({
+const Step = ({
   step,
   index,
   imageRefs,
   updateStep,
   addStep,
   deleteStep,
-}) => {
+}: StepProps) => {
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [showPopover, setShowPopover] = React.useState(false);
 
@@ -63,6 +41,13 @@ const Step: React.FC<StepProps> = ({
     // implement updating step in here
     console.log("stepData State changed");
     step.screenshotUrl = imageLink;
+    updateStep(
+      index,
+      step.title,
+      step.description,
+      step.relativeCoordinates,
+      imageLink
+    );
     // console.log("imageLink", imageLink);
     // console.log("after update image: ", step.screenshotUrl);
     setShowChangeImagePopup(false);
@@ -117,7 +102,7 @@ const Step: React.FC<StepProps> = ({
               step.screenshotUrl ||
               "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
             }
-            alt={step.id}
+            alt={step.title}
             className="step-image"
             onLoad={() => setImageLoaded(true)}
             style={{

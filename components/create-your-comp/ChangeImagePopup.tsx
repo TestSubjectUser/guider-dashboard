@@ -6,7 +6,6 @@ function ChangeImagePopup({
   setShowChangeImagePopup,
 }: {
   handleImageUpload: (imageLink: string) => void;
-  //   setPopupChangeImageUrl: React.Dispatch<React.SetStateAction<string>>;
   setShowChangeImagePopup: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const imageLink = React.useRef<HTMLInputElement | null>(null);

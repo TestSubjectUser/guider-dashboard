@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React from "react";
 
 export const BlinkingBubble = ({
   coordinates,
@@ -9,14 +9,15 @@ export const BlinkingBubble = ({
   imageRef: HTMLImageElement | null;
   updateCoordinates: (newCoordinates: { x: number; y: number }) => void;
 }) => {
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(
-    null
-  );
-  const [dragging, setDragging] = useState(false);
-  const bubbleRef = useRef<HTMLDivElement | null>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = React.useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const [dragging, setDragging] = React.useState(false);
+  const bubbleRef = React.useRef<HTMLDivElement | null>(null);
+  const [offset, setOffset] = React.useState({ x: 0, y: 0 });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!imageRef) return;
 
     const updatePosition = () => {
@@ -33,6 +34,21 @@ export const BlinkingBubble = ({
       imageRef.onload = updatePosition;
     }
   }, [imageRef, coordinates]);
+
+  React.useEffect(() => {
+    if (dragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    } else {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [dragging]);
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!bubbleRef.current) return;
@@ -68,21 +84,6 @@ export const BlinkingBubble = ({
   const handleMouseUp = () => {
     setDragging(false);
   };
-
-  useEffect(() => {
-    if (dragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    } else {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [dragging]);
 
   if (!position) return null;
 

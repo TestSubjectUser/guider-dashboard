@@ -1,20 +1,21 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { Sidebar } from "./Sidebar";
 import Step from "./Step";
-import { db } from "../../app/api/save-screenshot/firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { useSearchParams } from "next/navigation";
-import EditableHeader from "./EditableHeader";
-import ImageWithBubble from "./ImageWithBubble";
 import Popup from "./Popup";
+import { Sidebar } from "./Sidebar";
+import EditableHeader from "./EditableHeader";
+import { GuideDataImagesProps } from "./types";
+import { useSearchParams } from "next/navigation";
+// import ImageWithBubble from "./ImageWithBubble";
+import { useEffect, useRef, useState } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../app/api/save-screenshot/firebaseConfig";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
   const screenshotId = searchParams.get("screenshotId");
 
   const [activeStep, setActiveStep] = useState(0);
-  const [stepsData, setStepsData] = useState<any[]>([]);
+  const [stepsData, setStepsData] = useState<GuideDataImagesProps>([]);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   // Editable states
@@ -25,6 +26,8 @@ const CreateComponent = () => {
   const [popupUrl, setPopupUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch: from firestore
   useEffect(() => {
     const fetchData = async () => {
       if (screenshotId) {
@@ -44,16 +47,45 @@ const CreateComponent = () => {
     };
     fetchData();
   }, [screenshotId]);
-
+  // initialize imageRefs
   useEffect(() => {
     imageRefs.current = imageRefs.current.slice(0, stepsData.length);
   }, [stepsData]);
+  // observer for steps
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const stepIndex = parseInt(entry.target.id.replace("step-", ""));
+            setActiveStep(stepIndex);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
 
+    // Observe each step
+    stepsData.forEach((_, index) => {
+      const stepElement = document.getElementById(`step-${index}`);
+      if (stepElement) {
+        observer.observe(stepElement);
+      }
+    });
+
+    // Cleanup observer on component unmount
+    return () => {
+      observer.disconnect();
+    };
+  }, [stepsData]);
+
+  // Func: update step
   const updateStep = (
     index: number,
     newTitle: string,
     newDescription: string,
-    newCoordinates?: { x: number; y: number }
+    newCoordinates?: { x: number; y: number },
+    newScreenshotUrl?: string
   ) => {
     const updatedSteps = [...stepsData];
     updatedSteps[index] = {
@@ -62,6 +94,7 @@ const CreateComponent = () => {
       description: newDescription,
       relativeCoordinates:
         newCoordinates ?? updatedSteps[index].relativeCoordinates,
+      screenshotUrl: newScreenshotUrl ?? updatedSteps[index].screenshotUrl,
     };
     setStepsData(updatedSteps);
   };
@@ -85,7 +118,10 @@ const CreateComponent = () => {
     const imageUrl = stepsData[index].screenshotUrl;
 
     try {
-      if (imageUrl.includes("amazonaws", "guider-extension")) {
+      if (
+        imageUrl.includes("amazonaws") ||
+        imageUrl.includes("guider-extension")
+      ) {
         await fetch("/api/cloudinary", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -127,40 +163,9 @@ const CreateComponent = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const stepIndex = parseInt(entry.target.id.replace("step-", ""));
-            setActiveStep(stepIndex);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    // Observe each step
-    stepsData.forEach((_, index) => {
-      const stepElement = document.getElementById(`step-${index}`);
-      if (stepElement) {
-        observer.observe(stepElement);
-      }
-    });
-
-    // Cleanup observer on component unmount
-    return () => {
-      observer.disconnect();
-    };
-  }, [stepsData]);
-
   return (
     <div className="container">
-      <Sidebar
-        activeStep={activeStep}
-        stepsData={stepsData}
-        imagerefs={imageRefs}
-      />
+      <Sidebar activeStep={activeStep} stepsData={stepsData} />
       <div className="main-content">
         {showPopup && (
           <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
@@ -177,8 +182,8 @@ const CreateComponent = () => {
           </div>
         </div>
 
-        {/* Guide Title */}
         <div className="guide-info">
+          {/* Guide Title */}
           <EditableHeader
             textValue={guideTitle}
             textColor=""
@@ -186,6 +191,7 @@ const CreateComponent = () => {
             placeholderValue="add title of your guide..."
             setText={setGuideTitle}
           />
+          {/* Guide Description */}
           <EditableHeader
             textValue={guideDescription}
             textColor="rgb(44, 169, 225)"
@@ -230,7 +236,7 @@ export default CreateComponent;
  * 9. ✅ sidebar view optimization
  * 10. extension optimization
  * 11. remove hydration
- * 12. DELETE image or switch as well
+ * 12. DELETE image on switch as well
  */
 
 /*

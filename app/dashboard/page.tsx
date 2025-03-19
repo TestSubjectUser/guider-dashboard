@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import Dashboard from "../../components/create-your-comp/Dashboard";
 import Main from "../../components/create-your-comp/Main";
 function page() {
   return (

@@ -1,4 +1,5 @@
 import React from "react";
+import { HeaderProps } from "./types";
 
 function EditableHeader({
   textValue = "enter text...",
@@ -6,13 +7,7 @@ function EditableHeader({
   textSize = "1rem",
   placeholderValue = "enter text...",
   setText,
-}: {
-  textValue: string;
-  textColor: string;
-  textSize: string;
-  placeholderValue: string;
-  setText: (newText: string) => void;
-}) {
+}: HeaderProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 

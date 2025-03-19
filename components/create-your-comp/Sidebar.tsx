@@ -1,21 +1,17 @@
 "use client";
-import React from "react";
 import "./index.css";
+import React from "react";
+import { GuideDataImagesProps } from "./types";
 
 export const Sidebar = ({
   activeStep,
-  // handleStepClick,
   stepsData,
-  imagerefs,
 }: {
   activeStep: number;
-  // handleStepClick: (index: number) => void;
-  stepsData: any[];
-  imagerefs: any;
+  stepsData: GuideDataImagesProps;
 }) => {
   const handleClick = (index: number) => {
     window.location.hash = `#${index}`;
-    // handleStepClick(index);
     scrollToStep(index);
   };
   const scrollToStep = (index: number) => {
@@ -23,14 +19,6 @@ export const Sidebar = ({
     if (stepElement) {
       stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    // imagerefs.current[index]?.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "start",
-    // });
-    // const stepElement = document.getElementById(index.toString());
-    // if (stepElement) {
-    //   stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
-    // }
   };
 
   return (

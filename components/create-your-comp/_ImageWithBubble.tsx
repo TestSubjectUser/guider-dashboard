@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import React from "react";
 
 interface ImageWithBlinkingBubbleProps {
   imageUrl: string;
@@ -10,12 +10,12 @@ const ImageWithBlinkingBubble: React.FC<ImageWithBlinkingBubbleProps> = ({
   imageUrl,
   relativeCoordinates,
 }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const imageRef = useRef<HTMLImageElement | null>(null);
-  const [opacity, setOpacity] = useState(1);
-  const [isFadingOut, setIsFadingOut] = useState(true);
+  const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+  const imageRef = React.useRef<HTMLImageElement | null>(null);
+  const [opacity, setOpacity] = React.useState(1);
+  const [isFadingOut, setIsFadingOut] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
