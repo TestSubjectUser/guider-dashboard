@@ -32,6 +32,8 @@ export interface StepProps {
   };
   index: number;
   imageRefs: any;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
   updateStep: (
     index: number,
     newTitle: string,
@@ -55,6 +57,13 @@ export type HeaderProps = {
   textSize: string;
   placeholderValue: string;
   setText: (newText: string) => void;
+};
+
+export type ChangeImagePopupProps = {
+  oldImageUrl: string;
+  handleImageUpload: (imageLink: string) => void;
+  setShowChangeImagePopup: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: (isLoading: boolean) => void;
 };
 
 export interface RequestBody {

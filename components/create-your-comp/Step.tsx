@@ -13,6 +13,8 @@ const Step = ({
   step,
   index,
   imageRefs,
+  isLoading,
+  setIsLoading,
   updateStep,
   addStep,
   deleteStep,
@@ -39,8 +41,7 @@ const Step = ({
   };
 
   function handleImageUpload(imageLink: string) {
-    // TODO : loading state - updating image... - disable publish and share button, also delete button
-    // implement updating step in here
+    setIsLoading(true);
     console.log("stepData State changed");
     // step.screenshotUrl = imageLink;
     updateStep(
@@ -53,7 +54,7 @@ const Step = ({
     // console.log("imageLink", imageLink);
     // console.log("after update image: ", step.screenshotUrl);
     setShowChangeImagePopup(false);
-    // TODO : loading state - set to false - enable publish and share button
+    setIsLoading(false);
   }
 
   return (
@@ -62,6 +63,7 @@ const Step = ({
         <ChangeImagePopup
           oldImageUrl={step.screenshotUrl}
           handleImageUpload={handleImageUpload}
+          setIsLoading={setIsLoading}
           // setPopupChangeImageUrl={setPopupChangeImageUrl}
           setShowChangeImagePopup={setShowChangeImagePopup}
         />
@@ -71,7 +73,7 @@ const Step = ({
         <div className={styles.delMoveDevider}>
           <div className={styles.moveIcon}></div>
           <button
-            className={styles.deleteButton}
+            className={isLoading ? styles.disabledButton : styles.deleteButton}
             onClick={() => deleteStep(index)}
           >
             delete
@@ -121,7 +123,9 @@ const Step = ({
 
           {imageLoaded && (
             <div
-              className={styles.swapContainer}
+              className={
+                isLoading ? styles.disabledButton : styles.swapContainer
+              }
               onMouseEnter={() => setShowPopover(true)}
               onMouseLeave={() => setShowPopover(false)}
               onClick={handleSwapClick}

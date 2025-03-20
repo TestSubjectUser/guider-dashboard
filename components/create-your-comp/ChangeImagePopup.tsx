@@ -1,16 +1,14 @@
 "use client";
 import React from "react";
 import styles from "./createGuide.module.css";
+import { ChangeImagePopupProps } from "./types";
 
 function ChangeImagePopup({
   oldImageUrl,
   handleImageUpload,
   setShowChangeImagePopup,
-}: {
-  oldImageUrl: string;
-  handleImageUpload: (imageLink: string) => void;
-  setShowChangeImagePopup: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+  setIsLoading,
+}: ChangeImagePopupProps) {
   const imageLink = React.useRef<HTMLInputElement | null>(null);
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
 
@@ -27,7 +25,7 @@ function ChangeImagePopup({
     }
   };
   const handleSubmit = async () => {
-    // TODO : loading state - updating image...- disable publish and share button, also delete button
+    setIsLoading(true);
     if (!selectedImage) {
       console.log("No image selected.");
       return;
@@ -67,7 +65,7 @@ function ChangeImagePopup({
 
         console.log("Image uploaded to S3 successfully:", data.imageUrl);
         handleImageUpload(data.imageUrl);
-        // TODO : loading state - false, image updated - enable publish and share button
+        setIsLoading(false);
       } else {
         console.error("Image upload failed:", data.error);
       }
@@ -75,7 +73,7 @@ function ChangeImagePopup({
       console.error("Error during image upload:", error);
     } finally {
       setShowChangeImagePopup(false);
-      // TODO : loading state - false if not error occured - enable publish and share button
+      setIsLoading(false);
     }
   };
 

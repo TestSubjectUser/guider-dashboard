@@ -117,7 +117,8 @@ const CreateComponent = () => {
     setStepsData(updatedSteps);
   };
   const deleteStep = async (index: number) => {
-    // TODO : loading state - deleting image... - disable publish and share button, also delete button
+    setIsLoading(true);
+    // so if isLoading disable delete button and swap button
     const imageUrl = stepsData[index].screenshotUrl;
 
     try {
@@ -140,7 +141,8 @@ const CreateComponent = () => {
     } catch (error) {
       console.error("Failed to delete image:", error);
     }
-    // TODO : loading state - set to false
+    setIsLoading(false);
+
     // by doing this need fs lib cause clodinary works on srver side like on nodejs
     // deleteImageFromCloudinary(stepsData[index].screenshotUrl);
     // const updatedSteps = [...stepsData];
@@ -216,6 +218,8 @@ const CreateComponent = () => {
                 step={step}
                 index={index}
                 imageRefs={imageRefs}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
                 updateStep={updateStep}
                 addStep={addStep}
                 deleteStep={deleteStep}
@@ -248,8 +252,7 @@ export default CreateComponent;
  * 14. ✅ scenario where uploaded image is from aws as well, @L123 already fixed
  * 15. ✅ handle empty data in extension or in route.
  * 16. Dragable from sidebar
- * 17. Loading on delete image
- * 18. Loading on swap image
+ * 17. ✅ disabling delete image and swap image action if similar action is in happening
  */
 
 /*
