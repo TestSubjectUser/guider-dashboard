@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ imageUrl: uploadedImageUrl }, { status: 200 });
   } catch (error) {
-    console.error("Cloudinary Upload Error:", error);
+    console.error("AWS Upload Error:", error);
     return NextResponse.json(
       { error: "Failed to upload image" },
       { status: 500 }

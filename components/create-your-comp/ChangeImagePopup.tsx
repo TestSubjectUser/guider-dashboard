@@ -32,7 +32,7 @@ function ChangeImagePopup({
     }
 
     try {
-      const response = await fetch("/api/cloudinary", {
+      const response = await fetch("/api/aws", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

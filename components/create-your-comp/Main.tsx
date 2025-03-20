@@ -126,13 +126,13 @@ const CreateComponent = () => {
         imageUrl.includes("amazonaws") ||
         imageUrl.includes("guider-extension")
       ) {
-        await fetch("/api/cloudinary", {
+        await fetch("/api/aws", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ imageUrl }),
         });
 
-        console.log("Image deleted from Cloudinary");
+        console.log("Image deleted from AWS");
       }
 
       const updatedSteps = [...stepsData];
@@ -162,6 +162,7 @@ const CreateComponent = () => {
       });
       // alert("Guide updated successfully!");
       setPopupUrl("http://localhost:3000/view-guide?id=" + screenshotId);
+      // setPopupUrl("https://localhost:3000/create-your-comp/view-guide?id=" + screenshotId);
       setShowPopup(true);
     } catch (e) {
       console.error("Error updating document: ", e);
@@ -253,6 +254,12 @@ export default CreateComponent;
  * 15. ✅ handle empty data in extension or in route.
  * 16. Dragable from sidebar
  * 17. ✅ disabling delete image and swap image action if similar action is in happening
+ * 18. transform-origin for zoom-in-out
+ * 19. add step without bubble if coordinates undefined
+ * 20. on schreenshot step added as well, but without bubble
+ * 21. step buttons(zoom, delete, swap) on hover only
+ * 22. add copy link button on guide as well
+ * 23. (optional)add step without image
  */
 
 /*
