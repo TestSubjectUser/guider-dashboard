@@ -2,29 +2,11 @@ import { NextResponse } from "next/server";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { uploadImageToS3 } from "./s3Upload"; // Assuming you have an S3 upload utility
-
-interface RelativeCoordinates {
-  x: number;
-  y: number;
-}
-interface GuideImage {
-  title: string;
-  description: string;
-  relativeCoordinates: RelativeCoordinates;
-  screenshotUrl: string; // This will be the S3 URL after uploading
-}
-interface Guide {
-  guideTitle: string;
-  guideDescription: string;
-  guideImages: GuideImage[];
-  timestamp: Date;
-}
-interface RequestBody {
-  title: string;
-  relativeCoordinates: RelativeCoordinates;
-  screenshotUrl: string; // Base64 image data or URL of the image
-  urlWeAreOn: string;
-}
+import {
+  GuideDataImagesProps,
+  GuideDataProps,
+  RequestBody,
+} from "@/components/create-your-comp/types";
 
 export async function POST(req: Request): Promise<NextResponse> {
   try {
@@ -42,7 +24,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     console.log("guideTitle: ", guideTitle);
 
     const guideDescription: string = "";
-    const guideImages: GuideImage[] = [];
+    const guideImages: GuideDataImagesProps = [];
 
     for (const { title, relativeCoordinates, screenshotUrl } of body.slice(
       0,
@@ -64,7 +46,7 @@ export async function POST(req: Request): Promise<NextResponse> {
         guideDescription,
         guideImages,
         timestamp: new Date(),
-      } as Guide);
+      } as GuideDataProps);
     } catch (e: any) {
       if (
         e.code === "invalid-argument" &&
@@ -79,7 +61,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 
     console.log("Guide saved with ID:", docRef.id);
-    const url = `/dashboard?screenshotId=${docRef.id}`;
+    const url = `/dashboard?id=${docRef.id}`;
 
     return NextResponse.json(
       {

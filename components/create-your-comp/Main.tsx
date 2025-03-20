@@ -1,7 +1,9 @@
 "use client";
+import "./index.css";
 import Step from "./Step";
 import Popup from "./Popup";
 import { Sidebar } from "./Sidebar";
+import styles from "./createGuide.module.css";
 import EditableHeader from "./EditableHeader";
 import { GuideDataImagesProps } from "./types";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +14,7 @@ import { db } from "../../app/api/save-screenshot/firebaseConfig";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
-  const screenshotId = searchParams.get("screenshotId");
+  const screenshotId = searchParams.get("id");
 
   const [activeStep, setActiveStep] = useState(0);
   const [stepsData, setStepsData] = useState<GuideDataImagesProps>([]);
@@ -115,6 +117,7 @@ const CreateComponent = () => {
     setStepsData(updatedSteps);
   };
   const deleteStep = async (index: number) => {
+    // TODO : loading state - deleting image... - disable publish and share button, also delete button
     const imageUrl = stepsData[index].screenshotUrl;
 
     try {
@@ -137,6 +140,7 @@ const CreateComponent = () => {
     } catch (error) {
       console.error("Failed to delete image:", error);
     }
+    // TODO : loading state - set to false
     // by doing this need fs lib cause clodinary works on srver side like on nodejs
     // deleteImageFromCloudinary(stepsData[index].screenshotUrl);
     // const updatedSteps = [...stepsData];
@@ -164,17 +168,20 @@ const CreateComponent = () => {
   };
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <Sidebar activeStep={activeStep} stepsData={stepsData} />
-      <div className="main-content">
+      <div className={styles.mainContent}>
         {showPopup && (
           <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
         )}
-        <div className="header">
-          <div className="header-buttons">
+
+        <div className={styles.header}>
+          <div>
             <button
               disabled={isLoading}
-              className={`publish-button ${isLoading ? "disabled" : ""}`}
+              className={`${styles.publishButton} ${
+                isLoading ? styles.disabled : ""
+              }`}
               onClick={handleGuidetitleordescPublish}
             >
               {isLoading ? "Updating..." : "Publish and share"}
@@ -182,13 +189,13 @@ const CreateComponent = () => {
           </div>
         </div>
 
-        <div className="guide-info">
+        <div>
           {/* Guide Title */}
           <EditableHeader
             textValue={guideTitle}
             textColor=""
             textSize="1.5rem"
-            placeholderValue="add title of your guide..."
+            placeholderValue="Add title of your guide..."
             setText={setGuideTitle}
           />
           {/* Guide Description */}
@@ -196,12 +203,12 @@ const CreateComponent = () => {
             textValue={guideDescription}
             textColor="rgb(44, 169, 225)"
             textSize="1.15rem"
-            placeholderValue="add description of your guide..."
+            placeholderValue="Add description of your guide..."
             setText={setGuideDescription}
           />
         </div>
 
-        <div className="steps">
+        <div className={styles.steps}>
           {stepsData.map((step, index) => (
             <div id={`step-${index}`} key={index}>
               <Step
@@ -234,11 +241,15 @@ export default CreateComponent;
  * 7. ✅ convert base64 image to jpeg/png
  * 8. ✅ Migrate to AWS
  * 9. ✅ sidebar view optimization
- * 10. extension optimization
+ * 10. ✅ extension style globalization optimization
  * 11. remove hydration
  * 12. ✅ DELETE image on switch as well
- * 13. FIX: Step.tsx:34L converts external image url into bas64 as well
- * 14. scenario where uploaded image is from aws as well
+ * 13. ✅ FIX: Step.tsx:34L converts external image url into bas64 as well, image urli picked was in base64 that's why
+ * 14. ✅ scenario where uploaded image is from aws as well, @L123 already fixed
+ * 15. ✅ handle empty data in extension or in route.
+ * 16. Dragable from sidebar
+ * 17. Loading on delete image
+ * 18. Loading on swap image
  */
 
 /*

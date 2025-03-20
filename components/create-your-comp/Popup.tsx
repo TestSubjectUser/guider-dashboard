@@ -1,3 +1,5 @@
+import styles from "./createGuide.module.css";
+
 function Popup({
   popupUrl,
   onClose,
@@ -14,44 +16,44 @@ function Popup({
   };
 
   return (
-    <div className="model">
-      <div className="modal">
-        <div className="modal-header">
+    <div className={styles.model}>
+      <div className={styles.modal}>
+        <div className={styles.modalHeader}>
           <span>Publish guide</span>
-          <i className="fas fa-times" onClick={onClose}></i>
         </div>
-        <div className="modal-body">
+        <div className={styles.modalBody}>
           <p>Who can see this guide?</p>
           <label>
             <input type="radio" name="visibility" defaultChecked />
             <span>Anyone with a link</span>
           </label>
           {/* <label>
-            <input type="radio" name="visibility" />
-            <span>Only users within my HubSpot account</span>
-          </label> */}
-          <div className="link-model">
-            <div className="link-container">
+        <input type="radio" name="visibility" />
+        <span>Only users within my HubSpot account</span>
+      </label> */}
+          <div className={styles.linkModel}>
+            <div className={styles.linkContainer}>
               <input type="text" value={popupUrl} readOnly />
             </div>
-            <div className="copy-link-container">
-              <button className="copy-link-btn" onClick={copyToClipboard}>
+            <div className={styles.copyLinkContainer}>
+              <button className={styles.copyLinkBtn} onClick={copyToClipboard}>
                 Copy link
               </button>
             </div>
           </div>
         </div>
-        <div className="modal-footer">
-          <button className="cancel-btn" onClick={onClose}>
+        <div className={styles.modalFooter}>
+          <button className={styles.cancelBtn} onClick={onClose}>
             Cancel
           </button>
           {/* redirect to final guide page OR ... */}
-          <button className="publish-btn" onClick={visitGuide}>
+          <button className={styles.publishBtn} onClick={visitGuide}>
             Visit guide
           </button>
         </div>
       </div>
     </div>
+
     // ,
     // // document.getElementById("popup") as HTMLElement
     // document.querySelector(".popup") as HTMLElement

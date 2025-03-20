@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./createGuide.module.css";
 
 export const BlinkingBubble = ({
   coordinates,
@@ -91,18 +92,10 @@ export const BlinkingBubble = ({
     <div
       ref={bubbleRef}
       onMouseDown={handleMouseDown}
+      className={styles.blinkingBubble}
       style={{
-        position: "absolute",
         top: `${position.y}px`,
         left: `${position.x}px`,
-        width: "25px",
-        height: "25px",
-        backgroundColor: "rgba(255, 0, 0, 0.5)",
-        borderRadius: "50%",
-        animation: "blink 1s infinite",
-        transform: "translate(-50%, -50%)",
-        zIndex: 10,
-        cursor: "grab",
       }}
     ></div>
   );

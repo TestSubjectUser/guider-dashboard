@@ -6,6 +6,7 @@ import EditableHeader from "./EditableHeader";
 import swapIcon from "../../public/swapIcon.png";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
+import styles from "./createGuide.module.css";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({
@@ -38,6 +39,7 @@ const Step = ({
   };
 
   function handleImageUpload(imageLink: string) {
+    // TODO : loading state - updating image... - disable publish and share button, also delete button
     // implement updating step in here
     console.log("stepData State changed");
     // step.screenshotUrl = imageLink;
@@ -51,6 +53,7 @@ const Step = ({
     // console.log("imageLink", imageLink);
     // console.log("after update image: ", step.screenshotUrl);
     setShowChangeImagePopup(false);
+    // TODO : loading state - set to false - enable publish and share button
   }
 
   return (
@@ -64,15 +67,18 @@ const Step = ({
         />
       )}
       {index === 0 && <AddComp index={0} addStep={addStep} />}
-      <div className={`step`} id={index.toString()} key={index}>
-        <div className="del_move-devider">
-          <div className="move_icon">::</div>
-          <button className="delete-button" onClick={() => deleteStep(index)}>
+      <div className={styles.step} id={index.toString()} key={index}>
+        <div className={styles.delMoveDevider}>
+          <div className={styles.moveIcon}></div>
+          <button
+            className={styles.deleteButton}
+            onClick={() => deleteStep(index)}
+          >
             delete
           </button>
         </div>
-        <div className="step-header">
-          <div className="step-number">{index + 1}</div>
+        <div className={styles.stepHeader}>
+          <div className={styles.stepNumber}>{index + 1}</div>
           <EditableHeader
             textValue={step.title}
             textColor=""
@@ -81,7 +87,7 @@ const Step = ({
             setText={(newText) => updateStep(index, newText, step.description)}
           />
         </div>
-        <div className="step-description">
+        <div className={styles.stepDescription}>
           <EditableHeader
             textValue={step.description}
             textColor="gray"
@@ -92,7 +98,7 @@ const Step = ({
         </div>
 
         <div
-          className="image-container"
+          className={styles.imageContainer}
           style={{ position: "relative", overflow: "hidden" }}
         >
           <img
@@ -104,7 +110,7 @@ const Step = ({
               "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
             }
             alt={step.title}
-            className="step-image"
+            className={styles.stepImage}
             onLoad={() => setImageLoaded(true)}
             style={{
               maxHeight: "600px",
@@ -115,20 +121,7 @@ const Step = ({
 
           {imageLoaded && (
             <div
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                width: "40px",
-                height: "40px",
-                cursor: "pointer",
-                backgroundColor: "rgba(255, 255, 255, 1)",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "3px",
-              }}
+              className={styles.swapContainer}
               onMouseEnter={() => setShowPopover(true)}
               onMouseLeave={() => setShowPopover(false)}
               onClick={handleSwapClick}
@@ -138,25 +131,11 @@ const Step = ({
                 alt="Swap"
                 width={25}
                 height={25}
-                style={{
-                  objectFit: "contain",
-                }}
+                className={styles.swapIcon}
               />
               {showPopover && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50px",
-                    right: "0",
-                    backgroundColor: "rgba(232, 222, 222, 0.8)",
-                    color: "black",
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                    fontSize: "12px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Click to swap image(Soon.)
+                <div className={styles.popover}>
+                  Click to swap image (Soon.)
                 </div>
               )}
             </div>
@@ -170,13 +149,13 @@ const Step = ({
               }}
               imageRef={imageRefs.current[index]}
               updateCoordinates={(newCoordinates) => {
-                // console.log("newCoordinates", newCoordinates);
                 updateStep(index, step.title, step.description, newCoordinates);
               }}
             />
           )}
         </div>
       </div>
+
       <AddComp index={index + 1} addStep={addStep} />
     </>
   );

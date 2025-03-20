@@ -56,3 +56,13 @@ export type HeaderProps = {
   placeholderValue: string;
   setText: (newText: string) => void;
 };
+
+export interface RequestBody {
+  title: string;
+  relativeCoordinates: {
+    x: number;
+    y: number;
+  };
+  screenshotUrl: string;
+  urlWeAreOn: string;
+}

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import styles from "./createGuide.module.css";
 
 function ChangeImagePopup({
   oldImageUrl,
@@ -26,6 +27,7 @@ function ChangeImagePopup({
     }
   };
   const handleSubmit = async () => {
+    // TODO : loading state - updating image...- disable publish and share button, also delete button
     if (!selectedImage) {
       console.log("No image selected.");
       return;
@@ -65,6 +67,7 @@ function ChangeImagePopup({
 
         console.log("Image uploaded to S3 successfully:", data.imageUrl);
         handleImageUpload(data.imageUrl);
+        // TODO : loading state - false, image updated - enable publish and share button
       } else {
         console.error("Image upload failed:", data.error);
       }
@@ -72,22 +75,22 @@ function ChangeImagePopup({
       console.error("Error during image upload:", error);
     } finally {
       setShowChangeImagePopup(false);
+      // TODO : loading state - false if not error occured - enable publish and share button
     }
   };
 
   return (
-    // <div className="model">
-    <div className="modal">
-      <div className="modal-header">
+    <div className={styles.modal}>
+      <div className={styles.modalHeader}>
         <span>Update image</span>
       </div>
       <div
-        className="modal-body"
+        className={styles.modalBody}
         style={{ display: "flex", flexDirection: "column", gap: "10px" }}
       >
         <input
           type="text"
-          placeholder="Entre a valid direct image url..."
+          placeholder="Enter a valid direct image URL..."
           ref={imageLink}
         />
         <div>OR</div>
@@ -96,17 +99,16 @@ function ChangeImagePopup({
         <input type="file" accept="image/*" onChange={handleImageSelection} />
         {/* <button disabled>Select My Image(coming soon...)</button> */}
       </div>
-      <div className="modal-footer">
+      <div className={styles.modalFooter}>
         <button
-          className="cancel-btn"
+          className={styles.cancelBtn}
           onClick={() => setShowChangeImagePopup(false)}
         >
           Cancel
         </button>
         <button
-          className="publish-btn"
+          className={styles.publishBtn}
           onClick={() => {
-            // console.log("imageLink.current!.value", imageLink.current!.value);
             if (imageLink.current!.value) {
               handleImageUpload(imageLink.current!.value);
             } else {
@@ -118,7 +120,6 @@ function ChangeImagePopup({
           Upload Image
         </button>
       </div>
-      {/* </div> */}
     </div>
   );
 }

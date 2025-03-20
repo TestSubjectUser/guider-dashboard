@@ -1,6 +1,6 @@
 "use client";
-import "./index.css";
 import React from "react";
+import styles from "./createGuide.module.css";
 import { GuideDataImagesProps } from "./types";
 
 export const Sidebar = ({
@@ -22,11 +22,11 @@ export const Sidebar = ({
   };
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
+    <div className={styles.sidebar}>
+      <div className={styles.sidebarHeader}>
         <h2>SideBar | MyDomain</h2>
       </div>
-      <ul className="sidebar-list">
+      <ul className={styles.sidebarList}>
         {stepsData.map((step, index) => (
           <a
             key={index}
@@ -37,7 +37,7 @@ export const Sidebar = ({
             <li
               id={index.toString()}
               key={index}
-              className={activeStep === index ? "active" : ""}
+              className={activeStep === index ? styles.active : ""}
               onClick={() => handleClick(index)}
             >
               {`${index + 1}. ${step.title}`}
