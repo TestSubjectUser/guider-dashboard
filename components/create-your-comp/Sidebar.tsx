@@ -24,7 +24,7 @@ export const Sidebar = ({
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebarHeader}>
-        <h2>SideBar | MyDomain</h2>
+        <h2>Guide Creator</h2>
       </div>
       <ul className={styles.sidebarList}>
         {stepsData.map((step, index) => (
@@ -40,7 +40,12 @@ export const Sidebar = ({
               className={activeStep === index ? styles.active : ""}
               onClick={() => handleClick(index)}
             >
-              {`${index + 1}. ${step.title}`}
+              {/* {`${index + 1}. ${step.title}`} */}
+              {`${index + 1}. ${
+                step.title.length > 30
+                  ? step.title.substring(0, 30) + "..."
+                  : step.title
+              }`}
             </li>
           </a>
         ))}

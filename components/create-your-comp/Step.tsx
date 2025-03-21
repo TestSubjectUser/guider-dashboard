@@ -20,7 +20,7 @@ const Step = ({
   deleteStep,
 }: StepProps) => {
   const [imageLoaded, setImageLoaded] = React.useState(false);
-  const [showPopover, setShowPopover] = React.useState(false);
+  // const [showPopover, setShowPopover] = React.useState(false);
 
   const [showChangeImagePopup, setShowChangeImagePopup] = React.useState(false);
 
@@ -70,15 +70,31 @@ const Step = ({
       )}
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div className={styles.step} id={index.toString()} key={index}>
-        <div className={styles.delMoveDevider}>
-          <div className={styles.moveIcon}></div>
-          <button
-            className={isLoading ? styles.disabledButton : styles.deleteButton}
-            onClick={() => deleteStep(index)}
+        {imageLoaded && (
+          <div
+            className={
+              isLoading ? styles.disabledButton : styles.stepActionContainer
+            }
           >
-            delete
-          </button>
-        </div>
+            <button onClick={() => deleteStep(index)}>
+              <img
+                width="20"
+                height="20"
+                src="https://img.icons8.com/ios-filled/50/FFFFFF/waste.png"
+                alt="waste"
+              />
+            </button>
+            <button>
+              <img
+                width="20"
+                height="20"
+                src="https://img.icons8.com/ios-filled/50/FFFFFF/ellipsis.png"
+                alt="ellipsis"
+              />
+            </button>
+          </div>
+        )}
+
         <div className={styles.stepHeader}>
           <div className={styles.stepNumber}>{index + 1}</div>
           <EditableHeader
@@ -122,26 +138,64 @@ const Step = ({
           />
 
           {imageLoaded && (
+            // <div
+            //   className={
+            //     isLoading ? styles.disabledButton : styles.swapContainer
+            //   }
+            //   onMouseEnter={() => setShowPopover(true)}
+            //   onMouseLeave={() => setShowPopover(false)}
+            //   onClick={handleSwapClick}
+            // >
+            //   <Image
+            //     src={swapIcon.src}
+            //     alt="Swap"
+            //     width={25}
+            //     height={25}
+            //     className={styles.swapIcon}
+            //   />
+            //   {showPopover && (
+            //     <div className={styles.popover}>
+            //       Click to swap image (Soon.)
+            //     </div>
+            //   )}
+            // </div>
             <div
               className={
-                isLoading ? styles.disabledButton : styles.swapContainer
+                isLoading ? styles.disabledButton : styles.imageActionContainer
               }
-              onMouseEnter={() => setShowPopover(true)}
-              onMouseLeave={() => setShowPopover(false)}
-              onClick={handleSwapClick}
             >
-              <Image
-                src={swapIcon.src}
-                alt="Swap"
-                width={25}
-                height={25}
-                className={styles.swapIcon}
-              />
-              {showPopover && (
-                <div className={styles.popover}>
-                  Click to swap image (Soon.)
-                </div>
-              )}
+              <button disabled>
+                <img
+                  width="20"
+                  height="20"
+                  src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-in.png"
+                  alt="zoom-in"
+                />
+              </button>
+              <button disabled>
+                <img
+                  width="20"
+                  height="20"
+                  src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-out.png"
+                  alt="zoom-out"
+                />
+              </button>
+              <button
+                onClick={handleSwapClick}
+                style={{
+                  // display: "flex",
+                  // alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <img
+                  width="20"
+                  height="20"
+                  src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit-image.png"
+                  alt="edit-image"
+                />
+                {/* swap img */}
+              </button>
             </div>
           )}
 

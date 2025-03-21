@@ -30,9 +30,9 @@ function EditableHeader({
       style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
         margin: "2px",
-        width: "100%",
+        // maxWidth: "50%",
       }}
     >
       <input
@@ -69,7 +69,21 @@ function EditableHeader({
         }}
         onClick={isEditing ? handleSaveClick : handleEditClick}
       >
-        {isEditing ? "Save" : "Edit"}
+        {isEditing ? (
+          <img
+            width="20"
+            height="20"
+            src="https://img.icons8.com/ios-filled/50/00A4BD/save--v1.png"
+            alt="save--v1"
+          />
+        ) : (
+          <img
+            width="20"
+            height="20"
+            src="https://img.icons8.com/deco-glyph/48/00A4BD/pencil.png"
+            alt="pencil"
+          />
+        )}
       </button>
     </div>
   );

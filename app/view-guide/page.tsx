@@ -7,7 +7,7 @@ import { GuideDataProps } from "@/components/create-your-comp/types";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   let { id } = await searchParams;
   if (Array.isArray(id)) {
