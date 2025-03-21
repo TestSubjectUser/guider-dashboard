@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
+import TopNavbar from "./TopNavbar";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -157,10 +158,14 @@ const CreateComponent = () => {
     if (!screenshotId) return;
 
     try {
+      // console.log("screenshotId: ", screenshotId);
+      // console.log("guideTitle: ", guideTitle);
+      // console.log("guideDescription: ", guideDescription);
       const docRef = doc(db, "guides", screenshotId);
+      // console.log("docRef: ", docRef);
       await updateDoc(docRef, {
-        guideTitle,
-        guideDescription,
+        guideTitle: guideTitle || "",
+        guideDescription: guideDescription || "",
         guideImages: stepsData,
       });
       // alert("Guide updated successfully!");
@@ -174,67 +179,73 @@ const CreateComponent = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Sidebar activeStep={activeStep} stepsData={stepsData} />
-      <div className={styles.mainContent}>
-        {showPopup && (
-          <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
-        )}
+    <>
+      <TopNavbar
+        isLoading={isLoading}
+        handleGuidetitleordescPublish={handleGuidetitleordescPublish}
+      />
+      <div className={styles.container}>
+        <Sidebar activeStep={activeStep} stepsData={stepsData} />
+        <div className={styles.mainContent}>
+          {showPopup && (
+            <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
+          )}
 
-        <div className={styles.header}>
-          <div>
-            <button
-              disabled={isLoading}
-              className={`${styles.publishButton} ${
-                isLoading ? styles.disabled : ""
-              }`}
-              onClick={handleGuidetitleordescPublish}
-            >
-              {isLoading ? "Updating..." : "Publish and share"}
-            </button>
+          {/* <div className={styles.header}>
+            <div>
+              <button
+                disabled={isLoading}
+                className={`${styles.publishButton} ${
+                  isLoading ? styles.disabled : ""
+                }`}
+                onClick={handleGuidetitleordescPublish}
+              >
+                {isLoading ? "Updating..." : "Publish and share"}
+              </button>
+            </div>
+          </div> */}
+
+          <div className={styles.guideHeader}>
+            {/* Guide Title */}
+            <p>Title of the guide</p>
+            <EditableHeader
+              textValue={guideTitle}
+              textColor=""
+              textSize="1.5rem"
+              placeholderValue="Add title of your guide..."
+              setText={setGuideTitle}
+            />
+            {/* Guide Description */}
+            <p>Description of the guide</p>
+            <EditableHeader
+              textValue={guideDescription}
+              textColor="rgb(44, 169, 225)"
+              textSize="1.15rem"
+              placeholderValue="What is this guide about?"
+              setText={setGuideDescription}
+            />
+          </div>
+
+          <div className={styles.steps}>
+            {stepsData.map((step, index) => (
+              <div id={`step-${index}`} key={index}>
+                <Step
+                  key={index}
+                  step={step}
+                  index={index}
+                  imageRefs={imageRefs}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  updateStep={updateStep}
+                  addStep={addStep}
+                  deleteStep={deleteStep}
+                />
+              </div>
+            ))}
           </div>
         </div>
-
-        <div className={styles.guideHeader}>
-          {/* Guide Title */}
-          <p>Title of the guide</p>
-          <EditableHeader
-            textValue={guideTitle}
-            textColor=""
-            textSize="1.5rem"
-            placeholderValue="Add title of your guide..."
-            setText={setGuideTitle}
-          />
-          {/* Guide Description */}
-          <p>Description of the guide</p>
-          <EditableHeader
-            textValue={guideDescription}
-            textColor="rgb(44, 169, 225)"
-            textSize="1.15rem"
-            placeholderValue="What is this guide about?"
-            setText={setGuideDescription}
-          />
-        </div>
-
-        <div className={styles.steps}>
-          {stepsData.map((step, index) => (
-            <div id={`step-${index}`} key={index}>
-              <Step
-                key={index}
-                step={step}
-                index={index}
-                imageRefs={imageRefs}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                updateStep={updateStep}
-                addStep={addStep}
-                deleteStep={deleteStep}
-              />
-            </div>
-          ))}
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -259,12 +270,13 @@ export default CreateComponent;
  * 15. ✅ handle empty data in extension or in route.
  * 16. Dragable from sidebar
  * 17. ✅ disabling delete image and swap image action if similar action is in happening
- * 18. transform-origin for zoom-in-out
+ * 18. ✅ transform-origin for zoom-in-out
  * 19. add step without bubble if coordinates undefined
  * 20. on schreenshot step added as well, but without bubble
  * 21. ✅ step buttons(zoom, delete, swap) on hover only
  * 22. add copy link button on guide as well
  * 23. (optional)add step without image
+ * 24. (optional)automatic expiry period which deletes image from server and DB
  *
  * added code till commit "rendering view-guide server side" to builder-preview-next (aws package not in there.)
  */

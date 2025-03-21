@@ -29,10 +29,17 @@ const Step = ({
     }
     setZoomState(step.scale ?? 1);
 
-    // if (step.scale > 1) {
-    //   // delaying
-    //   setTimeout(() => setZoomState(step.scale), 3);
+    // if (!hasZoomedOnce && step.scale > 1) {
+    //   setTimeout(() => {
+    //     setZoomState(step.scale);
+    //     setHasZoomedOnce(true);
+    //   }, 300);
     // }
+
+    if (step.scale > 1) {
+      // delaying
+      setTimeout(() => setZoomState(step.scale), 3);
+    }
     // console.log("step.relativeCoordinates ", step.relativeCoordinates);
   }, [imageRefs.current[index]]);
 
@@ -90,7 +97,7 @@ const Step = ({
       <div className={styles.step} id={index.toString()} key={index}>
         {imageLoaded && (
           <div className={styles.stepActionContainer}>
-            <button onClick={() => deleteStep(index)}>
+            <button title="Delete this step" onClick={() => deleteStep(index)}>
               <img
                 width="20"
                 height="20"
@@ -98,7 +105,10 @@ const Step = ({
                 alt="waste"
               />
             </button>
-            <button>
+            <button
+              className={styles.disabledMoreActionBtn}
+              title="more options"
+            >
               <img
                 width="20"
                 height="20"
@@ -129,89 +139,93 @@ const Step = ({
           />
         </div>
 
-        <div
-          className={styles.imageContainer}
-          style={{ position: "relative", overflow: "hidden" }}
-        >
-          <div style={{ position: "relative", display: "inline-block" }}>
-            <img
-              ref={(el) => {
-                imageRefs.current[index] = el;
-              }}
-              src={
-                step.screenshotUrl ||
-                "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
-              }
-              alt={step.title}
-              className={styles.stepImage}
-              onLoad={() => setImageLoaded(true)}
-              style={{
-                transition: "transform 0.5s ease-out",
-                transform: `scale(${zoomState})`,
-                transformOrigin: `${step.relativeCoordinates.x}% ${step.relativeCoordinates.y}%`,
-                position: "relative", // Ensures absolute positioning inside
-              }}
-            />
-
-            {imageLoaded && (
-              <BlinkingBubble
-                coordinates={{
-                  x: step.relativeCoordinates.x,
-                  y: step.relativeCoordinates.y,
+        {/* below all code works only if image exists. with relative coords*/}
+        {step.screenshotUrl && (
+          <div
+            className={styles.imageContainer}
+            style={{ position: "relative", overflow: "hidden" }}
+          >
+            <div style={{ position: "relative", display: "inline-block" }}>
+              <img
+                ref={(el) => {
+                  imageRefs.current[index] = el;
                 }}
-                imageRef={imageRefs.current[index]}
-                updateCoordinates={(newCoordinates) => {
-                  updateStep(
-                    index,
-                    step.title,
-                    step.description,
-                    newCoordinates
-                  );
+                src={
+                  step.screenshotUrl ||
+                  "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
+                }
+                alt={step.title}
+                className={styles.stepImage}
+                onLoad={() => setImageLoaded(true)}
+                style={{
+                  transition: "transform 0.5s ease-out",
+                  transform: `scale(${zoomState})`,
+                  transformOrigin: `${step.relativeCoordinates.x}% ${step.relativeCoordinates.y}%`,
+                  position: "relative", // Ensures absolute positioning inside
                 }}
               />
+
+              {imageLoaded && (
+                <BlinkingBubble
+                  coordinates={{
+                    x: step.relativeCoordinates.x,
+                    y: step.relativeCoordinates.y,
+                  }}
+                  imageRef={imageRefs.current[index]}
+                  updateCoordinates={(newCoordinates) => {
+                    updateStep(
+                      index,
+                      step.title,
+                      step.description,
+                      newCoordinates
+                    );
+                  }}
+                />
+              )}
+            </div>
+            {imageLoaded && (
+              <div
+                className={styles.imageActionContainer}
+                // className={
+                //   isLoading ? styles.disabledButton : styles.imageActionContainer
+                // }
+              >
+                <button title="Zoom In" onClick={() => zoomHandler(0.2)}>
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-in.png"
+                    alt="zoom-in"
+                  />
+                </button>
+                <button title="Zoom Out" onClick={() => zoomHandler(-0.2)}>
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-out.png"
+                    alt="zoom-out"
+                  />
+                </button>
+                <button
+                  title="Change Image"
+                  onClick={handleSwapClick}
+                  style={{
+                    // display: "flex",
+                    // alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit-image.png"
+                    alt="edit-image"
+                  />
+                </button>
+              </div>
             )}
           </div>
-          {imageLoaded && (
-            <div
-              className={styles.imageActionContainer}
-              // className={
-              //   isLoading ? styles.disabledButton : styles.imageActionContainer
-              // }
-            >
-              <button onClick={() => zoomHandler(0.2)}>
-                <img
-                  width="20"
-                  height="20"
-                  src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-in.png"
-                  alt="zoom-in"
-                />
-              </button>
-              <button onClick={() => zoomHandler(-0.2)}>
-                <img
-                  width="20"
-                  height="20"
-                  src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-out.png"
-                  alt="zoom-out"
-                />
-              </button>
-              <button
-                onClick={handleSwapClick}
-                style={{
-                  // display: "flex",
-                  // alignItems: "center",
-                  gap: "0.5rem",
-                }}
-              >
-                <img
-                  width="20"
-                  height="20"
-                  src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit-image.png"
-                  alt="edit-image"
-                />
-              </button>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       <AddComp index={index + 1} addStep={addStep} />
