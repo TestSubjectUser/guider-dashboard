@@ -17,7 +17,7 @@
   overflow-y: auto;
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: calc(100vh - 54px);
   color: rgb(51, 71, 91);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -301,6 +301,35 @@
 .imageActionContainer button:hover {
   background-color: #506e91;
   color: rgb(255, 89, 66);
+}
+
+.tooltip {
+  position: absolute;
+  top: 40px; /* Position below the button */
+  right: 0;
+  background: rgb(51, 71, 91);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.tooltip button {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  text-align: left;
+  border-radius: 5px;
+}
+
+.tooltip button:hover {
+  cursor: not-allowed;
+  background: #506e91;
 }
 
 @keyframes blink {

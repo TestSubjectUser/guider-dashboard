@@ -19,6 +19,7 @@ const Step = ({
 }: StepProps) => {
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [zoomState, setZoomState] = React.useState(1);
+  const [showTooltip, setShowTooltip] = React.useState(false);
 
   const [showChangeImagePopup, setShowChangeImagePopup] = React.useState(false);
 
@@ -94,7 +95,12 @@ const Step = ({
         />
       )}
       {index === 0 && <AddComp index={0} addStep={addStep} />}
-      <div className={styles.step} id={index.toString()} key={index}>
+      <div
+        onMouseLeave={() => setShowTooltip(false)}
+        className={styles.step}
+        id={index.toString()}
+        key={index}
+      >
         {imageLoaded && (
           <div className={styles.stepActionContainer}>
             <button title="Delete this step" onClick={() => deleteStep(index)}>
@@ -106,8 +112,9 @@ const Step = ({
               />
             </button>
             <button
-              className={styles.disabledMoreActionBtn}
-              title="more options"
+              className={styles.moreActionBtn}
+              title="More options"
+              onClick={() => setShowTooltip((prev) => !prev)} // Toggle tooltip on click
             >
               <img
                 width="20"
@@ -115,6 +122,43 @@ const Step = ({
                 src="https://img.icons8.com/ios-filled/50/FFFFFF/ellipsis.png"
                 alt="ellipsis"
               />
+            </button>
+          </div>
+        )}
+        {showTooltip && (
+          <div className={styles.tooltip}>
+            {/* set state to false onClick as well */}
+            <button
+              onClick={() => {
+                setShowTooltip((prev) => !prev);
+                console.log("Remove Bubble");
+              }}
+            >
+              Remove Bubble
+            </button>
+            <button
+              onClick={() => {
+                setShowTooltip((prev) => !prev);
+                console.log("Add Bubble");
+              }}
+            >
+              Add Bubble
+            </button>
+            <button
+              onClick={() => {
+                setShowTooltip((prev) => !prev);
+                console.log("Remove Image");
+              }}
+            >
+              Remove Image
+            </button>
+            <button
+              onClick={() => {
+                setShowTooltip((prev) => !prev);
+                console.log("Add Image");
+              }}
+            >
+              Add Image
             </button>
           </div>
         )}
