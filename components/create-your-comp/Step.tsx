@@ -1,9 +1,7 @@
 import React from "react";
-import Image from "next/image";
 import AddComp from "./AddComp";
 import { StepProps } from "./types";
 import EditableHeader from "./EditableHeader";
-import swapIcon from "../../public/swapIcon.png";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
 import styles from "./createGuide.module.css";
@@ -20,7 +18,7 @@ const Step = ({
   deleteStep,
 }: StepProps) => {
   const [imageLoaded, setImageLoaded] = React.useState(false);
-  // const [showPopover, setShowPopover] = React.useState(false);
+  const [zoomState, setZoomState] = React.useState(1);
 
   const [showChangeImagePopup, setShowChangeImagePopup] = React.useState(false);
 
@@ -55,6 +53,14 @@ const Step = ({
     // console.log("after update image: ", step.screenshotUrl);
     setShowChangeImagePopup(false);
     setIsLoading(false);
+  }
+
+  function zoomHandler(zoomBy: number) {
+    setZoomState((prev) => {
+      if (prev + zoomBy < 1) return 1;
+      if (prev + zoomBy > 2) return 2;
+      return prev + zoomBy;
+    });
   }
 
   return (
@@ -131,9 +137,10 @@ const Step = ({
             className={styles.stepImage}
             onLoad={() => setImageLoaded(true)}
             style={{
-              maxHeight: "600px",
-              maxWidth: "100%",
-              objectFit: "contain",
+              transition: "transform 0.5s ease-out",
+              transform: `scale(${zoomState})`,
+              // scale: imageLoaded ? zoomState : 1,
+              transformOrigin: `${step.relativeCoordinates.x}% ${step.relativeCoordinates.y}%`,
             }}
           />
 
@@ -164,7 +171,7 @@ const Step = ({
                 isLoading ? styles.disabledButton : styles.imageActionContainer
               }
             >
-              <button disabled>
+              <button onClick={() => zoomHandler(0.2)}>
                 <img
                   width="20"
                   height="20"
@@ -172,7 +179,7 @@ const Step = ({
                   alt="zoom-in"
                 />
               </button>
-              <button disabled>
+              <button onClick={() => zoomHandler(-0.2)}>
                 <img
                   width="20"
                   height="20"
@@ -200,6 +207,7 @@ const Step = ({
           )}
 
           {imageLoaded && (
+            // update BlinkingBubble state if Zoom Handler is called
             <BlinkingBubble
               coordinates={{
                 x: step.relativeCoordinates.x,
