@@ -20,9 +20,11 @@ export async function POST(req: Request): Promise<NextResponse> {
       );
     }
 
-    const guideTitle: string = body[body.length - 1].urlWeAreOn;
-    console.log("guideTitle: ", guideTitle);
+    // will be first step of any guide
+    // const guideTitle: string = body[body.length - 1].urlWeAreOn;
+    // console.log("guideTitle: ", guideTitle);
 
+    const guideTitle: string = "Guide - Guide Creator";
     const guideDescription: string = "";
     const guideImages: GuideDataImagesProps = [];
 
@@ -36,6 +38,7 @@ export async function POST(req: Request): Promise<NextResponse> {
         description: "",
         relativeCoordinates,
         screenshotUrl: uploadedImageUrl,
+        scale: 1.4,
       });
     }
 

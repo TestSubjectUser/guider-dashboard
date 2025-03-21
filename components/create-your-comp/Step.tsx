@@ -27,6 +27,12 @@ const Step = ({
     if (img && img.complete) {
       setImageLoaded(true);
     }
+    setZoomState(step.scale ?? 1);
+
+    // if (step.scale > 1) {
+    //   // delaying
+    //   setTimeout(() => setZoomState(step.scale), 3);
+    // }
     // console.log("step.relativeCoordinates ", step.relativeCoordinates);
   }, [imageRefs.current[index]]);
 
@@ -57,10 +63,16 @@ const Step = ({
 
   function zoomHandler(zoomBy: number) {
     setZoomState((prev) => {
-      if (prev + zoomBy < 1) return 1;
-      if (prev + zoomBy > 2) return 2;
-      return prev + zoomBy;
+      return Math.max(1, Math.min(prev + zoomBy, 2));
     });
+    updateStep(
+      index,
+      step.title,
+      step.description,
+      step.relativeCoordinates,
+      step.screenshotUrl,
+      zoomState
+    );
   }
 
   return (
@@ -77,11 +89,7 @@ const Step = ({
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div className={styles.step} id={index.toString()} key={index}>
         {imageLoaded && (
-          <div
-            className={
-              isLoading ? styles.disabledButton : styles.stepActionContainer
-            }
-          >
+          <div className={styles.stepActionContainer}>
             <button onClick={() => deleteStep(index)}>
               <img
                 width="20"
@@ -125,51 +133,50 @@ const Step = ({
           className={styles.imageContainer}
           style={{ position: "relative", overflow: "hidden" }}
         >
-          <img
-            ref={(el) => {
-              imageRefs.current[index] = el;
-            }}
-            src={
-              step.screenshotUrl ||
-              "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
-            }
-            alt={step.title}
-            className={styles.stepImage}
-            onLoad={() => setImageLoaded(true)}
-            style={{
-              transition: "transform 0.5s ease-out",
-              transform: `scale(${zoomState})`,
-              // scale: imageLoaded ? zoomState : 1,
-              transformOrigin: `${step.relativeCoordinates.x}% ${step.relativeCoordinates.y}%`,
-            }}
-          />
-
-          {imageLoaded && (
-            // <div
-            //   className={
-            //     isLoading ? styles.disabledButton : styles.swapContainer
-            //   }
-            //   onMouseEnter={() => setShowPopover(true)}
-            //   onMouseLeave={() => setShowPopover(false)}
-            //   onClick={handleSwapClick}
-            // >
-            //   <Image
-            //     src={swapIcon.src}
-            //     alt="Swap"
-            //     width={25}
-            //     height={25}
-            //     className={styles.swapIcon}
-            //   />
-            //   {showPopover && (
-            //     <div className={styles.popover}>
-            //       Click to swap image (Soon.)
-            //     </div>
-            //   )}
-            // </div>
-            <div
-              className={
-                isLoading ? styles.disabledButton : styles.imageActionContainer
+          <div style={{ position: "relative", display: "inline-block" }}>
+            <img
+              ref={(el) => {
+                imageRefs.current[index] = el;
+              }}
+              src={
+                step.screenshotUrl ||
+                "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
               }
+              alt={step.title}
+              className={styles.stepImage}
+              onLoad={() => setImageLoaded(true)}
+              style={{
+                transition: "transform 0.5s ease-out",
+                transform: `scale(${zoomState})`,
+                transformOrigin: `${step.relativeCoordinates.x}% ${step.relativeCoordinates.y}%`,
+                position: "relative", // Ensures absolute positioning inside
+              }}
+            />
+
+            {imageLoaded && (
+              <BlinkingBubble
+                coordinates={{
+                  x: step.relativeCoordinates.x,
+                  y: step.relativeCoordinates.y,
+                }}
+                imageRef={imageRefs.current[index]}
+                updateCoordinates={(newCoordinates) => {
+                  updateStep(
+                    index,
+                    step.title,
+                    step.description,
+                    newCoordinates
+                  );
+                }}
+              />
+            )}
+          </div>
+          {imageLoaded && (
+            <div
+              className={styles.imageActionContainer}
+              // className={
+              //   isLoading ? styles.disabledButton : styles.imageActionContainer
+              // }
             >
               <button onClick={() => zoomHandler(0.2)}>
                 <img
@@ -201,23 +208,8 @@ const Step = ({
                   src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit-image.png"
                   alt="edit-image"
                 />
-                {/* swap img */}
               </button>
             </div>
-          )}
-
-          {imageLoaded && (
-            // update BlinkingBubble state if Zoom Handler is called
-            <BlinkingBubble
-              coordinates={{
-                x: step.relativeCoordinates.x,
-                y: step.relativeCoordinates.y,
-              }}
-              imageRef={imageRefs.current[index]}
-              updateCoordinates={(newCoordinates) => {
-                updateStep(index, step.title, step.description, newCoordinates);
-              }}
-            />
           )}
         </div>
       </div>

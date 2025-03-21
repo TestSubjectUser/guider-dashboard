@@ -14,6 +14,7 @@ export type GuideDataImagesProps = {
   description: string;
   screenshotUrl: string;
   relativeCoordinates: { x: number; y: number };
+  scale: number;
 }[];
 
 export type GuideDataProps = {
@@ -29,6 +30,7 @@ export interface StepProps {
     description: string;
     screenshotUrl: string;
     relativeCoordinates: { x: number; y: number };
+    scale: number;
   };
   index: number;
   imageRefs: any;
@@ -39,7 +41,8 @@ export interface StepProps {
     newTitle: string,
     newDescription: string,
     newCoordinates?: { x: number; y: number },
-    newScreenshotUrl?: string
+    newScreenshotUrl?: string,
+    scale?: number
   ) => void;
   addStep: (
     index: number,

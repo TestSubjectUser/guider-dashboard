@@ -71,6 +71,11 @@
   align-items: center;
   margin-bottom: 16px;
 }
+.guideHeader p {
+  margin: 0px;
+  color: gray;
+  font-size: small;
+}
 
 .publishButton {
   background-color: rgb(255, 89, 66);
@@ -99,6 +104,7 @@
   border-radius: 8px;
   box-shadow: 0 0px 7px rgba(0, 0, 0, 0.1);
   margin: 10px 0;
+  user-select: none;
 }
 .step:hover .stepActionContainer {
   visibility: visible;
@@ -157,6 +163,7 @@
 }
 
 .stepImage {
+  position: relative;
   height: auto;
   max-height: 600px;
   max-width: 100%;

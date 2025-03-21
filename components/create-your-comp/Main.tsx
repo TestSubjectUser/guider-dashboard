@@ -87,7 +87,8 @@ const CreateComponent = () => {
     newTitle: string,
     newDescription: string,
     newCoordinates?: { x: number; y: number },
-    newScreenshotUrl?: string
+    newScreenshotUrl?: string,
+    newScale?: number
   ) => {
     const updatedSteps = [...stepsData];
     updatedSteps[index] = {
@@ -97,6 +98,7 @@ const CreateComponent = () => {
       relativeCoordinates:
         newCoordinates ?? updatedSteps[index].relativeCoordinates,
       screenshotUrl: newScreenshotUrl ?? updatedSteps[index].screenshotUrl,
+      scale: newScale ?? updatedSteps[index].scale,
     };
     setStepsData(updatedSteps);
   };
@@ -113,6 +115,7 @@ const CreateComponent = () => {
       description: newDescription,
       screenshotUrl: screenshotUrl,
       relativeCoordinates: relativeCoordinates,
+      scale: 1,
     });
     setStepsData(updatedSteps);
   };
@@ -192,8 +195,9 @@ const CreateComponent = () => {
           </div>
         </div>
 
-        <div>
+        <div className={styles.guideHeader}>
           {/* Guide Title */}
+          <p>Title of the guide</p>
           <EditableHeader
             textValue={guideTitle}
             textColor=""
@@ -202,11 +206,12 @@ const CreateComponent = () => {
             setText={setGuideTitle}
           />
           {/* Guide Description */}
+          <p>Description of the guide</p>
           <EditableHeader
             textValue={guideDescription}
             textColor="rgb(44, 169, 225)"
             textSize="1.15rem"
-            placeholderValue="Add description of your guide..."
+            placeholderValue="What is this guide about?"
             setText={setGuideDescription}
           />
         </div>
