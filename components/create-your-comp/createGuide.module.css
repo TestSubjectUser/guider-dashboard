@@ -318,6 +318,10 @@
 }
 
 .tooltip button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
   color: white;
   background: none;
   border: none;

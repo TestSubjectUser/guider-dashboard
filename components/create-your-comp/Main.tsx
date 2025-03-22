@@ -272,11 +272,11 @@ export default CreateComponent;
  * 16. Dragable from sidebar
  * 17. ✅ disabling delete image and swap image action if similar action is in happening
  * 18. ✅ transform-origin for zoom-in-out
- * 19. add step without bubble if coordinates undefined
- * 20. on schreenshot step added as well, but without bubble
+ * 19. ✅ add step without bubble if coordinates undefined
+ * 20. ✅ on schreenshot step added as well, but without bubble
  * 21. ✅ step buttons(zoom, delete, swap) on hover only
  * 22. add copy link button on guide as well
- * 23. (optional)add step without image
+ * 23. ✅ (optional)add step without image
  * 24. (optional)automatic expiry period which deletes image from server and DB
  *
  * added code till commit "rendering view-guide server side" to builder-preview-next (aws package not in there.)

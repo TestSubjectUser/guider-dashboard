@@ -83,6 +83,26 @@ const Step = ({
     );
   }
 
+  async function handleRemoveImage(imageUrl: string) {
+    try {
+      if (
+        imageUrl &&
+        (imageUrl.includes("amazonaws") ||
+          imageUrl.includes("guider-extension"))
+      ) {
+        await fetch("/api/aws", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageUrl }),
+        });
+
+        console.log("Image deleted from AWS");
+      }
+    } catch (error) {
+      console.error("Failed to delete image:", error);
+    }
+  }
+
   return (
     <>
       {showChangeImagePopup && (
@@ -132,11 +152,23 @@ const Step = ({
             <button
               onClick={() => {
                 setShowTooltip((prev) => !prev);
-                updateStep(index, step.title, step.description, null);
+                updateStep(
+                  index,
+                  step.title,
+                  step.description,
+                  null,
+                  step.screenshotUrl
+                );
                 // console.log("Remove Bubble");
               }}
             >
               Remove Bubble
+              <img
+                width="20"
+                height="20"
+                src="https://img.icons8.com/ios-filled/50/FFFFFF/circled-x.png"
+                alt="circled-x"
+              />
             </button>
             <button
               onClick={() => {
@@ -157,16 +189,30 @@ const Step = ({
               }}
             >
               Add Bubble
+              <img
+                width="20"
+                height="20"
+                src="https://img.icons8.com/ios-filled/50/FFFFFF/circled.png"
+                alt="circled"
+              />
             </button>
             <button
               onClick={() => {
                 setShowTooltip((prev) => !prev);
                 // console.log("Remove Image");
-                if (step.screenshotUrl)
+                if (step.screenshotUrl) {
+                  handleRemoveImage(step.screenshotUrl);
                   updateStep(index, step.title, step.description, null, null);
+                }
               }}
             >
               Remove Image
+              <img
+                width="20"
+                height="20"
+                src="https://img.icons8.com/material-rounded/24/FFFFFF/remove-image.png"
+                alt="remove-image"
+              />
             </button>
             <button
               onClick={() => {
@@ -185,6 +231,12 @@ const Step = ({
               }}
             >
               Add Image
+              <img
+                width="20"
+                height="20"
+                src="https://img.icons8.com/material-rounded/24/FFFFFF/add-image.png"
+                alt="add-image"
+              />
             </button>
           </div>
         )}
@@ -201,7 +253,8 @@ const Step = ({
                 index,
                 newText,
                 step.description,
-                step.relativeCoordinates ?? null
+                step.relativeCoordinates ?? null,
+                step.screenshotUrl
               )
             }
           />
@@ -217,7 +270,8 @@ const Step = ({
                 index,
                 step.title,
                 newText,
-                step.relativeCoordinates ?? null
+                step.relativeCoordinates ?? null,
+                step.screenshotUrl
               )
             }
           />
@@ -261,7 +315,8 @@ const Step = ({
                       index,
                       step.title,
                       step.description,
-                      newCoordinates
+                      newCoordinates,
+                      step.screenshotUrl
                     );
                   }}
                 />

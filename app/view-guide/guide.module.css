@@ -23,6 +23,10 @@
   margin-bottom: 8px;
   color: #2563eb;
 }
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+}
 .stepContainer {
   margin-bottom: 10px;
 }
