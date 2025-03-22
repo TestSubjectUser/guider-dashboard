@@ -60,6 +60,7 @@
 .stepImage {
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 .bubble {
   width: 20px;

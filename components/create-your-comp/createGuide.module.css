@@ -328,7 +328,7 @@
 }
 
 .tooltip button:hover {
-  cursor: not-allowed;
+  /* cursor: not-allowed; */
   background: #506e91;
 }
 

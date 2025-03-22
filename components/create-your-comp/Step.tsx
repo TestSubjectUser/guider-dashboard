@@ -87,7 +87,7 @@ const Step = ({
     <>
       {showChangeImagePopup && (
         <ChangeImagePopup
-          oldImageUrl={step.screenshotUrl}
+          oldImageUrl={step.screenshotUrl!}
           handleImageUpload={handleImageUpload}
           setIsLoading={setIsLoading}
           // setPopupChangeImageUrl={setPopupChangeImageUrl}
@@ -97,11 +97,12 @@ const Step = ({
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div
         onMouseLeave={() => setShowTooltip(false)}
+        // onMouseEnter={() => setShowTooltip(true)}
         className={styles.step}
         id={index.toString()}
         key={index}
       >
-        {imageLoaded && (
+        {
           <div className={styles.stepActionContainer}>
             <button title="Delete this step" onClick={() => deleteStep(index)}>
               <img
@@ -124,14 +125,15 @@ const Step = ({
               />
             </button>
           </div>
-        )}
+        }
         {showTooltip && (
           <div className={styles.tooltip}>
             {/* set state to false onClick as well */}
             <button
               onClick={() => {
                 setShowTooltip((prev) => !prev);
-                console.log("Remove Bubble");
+                updateStep(index, step.title, step.description, null);
+                // console.log("Remove Bubble");
               }}
             >
               Remove Bubble
@@ -139,7 +141,19 @@ const Step = ({
             <button
               onClick={() => {
                 setShowTooltip((prev) => !prev);
-                console.log("Add Bubble");
+                if (!step.relativeCoordinates)
+                  updateStep(
+                    index,
+                    step.title,
+                    step.description,
+                    {
+                      x: 50,
+                      y: 50,
+                    },
+                    step.screenshotUrl,
+                    1
+                  );
+                // console.log("Add Bubble");
               }}
             >
               Add Bubble
@@ -147,7 +161,9 @@ const Step = ({
             <button
               onClick={() => {
                 setShowTooltip((prev) => !prev);
-                console.log("Remove Image");
+                // console.log("Remove Image");
+                if (step.screenshotUrl)
+                  updateStep(index, step.title, step.description, null, null);
               }}
             >
               Remove Image
@@ -155,7 +171,17 @@ const Step = ({
             <button
               onClick={() => {
                 setShowTooltip((prev) => !prev);
-                console.log("Add Image");
+                // console.log("Add Image");
+                updateStep(
+                  index,
+                  step.title,
+                  step.description,
+                  {
+                    x: 50,
+                    y: 50,
+                  },
+                  "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
+                );
               }}
             >
               Add Image
@@ -170,7 +196,14 @@ const Step = ({
             textColor=""
             textSize=""
             placeholderValue="enter title for this step..."
-            setText={(newText) => updateStep(index, newText, step.description)}
+            setText={(newText) =>
+              updateStep(
+                index,
+                newText,
+                step.description,
+                step.relativeCoordinates ?? null
+              )
+            }
           />
         </div>
         <div className={styles.stepDescription}>
@@ -179,7 +212,14 @@ const Step = ({
             textColor="gray"
             textSize=""
             placeholderValue="add description for this step..."
-            setText={(newText) => updateStep(index, step.title, newText)}
+            setText={(newText) =>
+              updateStep(
+                index,
+                step.title,
+                newText,
+                step.relativeCoordinates ?? null
+              )
+            }
           />
         </div>
 
@@ -204,12 +244,12 @@ const Step = ({
                 style={{
                   transition: "transform 0.5s ease-out",
                   transform: `scale(${zoomState})`,
-                  transformOrigin: `${step.relativeCoordinates.x}% ${step.relativeCoordinates.y}%`,
+                  transformOrigin: `${step?.relativeCoordinates?.x}% ${step?.relativeCoordinates?.y}%`,
                   position: "relative", // Ensures absolute positioning inside
                 }}
               />
 
-              {imageLoaded && (
+              {step.relativeCoordinates && imageLoaded && (
                 <BlinkingBubble
                   coordinates={{
                     x: step.relativeCoordinates.x,
@@ -250,15 +290,7 @@ const Step = ({
                     alt="zoom-out"
                   />
                 </button>
-                <button
-                  title="Change Image"
-                  onClick={handleSwapClick}
-                  style={{
-                    // display: "flex",
-                    // alignItems: "center",
-                    gap: "0.5rem",
-                  }}
-                >
+                <button title="Change Image" onClick={handleSwapClick}>
                   <img
                     width="20"
                     height="20"
@@ -266,6 +298,14 @@ const Step = ({
                     alt="edit-image"
                   />
                 </button>
+                {/* <button title="Remove Image">
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/glyph-neue/64/FFFFFF/remove-image.png"
+                    alt="remove-image"
+                  />
+                </button> */}
               </div>
             )}
           </div>

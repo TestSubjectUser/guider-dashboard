@@ -87,8 +87,8 @@ const CreateComponent = () => {
     index: number,
     newTitle: string,
     newDescription: string,
-    newCoordinates?: { x: number; y: number },
-    newScreenshotUrl?: string,
+    newCoordinates: { x: number; y: number } | null,
+    newScreenshotUrl?: string | null,
     newScale?: number
   ) => {
     const updatedSteps = [...stepsData];
@@ -96,9 +96,9 @@ const CreateComponent = () => {
       ...updatedSteps[index],
       title: newTitle,
       description: newDescription,
-      relativeCoordinates:
-        newCoordinates ?? updatedSteps[index].relativeCoordinates,
-      screenshotUrl: newScreenshotUrl ?? updatedSteps[index].screenshotUrl,
+      relativeCoordinates: newCoordinates,
+      screenshotUrl: newScreenshotUrl ?? null,
+      // screenshotUrl: newScreenshotUrl ?? updatedSteps[index].screenshotUrl,
       scale: newScale ?? updatedSteps[index].scale,
     };
     setStepsData(updatedSteps);
@@ -127,8 +127,9 @@ const CreateComponent = () => {
 
     try {
       if (
-        imageUrl.includes("amazonaws") ||
-        imageUrl.includes("guider-extension")
+        imageUrl &&
+        (imageUrl.includes("amazonaws") ||
+          imageUrl.includes("guider-extension"))
       ) {
         await fetch("/api/aws", {
           method: "DELETE",

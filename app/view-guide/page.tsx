@@ -45,27 +45,38 @@ export default async function Page({
             <p className={styles.imageTitle}>{image.title}</p>
           </div>
           <p className={styles.imageDescription}>{image.description}</p>
-          <div className={styles.imageWrapper} style={{ position: "relative" }}>
-            <div className={styles.stepImage}>
-              <img
-                src={image.screenshotUrl}
-                alt={image.title}
-                style={{
-                  maxWidth: "75vw",
-                  objectFit: "contain",
-                  maxHeight: "450px",
-                }}
-              />
-              <div
-                className={styles.bubble}
-                style={{
-                  position: "absolute",
-                  top: `${image.relativeCoordinates.y}%`,
-                  left: `${image.relativeCoordinates.x}%`,
-                }}
-              ></div>
+          {image.screenshotUrl && (
+            <div
+              className={styles.imageWrapper}
+              style={{ position: "relative" }}
+            >
+              <div className={styles.stepImage}>
+                <img
+                  src={image.screenshotUrl}
+                  alt={image.title}
+                  style={{
+                    maxWidth: "75vw",
+                    objectFit: "contain",
+                    maxHeight: "450px",
+                    transition: "transform 0.5s ease-out",
+                    transform: `scale(${image.scale ?? 1})`,
+                    transformOrigin: `${image?.relativeCoordinates?.x}% ${image?.relativeCoordinates?.y}%`,
+                    position: "relative",
+                  }}
+                />
+                {image.relativeCoordinates && (
+                  <div
+                    className={styles.bubble}
+                    style={{
+                      position: "absolute",
+                      top: `${image.relativeCoordinates.y}%`,
+                      left: `${image.relativeCoordinates.x}%`,
+                    }}
+                  ></div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       ))}
     </div>
