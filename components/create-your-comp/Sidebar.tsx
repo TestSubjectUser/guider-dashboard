@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import styles from "./createGuide.module.css";
+import styles from "./moduleStyles/Sidebar.module.css";
 import { GuideDataImagesProps } from "./types";
 
 export const Sidebar = ({

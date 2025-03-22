@@ -30,6 +30,10 @@ const CreateComponent = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // Dragging  func
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
   // Fetch: from firestore
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +85,28 @@ const CreateComponent = () => {
       observer.disconnect();
     };
   }, [stepsData]);
+
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIndex === null) return;
+    setHoverIndex(index);
+  };
+
+  const handleDragEnd = () => {
+    if (draggedIndex === null || hoverIndex === null) return;
+
+    const newSteps = [...stepsData];
+    const [movedItem] = newSteps.splice(draggedIndex, 1);
+    newSteps.splice(hoverIndex, 0, movedItem);
+
+    setStepsData(newSteps);
+    setDraggedIndex(null);
+    setHoverIndex(null);
+  };
 
   // Func: update step
   const updateStep = async (
@@ -229,7 +255,19 @@ const CreateComponent = () => {
 
           <div className={styles.steps}>
             {stepsData.map((step, index) => (
-              <div id={`step-${index}`} key={index}>
+              <div
+                key={index}
+                id={`step-${index}`}
+                draggable
+                onDragStart={() => handleDragStart(index)}
+                onDragOver={(e) => handleDragOver(e, index)}
+                onDragEnd={handleDragEnd}
+                style={{
+                  opacity: draggedIndex === index ? 0.5 : 1,
+                  border: hoverIndex === index ? "2px dashed #2da9e1" : "none",
+                  cursor: "grab",
+                }}
+              >
                 <Step
                   key={index}
                   step={step}
@@ -240,6 +278,7 @@ const CreateComponent = () => {
                   updateStep={updateStep}
                   addStep={addStep}
                   deleteStep={deleteStep}
+                  isDragging={draggedIndex === index}
                 />
               </div>
             ))}
@@ -277,6 +316,8 @@ export default CreateComponent;
  * 21. ✅ step buttons(zoom, delete, swap) on hover only
  * 22. add copy link button on guide as well
  * 23. ✅ (optional)add step without image
+ * 23. DND
+ * 23. working on other browser and in incognito mode as well.
  * 24. (optional)automatic expiry period which deletes image from server and DB
  *
  * added code till commit "rendering view-guide server side" to builder-preview-next (aws package not in there.)

@@ -4,7 +4,7 @@ import { StepProps } from "./types";
 import EditableHeader from "./EditableHeader";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
-import styles from "./createGuide.module.css";
+import styles from "./moduleStyles/Step.module.css";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({
@@ -16,7 +16,12 @@ const Step = ({
   updateStep,
   addStep,
   deleteStep,
+  isDragging,
 }: StepProps) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [zoomState, setZoomState] = React.useState(1);
   const [showTooltip, setShowTooltip] = React.useState(false);
@@ -121,7 +126,20 @@ const Step = ({
         className={styles.step}
         id={index.toString()}
         key={index}
+        style={{
+          cursor: isDragging ? "grabbing" : "grab",
+          position: "relative",
+          transition: "transform 0.2s, opacity 0.2s",
+        }}
       >
+        {/* draggable while dragging this div */}
+        <div
+          className={styles.stepDragger}
+          onMouseDown={handleMouseDown}
+          title="Drag to reorder"
+        >
+          ::::
+        </div>
         {
           <div className={styles.stepActionContainer}>
             <button title="Delete this step" onClick={() => deleteStep(index)}>
@@ -133,7 +151,6 @@ const Step = ({
               />
             </button>
             <button
-              className={styles.moreActionBtn}
               title="More options"
               onClick={() => setShowTooltip((prev) => !prev)} // Toggle tooltip on click
             >
@@ -149,31 +166,88 @@ const Step = ({
         {showTooltip && (
           <div className={styles.tooltip}>
             {/* set state to false onClick as well */}
-            <button
-              onClick={() => {
-                setShowTooltip((prev) => !prev);
-                updateStep(
-                  index,
-                  step.title,
-                  step.description,
-                  null,
-                  step.screenshotUrl
-                );
-                // console.log("Remove Bubble");
-              }}
-            >
-              Remove Bubble
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/ios-filled/50/FFFFFF/circled-x.png"
-                alt="circled-x"
-              />
-            </button>
-            <button
-              onClick={() => {
-                setShowTooltip((prev) => !prev);
-                if (!step.relativeCoordinates)
+            {step.screenshotUrl ? (
+              <>
+                <button
+                  onClick={() => {
+                    setShowTooltip((prev) => !prev);
+                    // console.log("Remove Image");
+                    if (step.screenshotUrl) {
+                      handleRemoveImage(step.screenshotUrl);
+                      updateStep(
+                        index,
+                        step.title,
+                        step.description,
+                        null,
+                        null
+                      );
+                    }
+                  }}
+                >
+                  Remove Image
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/material-rounded/24/FFFFFF/remove-image.png"
+                    alt="remove-image"
+                  />
+                </button>
+                {step.relativeCoordinates ? (
+                  <button
+                    onClick={() => {
+                      setShowTooltip((prev) => !prev);
+                      updateStep(
+                        index,
+                        step.title,
+                        step.description,
+                        null,
+                        step.screenshotUrl
+                      );
+                      // console.log("Remove Bubble");
+                    }}
+                  >
+                    Remove Bubble
+                    <img
+                      width="20"
+                      height="20"
+                      src="https://img.icons8.com/ios-filled/50/FFFFFF/circled-x.png"
+                      alt="circled-x"
+                    />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowTooltip((prev) => !prev);
+                      if (!step.relativeCoordinates)
+                        updateStep(
+                          index,
+                          step.title,
+                          step.description,
+                          {
+                            x: 50,
+                            y: 50,
+                          },
+                          step.screenshotUrl,
+                          1
+                        );
+                      // console.log("Add Bubble");
+                    }}
+                  >
+                    Add Bubble
+                    <img
+                      width="20"
+                      height="20"
+                      src="https://img.icons8.com/ios-filled/50/FFFFFF/circled.png"
+                      alt="circled"
+                    />
+                  </button>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  setShowTooltip((prev) => !prev);
+                  // console.log("Add Image");
                   updateStep(
                     index,
                     step.title,
@@ -182,62 +256,19 @@ const Step = ({
                       x: 50,
                       y: 50,
                     },
-                    step.screenshotUrl,
-                    1
+                    "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
                   );
-                // console.log("Add Bubble");
-              }}
-            >
-              Add Bubble
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/ios-filled/50/FFFFFF/circled.png"
-                alt="circled"
-              />
-            </button>
-            <button
-              onClick={() => {
-                setShowTooltip((prev) => !prev);
-                // console.log("Remove Image");
-                if (step.screenshotUrl) {
-                  handleRemoveImage(step.screenshotUrl);
-                  updateStep(index, step.title, step.description, null, null);
-                }
-              }}
-            >
-              Remove Image
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/material-rounded/24/FFFFFF/remove-image.png"
-                alt="remove-image"
-              />
-            </button>
-            <button
-              onClick={() => {
-                setShowTooltip((prev) => !prev);
-                // console.log("Add Image");
-                updateStep(
-                  index,
-                  step.title,
-                  step.description,
-                  {
-                    x: 50,
-                    y: 50,
-                  },
-                  "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
-                );
-              }}
-            >
-              Add Image
-              <img
-                width="20"
-                height="20"
-                src="https://img.icons8.com/material-rounded/24/FFFFFF/add-image.png"
-                alt="add-image"
-              />
-            </button>
+                }}
+              >
+                Add Image
+                <img
+                  width="20"
+                  height="20"
+                  src="https://img.icons8.com/material-rounded/24/FFFFFF/add-image.png"
+                  alt="add-image"
+                />
+              </button>
+            )}
           </div>
         )}
 
