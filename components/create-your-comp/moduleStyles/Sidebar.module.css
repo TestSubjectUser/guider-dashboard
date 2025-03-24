@@ -43,3 +43,27 @@
   color: rgb(51, 71, 91);
   border-left: 4px solid rgb(0, 164, 189);
 }
+
+.stepDragger {
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  cursor: grab;
+}
+
+.stepDragger:hover {
+  opacity: 1;
+}
+
+.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.drop-target {
+  border: 2px dashed #2da9e1 !important;
+  margin: 10px 0;
+}

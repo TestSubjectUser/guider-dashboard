@@ -52,7 +52,7 @@ export interface StepProps {
     relativeCoordinates: { x: number; y: number }
   ) => void;
   deleteStep: (index: number) => void;
-  isDragging: boolean;
+  isDragging?: boolean;
 }
 
 export type HeaderProps = {

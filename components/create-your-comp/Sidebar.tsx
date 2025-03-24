@@ -6,10 +6,15 @@ import { GuideDataImagesProps } from "./types";
 export const Sidebar = ({
   activeStep,
   stepsData,
+  setStepsData,
 }: {
   activeStep: number;
   stepsData: GuideDataImagesProps;
+  setStepsData: any;
 }) => {
+  const [draggedIndex, setDraggedIndex] = React.useState<number | null>(null);
+  const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);
+
   const handleClick = (index: number) => {
     window.location.hash = `#${index}`;
     scrollToStep(index);
@@ -19,6 +24,29 @@ export const Sidebar = ({
     if (stepElement) {
       stepElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  };
+
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIndex === null) return;
+    setHoverIndex(index);
+    console.log("hoverIndex: ", hoverIndex, typeof hoverIndex);
+  };
+
+  const handleDragEnd = () => {
+    if (draggedIndex === null || hoverIndex === null) return;
+
+    const newSteps = [...stepsData];
+    const [movedItem] = newSteps.splice(draggedIndex, 1);
+    newSteps.splice(hoverIndex, 0, movedItem);
+
+    setStepsData(newSteps);
+    setDraggedIndex(null);
+    setHoverIndex(null);
   };
 
   return (
@@ -31,14 +59,30 @@ export const Sidebar = ({
           <a
             key={index}
             id={index.toString()}
+            draggable
+            onDragStart={() => handleDragStart(index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDragEnd={handleDragEnd}
             href={`#${index.toString()}`}
-            style={{ textDecoration: "none", color: "black", cursor: "auto" }}
+            style={{
+              textDecoration: "none",
+              color: "black",
+              // cursor: "auto",
+              opacity: draggedIndex === index ? 0.5 : 1,
+              cursor: "grab",
+            }}
           >
             <li
               id={index.toString()}
               key={index}
               className={activeStep === index ? styles.active : ""}
               onClick={() => handleClick(index)}
+              style={{
+                border: hoverIndex === index ? "2px dashed #2da9e1" : "",
+                cursor: draggedIndex === index ? "grabbing" : "grab",
+                position: "relative",
+                transition: "transform 0.2s, opacity 0.2s",
+              }}
             >
               {/* {`${index + 1}. ${step.title}`} */}
               {`${index + 1}. ${
@@ -46,6 +90,7 @@ export const Sidebar = ({
                   ? step.title.substring(0, 30) + "..."
                   : step.title
               }`}
+              {/* <p className={styles.stepDragger}>::</p> */}
             </li>
           </a>
         ))}

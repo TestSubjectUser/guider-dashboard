@@ -1,4 +1,4 @@
-import styles from "./createGuide.module.css";
+import styles from "./moduleStyles/TopNavbar.module.css";
 
 function TopNavbar({ isLoading, handleGuidetitleordescPublish }: any) {
   return (

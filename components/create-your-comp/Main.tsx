@@ -212,7 +212,11 @@ const CreateComponent = () => {
         handleGuidetitleordescPublish={handleGuidetitleordescPublish}
       />
       <div className={styles.container}>
-        <Sidebar activeStep={activeStep} stepsData={stepsData} />
+        <Sidebar
+          activeStep={activeStep}
+          stepsData={stepsData}
+          setStepsData={setStepsData}
+        />
         <div className={styles.mainContent}>
           {showPopup && (
             <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
