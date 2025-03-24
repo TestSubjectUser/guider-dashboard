@@ -82,6 +82,8 @@ export const Sidebar = ({
                 cursor: draggedIndex === index ? "grabbing" : "grab",
                 position: "relative",
                 transition: "transform 0.2s, opacity 0.2s",
+                display: "flex",
+                justifyContent: "space-between",
               }}
             >
               {/* {`${index + 1}. ${step.title}`} */}
@@ -90,6 +92,7 @@ export const Sidebar = ({
                   ? step.title.substring(0, 30) + "..."
                   : step.title
               }`}
+              <span>::: </span>
               {/* <p className={styles.stepDragger}>::</p> */}
             </li>
           </a>

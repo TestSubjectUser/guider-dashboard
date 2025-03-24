@@ -126,20 +126,20 @@ const Step = ({
         className={styles.step}
         id={index.toString()}
         key={index}
-        style={{
-          cursor: isDragging ? "grabbing" : "grab",
-          position: "relative",
-          transition: "transform 0.2s, opacity 0.2s",
-        }}
+        // style={{
+        //   cursor: isDragging ? "grabbing" : "grab",
+        //   position: "relative",
+        //   transition: "transform 0.2s, opacity 0.2s",
+        // }}
       >
         {/* draggable while dragging this div */}
-        <div
+        {/* <div
           className={styles.stepDragger}
           onMouseDown={handleMouseDown}
           title="Drag to reorder"
         >
           ::::
-        </div>
+        </div> */}
         {
           <div className={styles.stepActionContainer}>
             <button title="Delete this step" onClick={() => deleteStep(index)}>

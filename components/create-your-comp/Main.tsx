@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import TopNavbar from "./TopNavbar";
+import ShimmerStepLoader from "./ShimmerStepLoader";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -28,11 +29,11 @@ const CreateComponent = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupUrl, setPopupUrl] = useState("");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Dragging  func
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  // // Dragging  func
+  // const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  // const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   // Fetch: from firestore
   useEffect(() => {
@@ -52,7 +53,9 @@ const CreateComponent = () => {
         console.warn("screenshotId is null.");
       }
     };
+    setIsLoading(true);
     fetchData();
+    setIsLoading(false);
   }, [screenshotId]);
   // initialize imageRefs
   useEffect(() => {
@@ -86,27 +89,27 @@ const CreateComponent = () => {
     };
   }, [stepsData]);
 
-  const handleDragStart = (index: number) => {
-    setDraggedIndex(index);
-  };
+  // const handleDragStart = (index: number) => {
+  //   setDraggedIndex(index);
+  // };
 
-  const handleDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    if (draggedIndex === null) return;
-    setHoverIndex(index);
-  };
+  // const handleDragOver = (e: React.DragEvent, index: number) => {
+  //   e.preventDefault();
+  //   if (draggedIndex === null) return;
+  //   setHoverIndex(index);
+  // };
 
-  const handleDragEnd = () => {
-    if (draggedIndex === null || hoverIndex === null) return;
+  // const handleDragEnd = () => {
+  //   if (draggedIndex === null || hoverIndex === null) return;
 
-    const newSteps = [...stepsData];
-    const [movedItem] = newSteps.splice(draggedIndex, 1);
-    newSteps.splice(hoverIndex, 0, movedItem);
+  //   const newSteps = [...stepsData];
+  //   const [movedItem] = newSteps.splice(draggedIndex, 1);
+  //   newSteps.splice(hoverIndex, 0, movedItem);
 
-    setStepsData(newSteps);
-    setDraggedIndex(null);
-    setHoverIndex(null);
-  };
+  //   setStepsData(newSteps);
+  //   setDraggedIndex(null);
+  //   setHoverIndex(null);
+  // };
 
   // Func: update step
   const updateStep = async (
@@ -257,20 +260,28 @@ const CreateComponent = () => {
             />
           </div>
 
+          {isLoading && (
+            <>
+              <ShimmerStepLoader />
+              <ShimmerStepLoader />
+              <ShimmerStepLoader />
+            </>
+          )}
+
           <div className={styles.steps}>
             {stepsData.map((step, index) => (
               <div
                 key={index}
                 id={`step-${index}`}
-                draggable
-                onDragStart={() => handleDragStart(index)}
-                onDragOver={(e) => handleDragOver(e, index)}
-                onDragEnd={handleDragEnd}
-                style={{
-                  opacity: draggedIndex === index ? 0.5 : 1,
-                  border: hoverIndex === index ? "2px dashed #2da9e1" : "none",
-                  cursor: "grab",
-                }}
+                // draggable
+                // onDragStart={() => handleDragStart(index)}
+                // onDragOver={(e) => handleDragOver(e, index)}
+                // onDragEnd={handleDragEnd}
+                // style={{
+                //   opacity: draggedIndex === index ? 0.5 : 1,
+                //   border: hoverIndex === index ? "2px dashed #2da9e1" : "none",
+                //   cursor: "grab",
+                // }}
               >
                 <Step
                   key={index}
@@ -282,7 +293,7 @@ const CreateComponent = () => {
                   updateStep={updateStep}
                   addStep={addStep}
                   deleteStep={deleteStep}
-                  isDragging={draggedIndex === index}
+                  // isDragging={draggedIndex === index}
                 />
               </div>
             ))}
@@ -312,7 +323,7 @@ export default CreateComponent;
  * 13. ✅ FIX: Step.tsx:34L converts external image url into bas64 as well, image urli picked was in base64 that's why
  * 14. ✅ scenario where uploaded image is from aws as well, @L123 already fixed
  * 15. ✅ handle empty data in extension or in route.
- * 16. Dragable from sidebar
+ * 16. ✅ Dragable from sidebar
  * 17. ✅ disabling delete image and swap image action if similar action is in happening
  * 18. ✅ transform-origin for zoom-in-out
  * 19. ✅ add step without bubble if coordinates undefined
@@ -320,8 +331,8 @@ export default CreateComponent;
  * 21. ✅ step buttons(zoom, delete, swap) on hover only
  * 22. add copy link button on guide as well
  * 23. ✅ (optional)add step without image
- * 23. DND
- * 23. working on other browser and in incognito mode as well.
+ * 23. ✅ DND
+ * 23. ✅ working on other browser and in incognito mode as well.
  * 24. (optional)automatic expiry period which deletes image from server and DB
  *
  * added code till commit "rendering view-guide server side" to builder-preview-next (aws package not in there.)
