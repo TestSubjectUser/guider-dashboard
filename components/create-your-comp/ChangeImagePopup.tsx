@@ -65,7 +65,6 @@ function ChangeImagePopup({
 
         console.log("Image uploaded to S3 successfully:", data.imageUrl);
         handleImageUpload(data.imageUrl);
-        setIsLoading(false);
       } else {
         console.error("Image upload failed:", data.error);
       }

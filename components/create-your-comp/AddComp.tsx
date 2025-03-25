@@ -17,6 +17,7 @@ function AddComp({ index, addStep }: AddCompProps) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        opacity: 0.5,
       }}
     >
       <hr style={{ flex: 1, border: "1px solid #ccc", margin: "0 5px" }} />

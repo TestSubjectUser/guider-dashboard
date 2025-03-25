@@ -67,3 +67,9 @@
   border: 2px dashed #2da9e1 !important;
   margin: 10px 0;
 }
+
+@media only screen and (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+}

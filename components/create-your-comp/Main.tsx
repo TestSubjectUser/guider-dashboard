@@ -3,6 +3,8 @@ import "./index.css";
 import Step from "./Step";
 import Popup from "./Popup";
 import { Sidebar } from "./Sidebar";
+import TopNavbar from "./TopNavbar";
+import ShimmerStep from "./ShimmerStep";
 import styles from "./createGuide.module.css";
 import EditableHeader from "./EditableHeader";
 import { GuideDataImagesProps } from "./types";
@@ -11,8 +13,6 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
-import TopNavbar from "./TopNavbar";
-import ShimmerStepLoader from "./ShimmerStepLoader";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -30,32 +30,34 @@ const CreateComponent = () => {
   const [popupUrl, setPopupUrl] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
-
-  // // Dragging  func
-  // const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
-  // const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [deletingSteps, setDeletingSteps] = useState<number[]>([]);
 
   // Fetch: from firestore
   useEffect(() => {
     const fetchData = async () => {
-      if (screenshotId) {
-        const docRef = doc(db, "guides", screenshotId);
-        const docSnap = await getDoc(docRef);
+      setIsLoading(true);
+      try {
+        if (screenshotId) {
+          const docRef = doc(db, "guides", screenshotId);
+          const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          setGuideTitle(docSnap.data()?.guideTitle);
-          setGuideDescription(docSnap.data()?.guideDescription);
-          setStepsData(docSnap.data().guideImages);
+          if (docSnap.exists()) {
+            setGuideTitle(docSnap.data()?.guideTitle);
+            setGuideDescription(docSnap.data()?.guideDescription);
+            setStepsData(docSnap.data().guideImages);
+          } else {
+            console.warn(`Document with ID ${screenshotId} not found.`);
+          }
         } else {
-          console.warn(`Document with ID ${screenshotId} not found.`);
+          console.warn("screenshotId is null.");
         }
-      } else {
-        console.warn("screenshotId is null.");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    setIsLoading(true);
     fetchData();
-    setIsLoading(false);
   }, [screenshotId]);
   // initialize imageRefs
   useEffect(() => {
@@ -89,28 +91,6 @@ const CreateComponent = () => {
     };
   }, [stepsData]);
 
-  // const handleDragStart = (index: number) => {
-  //   setDraggedIndex(index);
-  // };
-
-  // const handleDragOver = (e: React.DragEvent, index: number) => {
-  //   e.preventDefault();
-  //   if (draggedIndex === null) return;
-  //   setHoverIndex(index);
-  // };
-
-  // const handleDragEnd = () => {
-  //   if (draggedIndex === null || hoverIndex === null) return;
-
-  //   const newSteps = [...stepsData];
-  //   const [movedItem] = newSteps.splice(draggedIndex, 1);
-  //   newSteps.splice(hoverIndex, 0, movedItem);
-
-  //   setStepsData(newSteps);
-  //   setDraggedIndex(null);
-  //   setHoverIndex(null);
-  // };
-
   // Func: update step
   const updateStep = async (
     index: number,
@@ -127,7 +107,6 @@ const CreateComponent = () => {
       description: newDescription,
       relativeCoordinates: newCoordinates,
       screenshotUrl: newScreenshotUrl ?? null,
-      // screenshotUrl: newScreenshotUrl ?? updatedSteps[index].screenshotUrl,
       scale: newScale ?? updatedSteps[index].scale,
     };
     setStepsData(updatedSteps);
@@ -151,7 +130,7 @@ const CreateComponent = () => {
   };
   const deleteStep = async (index: number) => {
     setIsLoading(true);
-    // so if isLoading disable delete button and swap button
+    setDeletingSteps((prev) => [...prev, index]);
     const imageUrl = stepsData[index].screenshotUrl;
 
     try {
@@ -174,8 +153,10 @@ const CreateComponent = () => {
       setStepsData(updatedSteps);
     } catch (error) {
       console.error("Failed to delete image:", error);
+    } finally {
+      setDeletingSteps((prev) => prev.filter((i) => i !== index));
+      setIsLoading(false);
     }
-    setIsLoading(false);
 
     // by doing this need fs lib cause clodinary works on srver side like on nodejs
     // deleteImageFromCloudinary(stepsData[index].screenshotUrl);
@@ -183,7 +164,7 @@ const CreateComponent = () => {
     // updatedSteps.splice(index, 1);
     // setStepsData(updatedSteps);
   };
-  const handleGuidetitleordescPublish = async () => {
+  const handlePublish = async () => {
     setIsLoading(true);
     if (!screenshotId) return;
 
@@ -212,7 +193,7 @@ const CreateComponent = () => {
     <>
       <TopNavbar
         isLoading={isLoading}
-        handleGuidetitleordescPublish={handleGuidetitleordescPublish}
+        handleGuidetitleordescPublish={handlePublish}
       />
       <div className={styles.container}>
         <Sidebar
@@ -224,20 +205,6 @@ const CreateComponent = () => {
           {showPopup && (
             <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
           )}
-
-          {/* <div className={styles.header}>
-            <div>
-              <button
-                disabled={isLoading}
-                className={`${styles.publishButton} ${
-                  isLoading ? styles.disabled : ""
-                }`}
-                onClick={handleGuidetitleordescPublish}
-              >
-                {isLoading ? "Updating..." : "Publish and share"}
-              </button>
-            </div>
-          </div> */}
 
           <div className={styles.guideHeader}>
             {/* Guide Title */}
@@ -260,38 +227,30 @@ const CreateComponent = () => {
             />
           </div>
 
-          {isLoading && (
+          {stepsData.length === 0 && (
             <>
-              <ShimmerStepLoader />
+              <ShimmerStep />
+              <ShimmerStep />
             </>
           )}
 
           <div className={styles.steps}>
             {stepsData.map((step, index) => (
-              <div
-                key={index}
-                id={`step-${index}`}
-                // draggable
-                // onDragStart={() => handleDragStart(index)}
-                // onDragOver={(e) => handleDragOver(e, index)}
-                // onDragEnd={handleDragEnd}
-                // style={{
-                //   opacity: draggedIndex === index ? 0.5 : 1,
-                //   border: hoverIndex === index ? "2px dashed #2da9e1" : "none",
-                //   cursor: "grab",
-                // }}
-              >
-                <Step
-                  key={index}
-                  step={step}
-                  index={index}
-                  imageRefs={imageRefs}
-                  setIsLoading={setIsLoading}
-                  updateStep={updateStep}
-                  addStep={addStep}
-                  deleteStep={deleteStep}
-                  // isDragging={draggedIndex === index}
-                />
+              <div key={index} id={`step-${index}`}>
+                {deletingSteps.includes(index) ? (
+                  <ShimmerStep />
+                ) : (
+                  <Step
+                    key={index}
+                    step={step}
+                    index={index}
+                    imageRefs={imageRefs}
+                    setIsLoading={setIsLoading}
+                    updateStep={updateStep}
+                    addStep={addStep}
+                    deleteStep={deleteStep}
+                  />
+                )}
               </div>
             ))}
           </div>

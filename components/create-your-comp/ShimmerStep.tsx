@@ -1,6 +1,6 @@
 import React from "react";
 
-function ShimmerStepLoader() {
+function ShimmerStep() {
   return (
     <div
       style={{
@@ -10,14 +10,10 @@ function ShimmerStepLoader() {
         borderRadius: "8px",
         boxShadow: "0 0px 7px rgba(0, 0, 0, 0.1)",
         margin: "10px 0",
-        marginTop: "20px",
-        height: "50vh",
-        maxHeight: "500px",
+        height: "200px",
         display: "flex",
         flexDirection: "column",
         gap: "15px",
-        justifyContent: "center",
-        alignItems: "flex-start",
       }}
     >
       <div
@@ -31,7 +27,6 @@ function ShimmerStepLoader() {
           animation: "shimmer 1.5s infinite linear",
         }}
       ></div>
-
       <div
         style={{
           borderRadius: "5px",
@@ -43,7 +38,6 @@ function ShimmerStepLoader() {
           animation: "shimmer 1.5s infinite linear",
         }}
       ></div>
-
       <div
         style={{
           height: "100%",
@@ -55,21 +49,16 @@ function ShimmerStepLoader() {
           animation: "shimmer 1.5s infinite linear",
         }}
       ></div>
-
       <style>
         {`
-@keyframes shimmer {
-0% {
-  background-position: -200% 0;
-}
-100% {
-  background-position: 200% 0;
-}
-}
-`}
+          @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+          }
+        `}
       </style>
     </div>
   );
 }
 
-export default ShimmerStepLoader;
+export default ShimmerStep;
