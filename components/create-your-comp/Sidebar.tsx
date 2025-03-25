@@ -10,7 +10,7 @@ export const Sidebar = ({
 }: {
   activeStep: number;
   stepsData: GuideDataImagesProps;
-  setStepsData: any;
+  setStepsData: React.Dispatch<React.SetStateAction<GuideDataImagesProps>>;
 }) => {
   const [draggedIndex, setDraggedIndex] = React.useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);

@@ -33,15 +33,14 @@ export interface StepProps {
     scale: number;
   };
   index: number;
-  imageRefs: any;
-  isLoading: boolean;
+  imageRefs: React.RefObject<(HTMLImageElement | null)[]>;
   setIsLoading: (isLoading: boolean) => void;
   updateStep: (
     index: number,
     newTitle: string,
     newDescription: string,
     newCoordinates: { x: number; y: number } | null,
-    newScreenshotUrl?: string | null,
+    newScreenshotUrl: string | null,
     scale?: number
   ) => void;
   addStep: (
@@ -52,7 +51,6 @@ export interface StepProps {
     relativeCoordinates: { x: number; y: number }
   ) => void;
   deleteStep: (index: number) => void;
-  isDragging?: boolean;
 }
 
 export type HeaderProps = {

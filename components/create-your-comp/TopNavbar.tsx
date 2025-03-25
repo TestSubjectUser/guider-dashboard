@@ -1,6 +1,12 @@
 import styles from "./moduleStyles/TopNavbar.module.css";
 
-function TopNavbar({ isLoading, handleGuidetitleordescPublish }: any) {
+function TopNavbar({
+  isLoading,
+  handleGuidetitleordescPublish,
+}: {
+  isLoading: boolean;
+  handleGuidetitleordescPublish: () => void;
+}) {
   return (
     <>
       <div className={styles.topNavbar}>

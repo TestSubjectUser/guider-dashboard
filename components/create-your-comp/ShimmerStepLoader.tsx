@@ -10,6 +10,7 @@ function ShimmerStepLoader() {
         borderRadius: "8px",
         boxShadow: "0 0px 7px rgba(0, 0, 0, 0.1)",
         margin: "10px 0",
+        marginTop: "20px",
         height: "50vh",
         maxHeight: "500px",
         display: "flex",

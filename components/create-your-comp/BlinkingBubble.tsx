@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./createGuide.module.css";
 
 export const BlinkingBubble = ({
@@ -14,8 +14,6 @@ export const BlinkingBubble = ({
     coordinates
   );
   const [dragging, setDragging] = React.useState(false);
-  const bubbleRef = React.useRef<HTMLDivElement | null>(null);
-  const [offset, setOffset] = React.useState({ x: 0, y: 0 });
 
   React.useEffect(() => {
     setPosition(coordinates); // Ensure position updates when props change
@@ -25,9 +23,6 @@ export const BlinkingBubble = ({
     if (dragging) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
-    } else {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
     }
 
     return () => {
@@ -40,20 +35,23 @@ export const BlinkingBubble = ({
     setDragging(true);
   };
 
-  const handleMouseMove = (event: MouseEvent) => {
-    if (!dragging || !imageRef) return;
+  const handleMouseMove = useCallback(
+    (event: MouseEvent) => {
+      if (!dragging || !imageRef) return;
 
-    const imgRect = imageRef.getBoundingClientRect();
-    let newX = ((event.clientX - imgRect.left) / imgRect.width) * 100;
-    let newY = ((event.clientY - imgRect.top) / imgRect.height) * 100;
+      const imgRect = imageRef.getBoundingClientRect();
+      let newX = ((event.clientX - imgRect.left) / imgRect.width) * 100;
+      let newY = ((event.clientY - imgRect.top) / imgRect.height) * 100;
 
-    // Ensure bubble stays within image boundaries (0% - 100%)
-    newX = Math.max(0, Math.min(newX, 100));
-    newY = Math.max(0, Math.min(newY, 100));
+      // Ensure bubble stays within image boundaries (0% - 100%)
+      newX = Math.max(0, Math.min(newX, 100));
+      newY = Math.max(0, Math.min(newY, 100));
 
-    setPosition({ x: newX, y: newY });
-    updateCoordinates({ x: newX, y: newY });
-  };
+      setPosition({ x: newX, y: newY });
+      updateCoordinates({ x: newX, y: newY });
+    },
+    [coordinates, dragging, imageRef]
+  );
 
   const handleMouseUp = () => {
     setDragging(false);
@@ -61,7 +59,6 @@ export const BlinkingBubble = ({
 
   return (
     <div
-      ref={bubbleRef}
       onMouseDown={handleMouseDown}
       className={styles.blinkingBubble}
       style={{

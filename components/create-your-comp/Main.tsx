@@ -263,8 +263,6 @@ const CreateComponent = () => {
           {isLoading && (
             <>
               <ShimmerStepLoader />
-              <ShimmerStepLoader />
-              <ShimmerStepLoader />
             </>
           )}
 
@@ -288,7 +286,6 @@ const CreateComponent = () => {
                   step={step}
                   index={index}
                   imageRefs={imageRefs}
-                  isLoading={isLoading}
                   setIsLoading={setIsLoading}
                   updateStep={updateStep}
                   addStep={addStep}

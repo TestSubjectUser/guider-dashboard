@@ -11,12 +11,10 @@ const Step = ({
   step,
   index,
   imageRefs,
-  isLoading,
   setIsLoading,
   updateStep,
   addStep,
   deleteStep,
-  isDragging,
 }: StepProps) => {
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -284,7 +282,7 @@ const Step = ({
                 index,
                 newText,
                 step.description,
-                step.relativeCoordinates ?? null,
+                step.relativeCoordinates,
                 step.screenshotUrl
               )
             }
@@ -301,7 +299,7 @@ const Step = ({
                 index,
                 step.title,
                 newText,
-                step.relativeCoordinates ?? null,
+                step.relativeCoordinates,
                 step.screenshotUrl
               )
             }
