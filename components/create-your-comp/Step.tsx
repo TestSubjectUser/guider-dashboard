@@ -5,6 +5,7 @@ import EditableHeader from "./EditableHeader";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
 import styles from "./moduleStyles/Step.module.css";
+import ToolTip from "./ToolTip";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({
@@ -16,10 +17,6 @@ const Step = ({
   addStep,
   deleteStep,
 }: StepProps) => {
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-  };
-
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [zoomState, setZoomState] = React.useState(1);
   const [showTooltip, setShowTooltip] = React.useState(false);
@@ -162,112 +159,13 @@ const Step = ({
           </div>
         }
         {showTooltip && (
-          <div className={styles.tooltip}>
-            {/* set state to false onClick as well */}
-            {step.screenshotUrl ? (
-              <>
-                <button
-                  onClick={() => {
-                    setShowTooltip((prev) => !prev);
-                    // console.log("Remove Image");
-                    if (step.screenshotUrl) {
-                      handleRemoveImage(step.screenshotUrl);
-                      updateStep(
-                        index,
-                        step.title,
-                        step.description,
-                        null,
-                        null
-                      );
-                    }
-                  }}
-                >
-                  Remove Image
-                  <img
-                    width="20"
-                    height="20"
-                    src="https://img.icons8.com/material-rounded/24/FFFFFF/remove-image.png"
-                    alt="remove-image"
-                  />
-                </button>
-                {step.relativeCoordinates ? (
-                  <button
-                    onClick={() => {
-                      setShowTooltip((prev) => !prev);
-                      updateStep(
-                        index,
-                        step.title,
-                        step.description,
-                        null,
-                        step.screenshotUrl
-                      );
-                      // console.log("Remove Bubble");
-                    }}
-                  >
-                    Remove Bubble
-                    <img
-                      width="20"
-                      height="20"
-                      src="https://img.icons8.com/ios-filled/50/FFFFFF/circled-x.png"
-                      alt="circled-x"
-                    />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setShowTooltip((prev) => !prev);
-                      if (!step.relativeCoordinates)
-                        updateStep(
-                          index,
-                          step.title,
-                          step.description,
-                          {
-                            x: 50,
-                            y: 50,
-                          },
-                          step.screenshotUrl,
-                          1
-                        );
-                      // console.log("Add Bubble");
-                    }}
-                  >
-                    Add Bubble
-                    <img
-                      width="20"
-                      height="20"
-                      src="https://img.icons8.com/ios-filled/50/FFFFFF/circled.png"
-                      alt="circled"
-                    />
-                  </button>
-                )}
-              </>
-            ) : (
-              <button
-                onClick={() => {
-                  setShowTooltip((prev) => !prev);
-                  // console.log("Add Image");
-                  updateStep(
-                    index,
-                    step.title,
-                    step.description,
-                    {
-                      x: 50,
-                      y: 50,
-                    },
-                    "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
-                  );
-                }}
-              >
-                Add Image
-                <img
-                  width="20"
-                  height="20"
-                  src="https://img.icons8.com/material-rounded/24/FFFFFF/add-image.png"
-                  alt="add-image"
-                />
-              </button>
-            )}
-          </div>
+          <ToolTip
+            setShowTooltip={setShowTooltip}
+            handleRemoveImage={handleRemoveImage}
+            updateStep={updateStep}
+            step={step}
+            index={index}
+          />
         )}
 
         <div className={styles.stepHeader}>

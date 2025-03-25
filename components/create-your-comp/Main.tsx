@@ -7,30 +7,38 @@ import TopNavbar from "./TopNavbar";
 import ShimmerStep from "./ShimmerStep";
 import styles from "./createGuide.module.css";
 import EditableHeader from "./EditableHeader";
-import { GuideDataImagesProps } from "./types";
 import { useSearchParams } from "next/navigation";
 // import ImageWithBubble from "./ImageWithBubble";
 import { useEffect, useRef, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
+import { useGuideData } from "./customHooks/useGuideData";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
   const screenshotId = searchParams.get("id");
 
   const [activeStep, setActiveStep] = useState(0);
-  const [stepsData, setStepsData] = useState<GuideDataImagesProps>([]);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
 
-  // Editable states
-  const [guideTitle, setGuideTitle] = useState("");
-  const [guideDescription, setGuideDescription] = useState("");
-
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupUrl, setPopupUrl] = useState("");
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [deletingSteps, setDeletingSteps] = useState<number[]>([]);
+  const {
+    isLoading,
+    setIsLoading,
+    guideTitle,
+    setGuideTitle,
+    guideDescription,
+    setGuideDescription,
+    stepsData,
+    setStepsData,
+    updateStep,
+    addStep,
+    deleteStep,
+    handlePublish,
+    deletingSteps,
+    showPopup,
+    setShowPopup,
+    popupUrl,
+  } = useGuideData(screenshotId);
 
   // Fetch: from firestore
   useEffect(() => {
@@ -90,104 +98,6 @@ const CreateComponent = () => {
       observer.disconnect();
     };
   }, [stepsData]);
-
-  // Func: update step
-  const updateStep = async (
-    index: number,
-    newTitle: string,
-    newDescription: string,
-    newCoordinates: { x: number; y: number } | null,
-    newScreenshotUrl?: string | null,
-    newScale?: number
-  ) => {
-    const updatedSteps = [...stepsData];
-    updatedSteps[index] = {
-      ...updatedSteps[index],
-      title: newTitle,
-      description: newDescription,
-      relativeCoordinates: newCoordinates,
-      screenshotUrl: newScreenshotUrl ?? null,
-      scale: newScale ?? updatedSteps[index].scale,
-    };
-    setStepsData(updatedSteps);
-  };
-  const addStep = (
-    index: number,
-    newTitle: string,
-    newDescription: string,
-    screenshotUrl: string,
-    relativeCoordinates: { x: number; y: number }
-  ) => {
-    const updatedSteps = [...stepsData];
-    updatedSteps.splice(index, 0, {
-      title: newTitle,
-      description: newDescription,
-      screenshotUrl: screenshotUrl,
-      relativeCoordinates: relativeCoordinates,
-      scale: 1,
-    });
-    setStepsData(updatedSteps);
-  };
-  const deleteStep = async (index: number) => {
-    setIsLoading(true);
-    setDeletingSteps((prev) => [...prev, index]);
-    const imageUrl = stepsData[index].screenshotUrl;
-
-    try {
-      if (
-        imageUrl &&
-        (imageUrl.includes("amazonaws") ||
-          imageUrl.includes("guider-extension"))
-      ) {
-        await fetch("/api/aws", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ imageUrl }),
-        });
-
-        console.log("Image deleted from AWS");
-      }
-
-      const updatedSteps = [...stepsData];
-      updatedSteps.splice(index, 1);
-      setStepsData(updatedSteps);
-    } catch (error) {
-      console.error("Failed to delete image:", error);
-    } finally {
-      setDeletingSteps((prev) => prev.filter((i) => i !== index));
-      setIsLoading(false);
-    }
-
-    // by doing this need fs lib cause clodinary works on srver side like on nodejs
-    // deleteImageFromCloudinary(stepsData[index].screenshotUrl);
-    // const updatedSteps = [...stepsData];
-    // updatedSteps.splice(index, 1);
-    // setStepsData(updatedSteps);
-  };
-  const handlePublish = async () => {
-    setIsLoading(true);
-    if (!screenshotId) return;
-
-    try {
-      // console.log("screenshotId: ", screenshotId);
-      // console.log("guideTitle: ", guideTitle);
-      // console.log("guideDescription: ", guideDescription);
-      const docRef = doc(db, "guides", screenshotId);
-      // console.log("docRef: ", docRef);
-      await updateDoc(docRef, {
-        guideTitle: guideTitle || "",
-        guideDescription: guideDescription || "",
-        guideImages: stepsData,
-      });
-      // alert("Guide updated successfully!");
-      setPopupUrl("http://localhost:3000/view-guide?id=" + screenshotId);
-      // setPopupUrl("https://localhost:3000/create-your-comp/view-guide?id=" + screenshotId);
-      setShowPopup(true);
-    } catch (e) {
-      console.error("Error updating document: ", e);
-    }
-    setIsLoading(false);
-  };
 
   return (
     <>
