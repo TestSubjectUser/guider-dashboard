@@ -3,7 +3,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../app/api/save-screenshot/firebaseConfig";
 import { GuideDataImagesProps } from "../types";
 
-export const useGuideData = (screenshotId: string | null) => {
+export const useGuideData = (screenshotId?: string | null) => {
   const [isLoading, setIsLoading] = useState(true);
   const [guideTitle, setGuideTitle] = useState("");
   const [guideDescription, setGuideDescription] = useState("");
@@ -11,6 +11,7 @@ export const useGuideData = (screenshotId: string | null) => {
   const [deletingSteps, setDeletingSteps] = useState<number[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupUrl, setPopupUrl] = useState("");
+  // const deleteImageOnPublishList: string[] = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +80,8 @@ export const useGuideData = (screenshotId: string | null) => {
     setIsLoading(true);
     setDeletingSteps((prev) => [...prev, index]);
     const imageUrl = stepsData[index].screenshotUrl;
+    // deleteImageOnPublishList.push(imageUrl!);
+    // console.log("deleteImageOnPublishList: ", deleteImageOnPublishList);
 
     try {
       if (
@@ -86,6 +89,7 @@ export const useGuideData = (screenshotId: string | null) => {
         (imageUrl.includes("amazonaws") ||
           imageUrl.includes("guider-extension"))
       ) {
+        // deleteImageOnPublishList.push(imageUrl);
         await fetch("/api/aws", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -127,6 +131,17 @@ export const useGuideData = (screenshotId: string | null) => {
       setPopupUrl("http://localhost:3000/view-guide?id=" + screenshotId);
       // setPopupUrl("https://localhost:3000/create-your-comp/view-guide?id=" + screenshotId);
       setShowPopup(true);
+
+      // if (deleteImageOnPublishList.length > 0) {
+      //   for (const imageUrl of deleteImageOnPublishList) {
+      //     await fetch("/api/aws", {
+      //       method: "DELETE",
+      //       headers: { "Content-Type": "application/json" },
+      //       body: JSON.stringify({ imageUrl }),
+      //     });
+      //   }
+      // }
+      // console.log("deleteImageOnPublishList: ", deleteImageOnPublishList);
     } catch (e) {
       console.error("Error updating document: ", e);
     }

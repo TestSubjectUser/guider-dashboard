@@ -81,6 +81,14 @@ export default async function Page({
           </div>
         ))}
       </div>
+      {/* <div className={styles.copyGuideLink}>
+        <button
+          onClick={() => console.log(window.location.href)}
+          // onClick={() => navigator.clipboard.writeText(window.location.href)}
+        >
+          copy
+        </button>
+      </div> */}
     </div>
   );
 }

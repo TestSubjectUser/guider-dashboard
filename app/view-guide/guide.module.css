@@ -90,3 +90,9 @@
     transform: scale(1);
   }
 }
+
+.copyGuideLink {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}

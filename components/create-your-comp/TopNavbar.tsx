@@ -11,8 +11,33 @@ function TopNavbar({
     <>
       <div className={styles.topNavbar}>
         <div className={styles.navLeft}>
-          <button disabled className={styles.navButton}>
+          {/* <button disabled className={styles.navButton}>
             Exit
+          </button> */}
+          <button
+            className={styles.navButton}
+            title="copy view-guide link"
+            onClick={(event) => {
+              // alert("copied");
+              navigator.clipboard.writeText(
+                window.location.href.replace("dashboard", "view-guide")
+              );
+              const button = event.currentTarget;
+              const originalText = button.innerText;
+
+              button.innerText = "Copied!";
+              setTimeout(() => {
+                button.innerText = originalText;
+              }, 500);
+            }}
+          >
+            {/* <img
+              width="12"
+              height="12"
+              src="https://img.icons8.com/material-two-tone/24/FFFFFF/link--v1.png"
+              alt="link--v1"
+            /> */}
+            Copy Guide Link
           </button>
           <button disabled className={styles.navButton}>
             <img

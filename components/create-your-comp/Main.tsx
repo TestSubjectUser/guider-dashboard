@@ -10,8 +10,6 @@ import EditableHeader from "./EditableHeader";
 import { useSearchParams } from "next/navigation";
 // import ImageWithBubble from "./ImageWithBubble";
 import { useEffect, useRef, useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { useGuideData } from "./customHooks/useGuideData";
 
 const CreateComponent = () => {
@@ -40,33 +38,6 @@ const CreateComponent = () => {
     popupUrl,
   } = useGuideData(screenshotId);
 
-  // Fetch: from firestore
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        if (screenshotId) {
-          const docRef = doc(db, "guides", screenshotId);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            setGuideTitle(docSnap.data()?.guideTitle);
-            setGuideDescription(docSnap.data()?.guideDescription);
-            setStepsData(docSnap.data().guideImages);
-          } else {
-            console.warn(`Document with ID ${screenshotId} not found.`);
-          }
-        } else {
-          console.warn("screenshotId is null.");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [screenshotId]);
   // initialize imageRefs
   useEffect(() => {
     imageRefs.current = imageRefs.current.slice(0, stepsData.length);
