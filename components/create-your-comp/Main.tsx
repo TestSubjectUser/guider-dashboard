@@ -2,6 +2,7 @@
 import "./index.css";
 import Step from "./Step";
 import Popup from "./Popup";
+import AddComp from "./AddComp";
 import { Sidebar } from "./Sidebar";
 import TopNavbar from "./TopNavbar";
 import ShimmerStep from "./ShimmerStep";
@@ -36,6 +37,7 @@ const CreateComponent = () => {
     showPopup,
     setShowPopup,
     popupUrl,
+    isFetching,
   } = useGuideData(screenshotId);
 
   // initialize imageRefs
@@ -108,7 +110,7 @@ const CreateComponent = () => {
             />
           </div>
 
-          {stepsData.length === 0 && (
+          {isFetching && (
             <>
               <ShimmerStep />
               <ShimmerStep />
@@ -134,6 +136,7 @@ const CreateComponent = () => {
                 )}
               </div>
             ))}
+            {!stepsData.length && <AddComp index={0} addStep={addStep} />}
           </div>
         </div>
       </div>

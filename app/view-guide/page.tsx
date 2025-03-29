@@ -1,8 +1,8 @@
-// made this component server side renderable.
 import styles from "./guide.module.css";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../app/api/save-screenshot/firebaseConfig";
 import { GuideDataProps } from "@/components/create-your-comp/types";
+import GuideContent from "./GuideContent";
 
 export default async function Page({
   searchParams,
@@ -10,88 +10,37 @@ export default async function Page({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   let { id } = await searchParams;
-  if (Array.isArray(id)) {
-    id = id[0];
-  }
-  // console.log("id: ", id);
-  // console.log(typeof id);
+  if (Array.isArray(id)) id = id[0];
 
   if (!id) {
     return <div className={styles.container}>No guide ID provided</div>;
   }
 
-  let data: GuideDataProps | null = null;
   try {
     const docRef = doc(db, "guides", id);
     const docSnap = await getDoc(docRef);
-    data = docSnap.exists() ? (docSnap.data() as GuideDataProps) : null;
+    const data = docSnap.exists() ? (docSnap.data() as GuideDataProps) : null;
+
+    if (!data) {
+      return <div className={styles.container}>Guide not found</div>;
+    }
+    const sanitizedData = {
+      ...data,
+      timestamp:
+        data.timestamp instanceof Date
+          ? data.timestamp
+          : new Date(data.timestamp),
+    };
+
+    return <GuideContent data={sanitizedData} />;
+
+    // return <GuideContent data={data} />;
   } catch (error) {
     console.error("Error fetching guide:", error);
     return <div className={styles.container}>Error loading guide</div>;
   }
-
-  if (!data) {
-    return <div className={styles.container}>Guide not found</div>;
-  }
-
-  return (
-    <div className={styles.container}>
-      <h1 className={styles.guideTitle}>{data.guideTitle}</h1>
-      <p className={styles.guideDescription}>{data.guideDescription}</p>
-      <div className={styles.stepsContainer}>
-        {data.guideImages?.map((image, index) => (
-          <div key={index} className={styles.stepContainer}>
-            <div className={styles.titleIndex}>
-              <p className={styles.imageIndex}>{index + 1}</p>
-              <p className={styles.imageTitle}>{image.title}</p>
-            </div>
-            <p className={styles.imageDescription}>{image.description}</p>
-            {image.screenshotUrl && (
-              <div
-                className={styles.imageWrapper}
-                style={{ position: "relative" }}
-              >
-                <div className={styles.stepImage}>
-                  <img
-                    src={image.screenshotUrl}
-                    alt={image.title}
-                    style={{
-                      maxWidth: "75vw",
-                      objectFit: "contain",
-                      maxHeight: "450px",
-                      transition: "transform 0.5s ease-out",
-                      transform: `scale(${image.scale ?? 1})`,
-                      transformOrigin: `${image?.relativeCoordinates?.x}% ${image?.relativeCoordinates?.y}%`,
-                      position: "relative",
-                    }}
-                  />
-                  {image.relativeCoordinates && (
-                    <div
-                      className={styles.bubble}
-                      style={{
-                        position: "absolute",
-                        top: `${image.relativeCoordinates.y}%`,
-                        left: `${image.relativeCoordinates.x}%`,
-                      }}
-                    ></div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      {/* <div className={styles.copyGuideLink}>
-        <button
-          onClick={() => console.log(window.location.href)}
-          // onClick={() => navigator.clipboard.writeText(window.location.href)}
-        >
-          copy
-        </button>
-      </div> */}
-    </div>
-  );
 }
+
 // "use client";
 // import styles from "./guide.module.css";
 // import { doc, getDoc } from "firebase/firestore";

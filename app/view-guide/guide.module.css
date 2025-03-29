@@ -4,6 +4,9 @@
   margin: 10;
   padding: 0;
 } */
+.wrapper {
+  display: flex;
+}
 
 .container {
   display: flex;
@@ -31,9 +34,11 @@
   margin-bottom: 10px;
 }
 .stepContainer:hover {
-  background-color: rgba(98, 94, 94, 0.01);
-  border: 2px dotted #2563eb;
-  border-radius: 5px;
+  background-color: rgba(98, 94, 94, 0.05);
+  /* outline: 2px dotted red;
+  outline-offset: -2px;
+  z-index: 99;
+  border-radius: 5px; */
 }
 .titleIndex {
   display: flex;
@@ -48,6 +53,7 @@
 }
 .imageIndex {
   margin: 0;
+  margin-left: 12px;
   background-color: #bfdbfe;
   color: #2563eb;
   font-weight: 600;
@@ -95,4 +101,84 @@
   position: absolute;
   bottom: 5px;
   right: 5px;
+}
+.sidebar {
+  display: none;
+}
+
+@media only screen and (min-width: 786px) {
+  .sidebar {
+    width: 25%;
+    display: block;
+    position: sticky;
+    top: 0px;
+    height: 100vh;
+  }
+  .container {
+    width: 75%;
+  }
+}
+
+.sidebarHeader {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sidebarHeader h2 {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.sidebarList {
+  padding-left: 2px;
+  list-style: none;
+  margin: 0;
+}
+
+.sidebarList li {
+  cursor: pointer;
+  padding: 8px 15px;
+  font-size: 0.8rem;
+  transition: background-color 0.3s;
+}
+
+.sidebarList li:hover {
+  background-color: #e5f5f8;
+}
+
+.sidebarList li.active {
+  background-color: #e5f5f8;
+  font-weight: bold;
+  color: rgb(51, 71, 91);
+  border-left: 4px solid rgb(0, 164, 189);
+}
+
+.stepDragger {
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  cursor: grab;
+}
+
+.stepDragger:hover {
+  opacity: 1;
+}
+
+.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.drop-target {
+  border: 2px dashed #2da9e1 !important;
+  margin: 10px 0;
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
 }

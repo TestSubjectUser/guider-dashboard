@@ -5,6 +5,7 @@ import { GuideDataImagesProps } from "../types";
 
 export const useGuideData = (screenshotId?: string | null) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
   const [guideTitle, setGuideTitle] = useState("");
   const [guideDescription, setGuideDescription] = useState("");
   const [stepsData, setStepsData] = useState<GuideDataImagesProps>([]);
@@ -16,6 +17,7 @@ export const useGuideData = (screenshotId?: string | null) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      setIsFetching(true);
       try {
         if (screenshotId) {
           const docRef = doc(db, "guides", screenshotId);
@@ -35,6 +37,7 @@ export const useGuideData = (screenshotId?: string | null) => {
         console.error("Error fetching data:", error);
       } finally {
         setIsLoading(false);
+        setIsFetching(false);
       }
     };
     fetchData();
@@ -165,5 +168,6 @@ export const useGuideData = (screenshotId?: string | null) => {
     showPopup,
     setShowPopup,
     popupUrl,
+    isFetching,
   };
 };
