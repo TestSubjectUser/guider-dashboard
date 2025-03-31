@@ -21,7 +21,7 @@ function Popup({
         <div className={styles.modalHeader}>
           <span>Publish guide</span>
         </div>
-        <div>
+        <div className={styles.modalBody}>
           <p>Who can see this guide?</p>
           <label>
             <input type="radio" name="visibility" defaultChecked />

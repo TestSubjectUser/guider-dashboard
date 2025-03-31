@@ -1,4 +1,5 @@
 import { AddCompProps } from "./types";
+import styles from "./createGuide.module.css";
 
 function AddComp({ index, addStep }: AddCompProps) {
   function handleAddComp() {
@@ -13,11 +14,11 @@ function AddComp({ index, addStep }: AddCompProps) {
   }
   return (
     <div
+      className={styles.addComp}
       style={{
-        display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        opacity: 0.5,
+        // opacity: 0.5,
       }}
     >
       <hr style={{ flex: 1, border: "1px solid #ccc", margin: "0 5px" }} />
