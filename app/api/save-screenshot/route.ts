@@ -28,18 +28,30 @@ export async function POST(req: Request): Promise<NextResponse> {
     const guideDescription: string = "";
     const guideImages: GuideDataImagesProps = [];
 
-    for (const { title, relativeCoordinates, screenshotUrl } of body.slice(
-      0,
-      -1
-    )) {
-      const uploadedImageUrl = await uploadImageToS3(screenshotUrl);
-      guideImages.push({
-        title,
-        description: "",
-        relativeCoordinates,
-        screenshotUrl: uploadedImageUrl,
-        scale: 1.4,
-      });
+    for (const {
+      title,
+      relativeCoordinates,
+      screenshotUrl,
+      description = "",
+    } of body.slice(0, -1)) {
+      if (screenshotUrl) {
+        const uploadedImageUrl = await uploadImageToS3(screenshotUrl);
+        guideImages.push({
+          title,
+          description,
+          relativeCoordinates,
+          screenshotUrl: uploadedImageUrl,
+          scale: 1.4,
+        });
+      } else {
+        guideImages.push({
+          title,
+          description,
+          relativeCoordinates: null,
+          screenshotUrl: null,
+          scale: 1.4,
+        });
+      }
     }
 
     let docRef;
@@ -82,3 +94,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+// currrenlty -> steps array -> [1,2,3,4]
+//
+// might be -> [[1,2,3], [1], [1,2,3,4,5]]

@@ -74,6 +74,7 @@ export interface RequestBody {
     x: number;
     y: number;
   };
+  description?: string;
   screenshotUrl: string;
   urlWeAreOn: string;
 }
