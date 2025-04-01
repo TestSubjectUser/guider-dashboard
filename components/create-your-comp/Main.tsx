@@ -174,7 +174,20 @@ export default CreateComponent;
  * 23. ✅ DND
  * 23. ✅ working on other browser and in incognito mode as well.
  * 24. (optional)automatic expiry period which deletes image from server and DB
- *
+ * 25. ✅ Error Handling for apis
+ * 26. stop capturing btn in ectension popup & control panel
+ * 27. minimize ref use
+ * 28. do not pass setState function
+ * 30. edit state without passing element.target, by passing name in input field
+ * 31. ✅ remove console.logs
+ * 32. reusable styles in extension.
+ * 33. homepage (dashboard, view-guide) initial pages.
+ * 34. better folder struct.
+ * 35. longer screenshot or selected screenshot.
+ * 36. and add custom step to create guide at last of the guide.
+ * 37. ✅ add topnavbar in guide-view
+ * 38. popup on screenshot capturing
+ * 38. control panel displays for initial 10 seconds.
  * added code till commit "rendering view-guide server side" to builder-preview-next (aws package not in there.)
  */
 

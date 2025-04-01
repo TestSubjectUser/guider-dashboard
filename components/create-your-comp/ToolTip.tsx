@@ -28,13 +28,11 @@ function ToolTip({
 }) {
   return (
     <div className={styles.tooltip}>
-      {/* set state to false onClick as well */}
       {step.screenshotUrl ? (
         <>
           <button
             onClick={() => {
               setShowTooltip((prev) => !prev);
-              // console.log("Remove Image");
               if (step.screenshotUrl) {
                 handleRemoveImage(step.screenshotUrl);
                 updateStep(index, step.title, step.description, null, null);
@@ -60,7 +58,6 @@ function ToolTip({
                   null,
                   step.screenshotUrl
                 );
-                // console.log("Remove Bubble");
               }}
             >
               Remove Bubble
@@ -87,7 +84,6 @@ function ToolTip({
                     step.screenshotUrl,
                     1
                   );
-                // console.log("Add Bubble");
               }}
             >
               Add Bubble
@@ -104,7 +100,6 @@ function ToolTip({
         <button
           onClick={() => {
             setShowTooltip((prev) => !prev);
-            // console.log("Add Image");
             updateStep(
               index,
               step.title,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { HeaderProps } from "./types";
 
 function EditableHeader({
@@ -10,6 +10,11 @@ function EditableHeader({
 }: HeaderProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const [text2, setText2] = useState({
+    name: "",
+    description: "",
+  });
 
   React.useEffect(() => {
     setText(textValue);
@@ -25,6 +30,14 @@ function EditableHeader({
     inputRef.current?.blur();
   };
 
+  const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+    setText2((prev) => ({
+      ...prev,
+      name: e.target.value,
+    }));
+  };
+
   return (
     <div
       style={{
@@ -38,6 +51,7 @@ function EditableHeader({
       <input
         ref={inputRef}
         type="text"
+        name="title"
         style={{
           textDecoration: "none",
           background: "transparent",
@@ -51,6 +65,7 @@ function EditableHeader({
         }}
         value={textValue}
         placeholder={placeholderValue}
+        // onChange={onTitleChange}
         onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsEditing(true)}
         onBlur={() => {

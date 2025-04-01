@@ -30,32 +30,18 @@ const Step = ({
     }
     setZoomState(step.scale ?? 1);
 
-    // if (!hasZoomedOnce && step.scale > 1) {
-    //   setTimeout(() => {
-    //     setZoomState(step.scale);
-    //     setHasZoomedOnce(true);
-    //   }, 300);
-    // }
-
     if (step.scale > 1) {
       // delaying
       setTimeout(() => setZoomState(step.scale), 3);
     }
-    // console.log("step.relativeCoordinates ", step.relativeCoordinates);
   }, [imageRefs.current[index]]);
 
   const handleSwapClick = () => {
-    console.log("Swap icon clicked for step:", index);
-    console.log("image: ", step.screenshotUrl);
     setShowChangeImagePopup(true);
-    // step.screenshotUrl =
-    //   "https://media.istockphoto.com/id/2153573059/photo/mountain-covered-with-a-coniferous-fir-tree-forest-scenic-landscape-from-carpathian-mountains.jpg?s=1024x1024&w=is&k=20&c=hwDTriUtxDP_4A6jQKVRWTTTXLf8jim4w3w1K2dcaHU=";
   };
 
   function handleImageUpload(imageLink: string) {
     setIsLoading(true);
-    console.log("stepData State changed");
-    // step.screenshotUrl = imageLink;
     updateStep(
       index,
       step.title,
@@ -63,8 +49,6 @@ const Step = ({
       step.relativeCoordinates,
       imageLink
     );
-    // console.log("imageLink", imageLink);
-    // console.log("after update image: ", step.screenshotUrl);
     setShowChangeImagePopup(false);
     setIsLoading(false);
   }
@@ -95,11 +79,9 @@ const Step = ({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ imageUrl }),
         });
-
-        console.log("Image deleted from AWS");
       }
     } catch (error) {
-      console.error("Failed to delete image:", error);
+      // TODO: failde to delete img toast
     }
   }
 
@@ -110,31 +92,16 @@ const Step = ({
           oldImageUrl={step.screenshotUrl!}
           handleImageUpload={handleImageUpload}
           setIsLoading={setIsLoading}
-          // setPopupChangeImageUrl={setPopupChangeImageUrl}
           setShowChangeImagePopup={setShowChangeImagePopup}
         />
       )}
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div
         onMouseLeave={() => setShowTooltip(false)}
-        // onMouseEnter={() => setShowTooltip(true)}
         className={styles.step}
         id={index.toString()}
         key={index}
-        // style={{
-        //   cursor: isDragging ? "grabbing" : "grab",
-        //   position: "relative",
-        //   transition: "transform 0.2s, opacity 0.2s",
-        // }}
       >
-        {/* draggable while dragging this div */}
-        {/* <div
-          className={styles.stepDragger}
-          onMouseDown={handleMouseDown}
-          title="Drag to reorder"
-        >
-          ::::
-        </div> */}
         {
           <div className={styles.stepActionContainer}>
             <button title="Delete this step" onClick={() => deleteStep(index)}>

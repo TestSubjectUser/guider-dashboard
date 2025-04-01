@@ -34,7 +34,6 @@ export const Sidebar = ({
     e.preventDefault();
     if (draggedIndex === null) return;
     setHoverIndex(index);
-    console.log("hoverIndex: ", hoverIndex, typeof hoverIndex);
   };
 
   const handleDragEnd = () => {

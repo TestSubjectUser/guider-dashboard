@@ -27,7 +27,6 @@ function ChangeImagePopup({
   const handleSubmit = async () => {
     setIsLoading(true);
     if (!selectedImage) {
-      console.log("No image selected.");
       return;
     }
 
@@ -44,9 +43,7 @@ function ChangeImagePopup({
 
       const data = await response.json();
       if (response.ok) {
-        // if image uploaded to s3 than delete older image which was swaped withthis new one....
         try {
-          console.log("oldUrl receided in popup: ", oldImageUrl);
           if (
             oldImageUrl.includes("amazonaws") ||
             oldImageUrl.includes("guider-extension")
@@ -56,20 +53,18 @@ function ChangeImagePopup({
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ imageUrl: oldImageUrl }),
             });
-
-            console.log("Image deleted from AWS");
           }
         } catch (error) {
-          console.error("Failed to delete image:", error);
+          // TODO: failed to...error toast
         }
 
-        console.log("Image uploaded to S3 successfully:", data.imageUrl);
+        // TODO: success toast
         handleImageUpload(data.imageUrl);
       } else {
-        console.error("Image upload failed:", data.error);
+        // TODO: failed to...data.error toast
       }
     } catch (error) {
-      console.error("Error during image upload:", error);
+      // TODO: failed to...error toast
     } finally {
       setShowChangeImagePopup(false);
       setIsLoading(false);

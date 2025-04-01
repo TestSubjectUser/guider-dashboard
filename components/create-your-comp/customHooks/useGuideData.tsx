@@ -12,7 +12,10 @@ export const useGuideData = (screenshotId?: string | null) => {
   const [deletingSteps, setDeletingSteps] = useState<number[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupUrl, setPopupUrl] = useState("");
-  // const deleteImageOnPublishList: string[] = [];
+
+  const hanldeLoading = () => {
+    setIsLoading(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,13 +31,13 @@ export const useGuideData = (screenshotId?: string | null) => {
             setGuideDescription(docSnap.data()?.guideDescription);
             setStepsData(docSnap.data().guideImages);
           } else {
-            console.warn(`Document with ID ${screenshotId} not found.`);
+            // TODO: not found with id toast
           }
         } else {
-          console.warn("screenshotId is null.");
+          // TODO: id is null toast
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // TODO: failed to...error toast
       } finally {
         setIsLoading(false);
         setIsFetching(false);
@@ -67,7 +70,7 @@ export const useGuideData = (screenshotId?: string | null) => {
     newTitle: string,
     newDescription: string,
     screenshotUrl: string,
-    relativeCoordinates: { x: number; y: number }
+    relativeCoordinates: { x: number; y: number } | null
   ) => {
     const updatedSteps = [...stepsData];
     updatedSteps.splice(index, 0, {
@@ -76,6 +79,7 @@ export const useGuideData = (screenshotId?: string | null) => {
       screenshotUrl,
       relativeCoordinates,
       scale: 1,
+      tabTitle: "",
     });
     setStepsData(updatedSteps);
   };
@@ -83,8 +87,6 @@ export const useGuideData = (screenshotId?: string | null) => {
     setIsLoading(true);
     setDeletingSteps((prev) => [...prev, index]);
     const imageUrl = stepsData[index].screenshotUrl;
-    // deleteImageOnPublishList.push(imageUrl!);
-    // console.log("deleteImageOnPublishList: ", deleteImageOnPublishList);
 
     try {
       if (
@@ -92,31 +94,22 @@ export const useGuideData = (screenshotId?: string | null) => {
         (imageUrl.includes("amazonaws") ||
           imageUrl.includes("guider-extension"))
       ) {
-        // deleteImageOnPublishList.push(imageUrl);
         await fetch("/api/aws", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ imageUrl }),
         });
-
-        console.log("Image deleted from AWS");
       }
 
       const updatedSteps = [...stepsData];
       updatedSteps.splice(index, 1);
       setStepsData(updatedSteps);
     } catch (error) {
-      console.error("Failed to delete image:", error);
+      // TODO: failed to...error toast
     } finally {
       setDeletingSteps((prev) => prev.filter((i) => i !== index));
       setIsLoading(false);
     }
-
-    // by doing this need fs lib cause clodinary works on srver side like on nodejs
-    // deleteImageFromCloudinary(stepsData[index].screenshotUrl);
-    // const updatedSteps = [...stepsData];
-    // updatedSteps.splice(index, 1);
-    // setStepsData(updatedSteps);
   };
   const handlePublish = async () => {
     setIsLoading(true);
@@ -124,29 +117,16 @@ export const useGuideData = (screenshotId?: string | null) => {
 
     try {
       const docRef = doc(db, "guides", screenshotId);
-      // console.log("docRef: ", docRef);
       await updateDoc(docRef, {
         guideTitle: guideTitle || "",
         guideDescription: guideDescription || "",
         guideImages: stepsData,
       });
-      // alert("Guide updated successfully!");
+      // TODO: toast notification
       setPopupUrl("http://localhost:3000/view-guide?id=" + screenshotId);
-      // setPopupUrl("https://localhost:3000/create-your-comp/view-guide?id=" + screenshotId);
       setShowPopup(true);
-
-      // if (deleteImageOnPublishList.length > 0) {
-      //   for (const imageUrl of deleteImageOnPublishList) {
-      //     await fetch("/api/aws", {
-      //       method: "DELETE",
-      //       headers: { "Content-Type": "application/json" },
-      //       body: JSON.stringify({ imageUrl }),
-      //     });
-      //   }
-      // }
-      // console.log("deleteImageOnPublishList: ", deleteImageOnPublishList);
     } catch (e) {
-      console.error("Error updating document: ", e);
+      // TODO: failed to updating...error toast
     }
     setIsLoading(false);
   };

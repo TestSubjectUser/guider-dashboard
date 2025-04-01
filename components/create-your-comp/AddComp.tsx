@@ -3,13 +3,12 @@ import styles from "./createGuide.module.css";
 
 function AddComp({ index, addStep }: AddCompProps) {
   function handleAddComp() {
-    console.log("AddComp @ index: ", index);
     addStep(
       index,
-      "New Step",
+      "",
       "",
       "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png",
-      { x: 46, y: 18 }
+      null
     );
   }
   return (

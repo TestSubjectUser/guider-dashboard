@@ -5,7 +5,7 @@ export type AddCompProps = {
     newTitle: string,
     newDescription: string,
     screenshotUrl: string,
-    relativeCoordinates: { x: number; y: number }
+    relativeCoordinates: { x: number; y: number } | null
   ) => void;
 };
 
@@ -49,7 +49,7 @@ export interface StepProps {
     newTitle: string,
     newDescription: string,
     screenshotUrl: string,
-    relativeCoordinates: { x: number; y: number }
+    relativeCoordinates: { x: number; y: number } | null
   ) => void;
   deleteStep: (index: number) => void;
 }
