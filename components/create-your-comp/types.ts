@@ -15,6 +15,7 @@ export type GuideDataImagesProps = {
   screenshotUrl: string | null;
   relativeCoordinates: { x: number; y: number } | null;
   scale: number;
+  tabTitle: string;
 }[];
 
 export type GuideDataProps = {
@@ -76,5 +77,5 @@ export interface RequestBody {
   };
   description?: string;
   screenshotUrl: string;
-  urlWeAreOn: string;
+  tabTitle?: string;
 }

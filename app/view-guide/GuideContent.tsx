@@ -42,17 +42,26 @@ export default function GuideContent({ data }: Props) {
         </div>
         <ul className={styles.sidebarList}>
           {data.guideImages?.map((step, index) => (
-            <li
-              key={index}
-              className={activeStep === index ? styles.active : ""}
-              onClick={() => handleScrollToStep(index)}
-            >
-              {`${index + 1}. ${
-                step.title.length > 30
-                  ? step.title.substring(0, 30) + "..."
-                  : step.title
-              }`}
-            </li>
+            <>
+              {index === 0 && (
+                <h4 className={styles.tabTitle}>{step.tabTitle}</h4>
+              )}
+              {index > 0 &&
+                data.guideImages[index - 1].tabTitle !== step.tabTitle && (
+                  <h4 className={styles.tabTitle}>{step.tabTitle}</h4>
+                )}
+              <li
+                key={index}
+                className={activeStep === index ? styles.active : ""}
+                onClick={() => handleScrollToStep(index)}
+              >
+                {`${index + 1}. ${
+                  step.title.length > 30
+                    ? step.title.substring(0, 30) + "..."
+                    : step.title
+                }`}
+              </li>
+            </>
           ))}
         </ul>
       </aside>

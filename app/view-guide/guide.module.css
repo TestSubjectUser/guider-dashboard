@@ -40,6 +40,9 @@
   z-index: 99;
   border-radius: 5px; */
 }
+.tabTitle {
+  color: #33475b;
+}
 .titleIndex {
   display: flex;
   margin: 0;

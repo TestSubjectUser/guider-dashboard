@@ -56,46 +56,52 @@ export const Sidebar = ({
       </div>
       <ul className={styles.sidebarList}>
         {stepsData.map((step, index) => (
-          <a
-            key={index}
-            id={index.toString()}
-            draggable
-            onDragStart={() => handleDragStart(index)}
-            onDragOver={(e) => handleDragOver(e, index)}
-            onDragEnd={handleDragEnd}
-            href={`#${index.toString()}`}
-            style={{
-              textDecoration: "none",
-              color: "black",
-              // cursor: "auto",
-              opacity: draggedIndex === index ? 0.5 : 1,
-              cursor: "grab",
-            }}
-          >
-            <li
-              id={index.toString()}
+          <>
+            {index === 0 && <h4>{step.tabTitle}</h4>}
+            {index > 0 && stepsData[index - 1].tabTitle !== step.tabTitle && (
+              <h4>{step.tabTitle}</h4>
+            )}
+            <a
               key={index}
-              className={activeStep === index ? styles.active : ""}
-              onClick={() => handleClick(index)}
+              id={index.toString()}
+              draggable
+              onDragStart={() => handleDragStart(index)}
+              onDragOver={(e) => handleDragOver(e, index)}
+              onDragEnd={handleDragEnd}
+              href={`#${index.toString()}`}
               style={{
-                border: hoverIndex === index ? "2px dashed #2da9e1" : "",
-                cursor: draggedIndex === index ? "grabbing" : "grab",
-                position: "relative",
-                transition: "transform 0.2s, opacity 0.2s",
-                display: "flex",
-                justifyContent: "space-between",
+                textDecoration: "none",
+                color: "black",
+                // cursor: "auto",
+                opacity: draggedIndex === index ? 0.5 : 1,
+                cursor: "grab",
               }}
             >
-              {/* {`${index + 1}. ${step.title}`} */}
-              {`${index + 1}. ${
-                step.title.length > 30
-                  ? step.title.substring(0, 30) + "..."
-                  : step.title
-              }`}
-              <span>::: </span>
-              {/* <p className={styles.stepDragger}>::</p> */}
-            </li>
-          </a>
+              <li
+                id={index.toString()}
+                key={index}
+                className={activeStep === index ? styles.active : ""}
+                onClick={() => handleClick(index)}
+                style={{
+                  border: hoverIndex === index ? "2px dashed #2da9e1" : "",
+                  cursor: draggedIndex === index ? "grabbing" : "grab",
+                  position: "relative",
+                  transition: "transform 0.2s, opacity 0.2s",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                {/* {`${index + 1}. ${step.title}`} */}
+                {`${index + 1}. ${
+                  step.title.length > 30
+                    ? step.title.substring(0, 30) + "..."
+                    : step.title
+                }`}
+                <span>::: </span>
+                {/* <p className={styles.stepDragger}>::</p> */}
+              </li>
+            </a>
+          </>
         ))}
       </ul>
     </div>

@@ -33,7 +33,9 @@ export async function POST(req: Request): Promise<NextResponse> {
       relativeCoordinates,
       screenshotUrl,
       description = "",
-    } of body.slice(0, -1)) {
+      tabTitle = "undefined",
+    } of body) {
+      console.log("___tabTitle: ", tabTitle);
       if (screenshotUrl) {
         const uploadedImageUrl = await uploadImageToS3(screenshotUrl);
         guideImages.push({
@@ -42,6 +44,7 @@ export async function POST(req: Request): Promise<NextResponse> {
           relativeCoordinates,
           screenshotUrl: uploadedImageUrl,
           scale: 1.4,
+          tabTitle,
         });
       } else {
         guideImages.push({
@@ -50,6 +53,7 @@ export async function POST(req: Request): Promise<NextResponse> {
           relativeCoordinates: null,
           screenshotUrl: null,
           scale: 1.4,
+          tabTitle,
         });
       }
     }
@@ -98,3 +102,5 @@ export async function POST(req: Request): Promise<NextResponse> {
 // currrenlty -> steps array -> [1,2,3,4]
 //
 // might be -> [[1,2,3], [1], [1,2,3,4,5]]
+// TODO : add topnavbar in guide-view
+// and add custom step to create guide at last of the guide.
