@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import styles from "./createGuide.module.css";
+import styles from "../moduleStyles/createGuide.module.css";
 
 export const BlinkingBubble = ({
   coordinates,

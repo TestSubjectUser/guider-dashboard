@@ -11,21 +11,26 @@ import ShimmerStep from "./commanComponent/ShimmerStep";
 import { useGuideData } from "./customHooks/useGuideData";
 import styles from "./moduleStyles/createGuide.module.css";
 import EditableHeader from "./commanComponent/EditableHeader";
+import GuideList from "./commanComponent/GuideList";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
   const screenshotId = searchParams.get("id");
-
   const [activeStep, setActiveStep] = useState(0);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const guideData = screenshotId ? useGuideData(screenshotId) : null;
+
+  if (!screenshotId) {
+    return <GuideList />;
+  }
 
   const {
     isLoading,
-    setIsLoading,
+    hanldeIsLoading,
     guideTitle,
-    setGuideTitle,
+    handleGuideTitle,
     guideDescription,
-    setGuideDescription,
+    handleGuideDescription,
     stepsData,
     setStepsData,
     updateStep,
@@ -34,10 +39,10 @@ const CreateComponent = () => {
     handlePublish,
     deletingSteps,
     showPopup,
-    setShowPopup,
+    handleShowPopup,
     popupUrl,
     isFetching,
-  } = useGuideData(screenshotId);
+  } = guideData!;
 
   // initialize imageRefs
   useEffect(() => {
@@ -85,7 +90,7 @@ const CreateComponent = () => {
         />
         <div className={styles.mainContent}>
           {showPopup && (
-            <Popup popupUrl={popupUrl} onClose={() => setShowPopup(false)} />
+            <Popup popupUrl={popupUrl} onClose={() => handleShowPopup(false)} />
           )}
 
           <div className={styles.guideHeader}>
@@ -96,7 +101,7 @@ const CreateComponent = () => {
               textColor=""
               textSize="1.5rem"
               placeholderValue="Add title of your guide..."
-              setText={setGuideTitle}
+              setText={handleGuideTitle}
             />
             {/* Guide Description */}
             <p>Description of the guide</p>
@@ -105,7 +110,7 @@ const CreateComponent = () => {
               textColor="rgb(44, 169, 225)"
               textSize="1.15rem"
               placeholderValue="What is this guide about?"
-              setText={setGuideDescription}
+              setText={handleGuideDescription}
             />
           </div>
 
@@ -127,7 +132,7 @@ const CreateComponent = () => {
                     step={step}
                     index={index}
                     imageRefs={imageRefs}
-                    setIsLoading={setIsLoading}
+                    setIsLoading={hanldeIsLoading}
                     updateStep={updateStep}
                     addStep={addStep}
                     deleteStep={deleteStep}
@@ -176,11 +181,11 @@ export default CreateComponent;
  * 25. ✅ Error Handling for apis
  * 26. stop capturing btn in ectension popup & control panel
  * 27. minimize ref use
- * 28. do not pass setState function
+ * 28. ✅ do not pass setState function
  * 30. edit state without passing element.target, by passing name in input field
  * 31. ✅ remove console.logs
  * 32. reusable styles in extension.
- * 33. homepage (dashboard, view-guide) initial pages.
+ * 33. ✅ homepage (dashboard, view-guide) initial pages.
  * 34. ✅ better folder struct.
  * 35. longer screenshot or selected screenshot.
  * 36. and add custom step to create guide at last of the guide.

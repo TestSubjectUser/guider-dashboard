@@ -1,4 +1,4 @@
-import styles from "./moduleStyles/Step.module.css";
+import styles from "../moduleStyles/Step.module.css";
 
 function ToolTip({
   setShowTooltip,

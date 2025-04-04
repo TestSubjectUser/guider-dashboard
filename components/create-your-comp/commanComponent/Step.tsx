@@ -5,7 +5,7 @@ import { StepProps } from "../utils/types";
 import EditableHeader from "./EditableHeader";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
-import styles from "./moduleStyles/Step.module.css";
+import styles from "../moduleStyles/Step.module.css";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({

@@ -13,9 +13,11 @@ export const useGuideData = (screenshotId?: string | null) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupUrl, setPopupUrl] = useState("");
 
-  const hanldeLoading = () => {
-    setIsLoading(true);
-  };
+  const hanldeIsLoading = (value: boolean) => setIsLoading(value);
+  const handleGuideTitle = (value: string) => setGuideTitle(value);
+  const handleGuideDescription = (value: string) => setGuideDescription(value);
+  // const handleStepsData = (value: GuideDataImagesProps) => setStepsData(value);
+  const handleShowPopup = (value: boolean) => setShowPopup(value);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,21 +135,21 @@ export const useGuideData = (screenshotId?: string | null) => {
 
   return {
     isLoading,
-    setIsLoading,
-    guideTitle,
-    setGuideTitle,
-    guideDescription,
-    setGuideDescription,
     stepsData,
-    setStepsData,
-    updateStep,
+    guideTitle,
+    guideDescription,
     addStep,
     deleteStep,
+    updateStep,
     handlePublish,
-    deletingSteps,
-    showPopup,
-    setShowPopup,
     popupUrl,
+    showPopup,
     isFetching,
+    deletingSteps,
+    setStepsData,
+    handleShowPopup,
+    hanldeIsLoading,
+    handleGuideTitle,
+    handleGuideDescription,
   };
 };

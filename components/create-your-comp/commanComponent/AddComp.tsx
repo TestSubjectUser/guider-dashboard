@@ -1,5 +1,5 @@
 import { AddCompProps } from "../utils/types";
-import styles from "./createGuide.module.css";
+import styles from "../moduleStyles/createGuide.module.css";
 
 function AddComp({ index, addStep }: AddCompProps) {
   function handleAddComp() {

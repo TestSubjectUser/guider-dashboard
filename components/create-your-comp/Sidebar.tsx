@@ -55,7 +55,7 @@ export const Sidebar = ({
       </div>
       <ul className={styles.sidebarList}>
         {stepsData.map((step, index) => (
-          <>
+          <div key={index}>
             {index === 0 && <h4>{step.tabTitle}</h4>}
             {index > 0 && stepsData[index - 1].tabTitle !== step.tabTitle && (
               <h4>{step.tabTitle}</h4>
@@ -100,7 +100,7 @@ export const Sidebar = ({
                 {/* <p className={styles.stepDragger}>::</p> */}
               </li>
             </a>
-          </>
+          </div>
         ))}
       </ul>
     </div>

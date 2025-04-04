@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import styles from "./createGuide.module.css";
 import { ChangeImagePopupProps } from "../utils/types";
+import styles from "../moduleStyles/createGuide.module.css";
 
 function ChangeImagePopup({
   oldImageUrl,

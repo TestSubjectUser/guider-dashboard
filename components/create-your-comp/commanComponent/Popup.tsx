@@ -1,4 +1,4 @@
-import styles from "./createGuide.module.css";
+import styles from "../moduleStyles/createGuide.module.css";
 
 function Popup({
   popupUrl,

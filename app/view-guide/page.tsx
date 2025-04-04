@@ -1,8 +1,9 @@
 import styles from "./guide.module.css";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../components/create-your-comp/utils/firebaseConfig";
-import { GuideDataProps } from "@/components/create-your-comp/utils/types";
 import GuideContent from "./GuideContent";
+import { doc, getDoc } from "firebase/firestore";
+import GuideAvailableDocs from "./GuideAvailableDocs";
+import { GuideDataProps } from "@/components/create-your-comp/utils/types";
+import { db } from "../../components/create-your-comp/utils/firebaseConfig";
 
 export default async function Page({
   searchParams,
@@ -13,7 +14,7 @@ export default async function Page({
   if (Array.isArray(id)) id = id[0];
 
   if (!id) {
-    return <div className={styles.container}>No guide ID provided</div>;
+    return <GuideAvailableDocs />;
   }
 
   try {
