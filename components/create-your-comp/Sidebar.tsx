@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
+import { GuideDataImagesProps } from "./utils/types";
 import styles from "./moduleStyles/Sidebar.module.css";
-import { GuideDataImagesProps } from "./types";
 
 export const Sidebar = ({
   activeStep,

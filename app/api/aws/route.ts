@@ -1,7 +1,7 @@
-import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-import { uploadImageToS3 } from "../save-screenshot/s3Upload";
-import s3Client from "../save-screenshot/aws";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { uploadImageToS3 } from "./s3Upload";
+import s3Client from "../../../components/create-your-comp/utils/aws";
 
 export async function POST(req: Request) {
   try {

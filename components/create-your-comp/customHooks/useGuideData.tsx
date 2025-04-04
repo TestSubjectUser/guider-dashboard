@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../../app/api/save-screenshot/firebaseConfig";
-import { GuideDataImagesProps } from "../types";
+import { db } from "../utils/firebaseConfig";
+import { GuideDataImagesProps } from "../utils/types";
 
 export const useGuideData = (screenshotId?: string | null) => {
   const [isLoading, setIsLoading] = useState(true);

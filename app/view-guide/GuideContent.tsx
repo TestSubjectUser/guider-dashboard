@@ -2,7 +2,7 @@
 import "../../components/create-your-comp/index.css";
 import { useRef, useEffect, useState } from "react";
 import styles from "./guide.module.css";
-import { GuideDataProps } from "@/components/create-your-comp/types";
+import { GuideDataProps } from "@/components/create-your-comp/utils/types";
 
 interface Props {
   data: GuideDataProps;

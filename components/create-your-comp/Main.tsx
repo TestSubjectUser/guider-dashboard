@@ -1,17 +1,16 @@
 "use client";
 import "./index.css";
-import Step from "./Step";
-import Popup from "./Popup";
-import AddComp from "./AddComp";
 import { Sidebar } from "./Sidebar";
 import TopNavbar from "./TopNavbar";
-import ShimmerStep from "./ShimmerStep";
-import styles from "./createGuide.module.css";
-import EditableHeader from "./EditableHeader";
+import Step from "./commanComponent/Step";
+import Popup from "./commanComponent/Popup";
+import AddComp from "./commanComponent/AddComp";
 import { useSearchParams } from "next/navigation";
-// import ImageWithBubble from "./ImageWithBubble";
 import { useEffect, useRef, useState } from "react";
+import ShimmerStep from "./commanComponent/ShimmerStep";
 import { useGuideData } from "./customHooks/useGuideData";
+import styles from "./moduleStyles/createGuide.module.css";
+import EditableHeader from "./commanComponent/EditableHeader";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
@@ -182,7 +181,7 @@ export default CreateComponent;
  * 31. ✅ remove console.logs
  * 32. reusable styles in extension.
  * 33. homepage (dashboard, view-guide) initial pages.
- * 34. better folder struct.
+ * 34. ✅ better folder struct.
  * 35. longer screenshot or selected screenshot.
  * 36. and add custom step to create guide at last of the guide.
  * 37. ✅ add topnavbar in guide-view

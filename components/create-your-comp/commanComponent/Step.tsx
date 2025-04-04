@@ -1,11 +1,11 @@
 import React from "react";
+import ToolTip from "./ToolTip";
 import AddComp from "./AddComp";
-import { StepProps } from "./types";
+import { StepProps } from "../utils/types";
 import EditableHeader from "./EditableHeader";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
 import styles from "./moduleStyles/Step.module.css";
-import ToolTip from "./ToolTip";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({

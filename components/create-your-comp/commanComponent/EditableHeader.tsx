@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HeaderProps } from "./types";
+import { HeaderProps } from "../utils/types";
 
 function EditableHeader({
   textValue = "enter text...",

@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
+import { uploadImageToS3 } from "../aws/s3Upload";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig";
-import { uploadImageToS3 } from "./s3Upload";
+import { db } from "../../../components/create-your-comp/utils/firebaseConfig";
 import {
   GuideDataImagesProps,
   GuideDataProps,
   RequestBody,
-} from "@/components/create-your-comp/types";
+} from "@/components/create-your-comp/utils/types";
 
 export async function POST(req: Request): Promise<NextResponse> {
   try {

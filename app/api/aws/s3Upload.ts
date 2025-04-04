@@ -1,7 +1,6 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import s3Client from "./aws";
+import s3Client from "../../../components/create-your-comp/utils/aws";
 
-// Upload image to S3
 export const uploadImageToS3 = async (base64Image: string) => {
   try {
     const buffer = Buffer.from(base64Image.split(",")[1], "base64");

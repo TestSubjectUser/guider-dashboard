@@ -1,7 +1,7 @@
 import styles from "./guide.module.css";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../app/api/save-screenshot/firebaseConfig";
-import { GuideDataProps } from "@/components/create-your-comp/types";
+import { db } from "../../components/create-your-comp/utils/firebaseConfig";
+import { GuideDataProps } from "@/components/create-your-comp/utils/types";
 import GuideContent from "./GuideContent";
 
 export default async function Page({
