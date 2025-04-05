@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { ChangeImagePopupProps } from "../utils/types";
-import styles from "../moduleStyles/createGuide.module.css";
+import SCSS from "../moduleStyles/createGuide.module.scss";
 
 function ChangeImagePopup({
   oldImageUrl,
@@ -72,13 +72,13 @@ function ChangeImagePopup({
   };
 
   return (
-    <div className={styles.model}>
-      <div className={styles.modal}>
-        <div className={styles.modalHeader}>
+    <div className={SCSS.model}>
+      <div className={SCSS.modal}>
+        <div className={SCSS.modalHeader}>
           <span>Update image</span>
         </div>
         <div
-          className={styles.modalBody}
+          className={SCSS.modalBody}
           style={{ display: "flex", flexDirection: "column", gap: "10px" }}
         >
           <input
@@ -92,15 +92,15 @@ function ChangeImagePopup({
           <input type="file" accept="image/*" onChange={handleImageSelection} />
           {/* <button disabled>Select My Image(coming soon...)</button> */}
         </div>
-        <div className={styles.modalFooter}>
+        <div className={SCSS.modalFooter}>
           <button
-            className={styles.cancelBtn}
+            className={SCSS.cancelBtn}
             onClick={() => setShowChangeImagePopup(false)}
           >
             Cancel
           </button>
           <button
-            className={styles.publishBtn}
+            className={SCSS.publishBtn}
             onClick={() => {
               if (imageLink.current!.value) {
                 handleImageUpload(imageLink.current!.value);

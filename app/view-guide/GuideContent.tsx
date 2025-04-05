@@ -1,7 +1,7 @@
 "use client";
 import "../../components/create-your-comp/index.css";
 import { useRef, useEffect, useState } from "react";
-import styles from "./guide.module.css";
+import SCSS from "./guide.module.scss";
 import { GuideDataProps } from "@/components/create-your-comp/utils/types";
 
 interface Props {
@@ -15,7 +15,12 @@ export default function GuideContent({ data }: Props) {
   const handleScrollToStep = (index: number) => {
     const target = stepRefs.current[index];
     if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      const elementPosition = target.offsetTop - 51;
+
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -35,10 +40,10 @@ export default function GuideContent({ data }: Props) {
   }, []);
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.topNavbar}>
-        <div className={styles.navLeft}>
-          <button disabled className={styles.navButton}>
+    <div>
+      <div className={SCSS.topNavbar}>
+        <div className={SCSS.navLeft}>
+          <button disabled className={SCSS.navButton}>
             <img
               width="12"
               height="12"
@@ -49,38 +54,35 @@ export default function GuideContent({ data }: Props) {
           </button>
         </div>
 
-        <div className={styles.navRight}>
-          <button
-            title="to last published version"
-            className={styles.navButton}
-          >
+        <div className={SCSS.navRight}>
+          <button title="to last published version" className={SCSS.navButton}>
             Copy link
           </button>
 
-          <button className={`${styles.publishButton}`}>
+          <button className={`${SCSS.publishButton}`}>
             get guide creator for free
           </button>
         </div>
       </div>
 
-      <div className={styles.content}>
-        <aside className={styles.sidebar}>
-          <div className={styles.sidebarHeader}>
+      <div className={SCSS.content}>
+        <aside className={SCSS.sidebar}>
+          <div className={SCSS.sidebarHeader}>
             <h2>Guide Steps</h2>
           </div>
-          <ul className={styles.sidebarList}>
+          <ul className={SCSS.sidebarList}>
             {data.guideImages?.map((step, index) => (
               <div key={index}>
                 {index === 0 && (
-                  <h4 className={styles.tabTitle}>{step.tabTitle}</h4>
+                  <h4 className={SCSS.tabTitle}>{step.tabTitle}</h4>
                 )}
                 {index > 0 &&
                   data.guideImages[index - 1].tabTitle !== step.tabTitle && (
-                    <h4 className={styles.tabTitle}>{step.tabTitle}</h4>
+                    <h4 className={SCSS.tabTitle}>{step.tabTitle}</h4>
                   )}
                 <li
                   key={index}
-                  className={activeStep === index ? styles.active : ""}
+                  className={activeStep === index ? SCSS.active : ""}
                   onClick={() => handleScrollToStep(index)}
                 >
                   {`${index + 1}. ${
@@ -94,29 +96,30 @@ export default function GuideContent({ data }: Props) {
           </ul>
         </aside>
 
-        <main className={styles.container}>
-          <h1 className={styles.guideTitle}>{data.guideTitle}</h1>
-          <p className={styles.guideDescription}>{data.guideDescription}</p>
-          <div className={styles.stepsContainer}>
+        <main className={SCSS.container}>
+          <h1 className={SCSS.guideTitle}>{data.guideTitle}</h1>
+          <p className={SCSS.guideDescription}>{data.guideDescription}</p>
+          <div className={SCSS.stepsContainer}>
             {data.guideImages?.map((image, index) => (
               <div
+                id={`step-${index}`}
                 key={index}
                 ref={(el) => {
                   stepRefs.current[index] = el;
                 }}
-                className={styles.stepContainer}
+                className={SCSS.stepContainer}
               >
-                <div className={styles.titleIndex}>
-                  <p className={styles.imageIndex}>{index + 1}</p>
-                  <p className={styles.imageTitle}>{image.title}</p>
+                <div className={SCSS.titleIndex}>
+                  <p className={SCSS.imageIndex}>{index + 1}</p>
+                  <p className={SCSS.imageTitle}>{image.title}</p>
                 </div>
-                <p className={styles.imageDescription}>{image.description}</p>
+                <p className={SCSS.imageDescription}>{image.description}</p>
                 {image.screenshotUrl && (
                   <div
-                    className={styles.imageWrapper}
+                    className={SCSS.imageWrapper}
                     style={{ position: "relative" }}
                   >
-                    <div className={styles.stepImage}>
+                    <div className={SCSS.stepImage}>
                       <img
                         src={image.screenshotUrl}
                         alt={image.title}
@@ -131,7 +134,7 @@ export default function GuideContent({ data }: Props) {
                       />
                       {image.relativeCoordinates && (
                         <div
-                          className={styles.bubble}
+                          className={SCSS.bubble}
                           style={{
                             top: `${image.relativeCoordinates.y}%`,
                             left: `${image.relativeCoordinates.x}%`,

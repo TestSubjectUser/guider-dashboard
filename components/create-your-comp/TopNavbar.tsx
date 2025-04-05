@@ -1,4 +1,4 @@
-import styles from "./moduleStyles/TopNavbar.module.css";
+import SCSS from "./moduleStyles/TopNavbar.module.scss";
 
 function TopNavbar({
   isLoading,
@@ -9,16 +9,12 @@ function TopNavbar({
 }) {
   return (
     <>
-      <div className={styles.topNavbar}>
-        <div className={styles.navLeft}>
-          {/* <button disabled className={styles.navButton}>
-            Exit
-          </button> */}
+      <div className={SCSS.topNavbar}>
+        <div className={SCSS.navLeft}>
           <button
-            className={styles.navButton}
+            className={SCSS.navButton}
             title="copy view-guide link"
             onClick={(event) => {
-              // alert("copied");
               navigator.clipboard.writeText(
                 window.location.href.replace("dashboard", "view-guide")
               );
@@ -31,15 +27,9 @@ function TopNavbar({
               }, 500);
             }}
           >
-            {/* <img
-              width="12"
-              height="12"
-              src="https://img.icons8.com/material-two-tone/24/FFFFFF/link--v1.png"
-              alt="link--v1"
-            /> */}
             Copy Guide Link
           </button>
-          <button disabled className={styles.navButton}>
+          <button disabled className={SCSS.navButton}>
             <img
               width="12"
               height="12"
@@ -49,20 +39,20 @@ function TopNavbar({
           </button>
         </div>
 
-        <div className={styles.navRight}>
-          <div className={styles.navTitle}>Guide Creator</div>
+        <div className={SCSS.navRight}>
+          <div className={SCSS.navTitle}>Guide Creator</div>
           <button
             title="to last published version"
-            className={styles.navButton}
+            className={SCSS.navButton}
             onClick={() => window.location.reload()}
           >
             Revert Changes
           </button>
-          {/* <button className={styles.navButton}>Button 4</button> */}
+          {/* <button className={SCSS.navButton}>Button 4</button> */}
           <button
             disabled={isLoading}
-            className={`${styles.publishButton} ${
-              isLoading ? styles.disabled : ""
+            className={`${SCSS.publishButton} ${
+              isLoading ? SCSS.disabled : ""
             }`}
             onClick={handleGuidetitleordescPublish}
           >
@@ -70,13 +60,13 @@ function TopNavbar({
           </button>
         </div>
       </div>
-      <div className={styles.mobileActionButtons}>
+      <div className={SCSS.mobileActionButtons}>
         <button
           style={{
             marginRight: "5px",
           }}
           title="to last published version"
-          className={styles.navButton}
+          className={SCSS.navButton}
           onClick={() => window.location.reload()}
         >
           Revert Changes
@@ -84,9 +74,7 @@ function TopNavbar({
 
         <button
           disabled={isLoading}
-          className={`${styles.publishButton} ${
-            isLoading ? styles.disabled : ""
-          }`}
+          className={`${SCSS.publishButton} ${isLoading ? SCSS.disabled : ""}`}
           onClick={handleGuidetitleordescPublish}
         >
           {isLoading ? "Updating..." : "Publish and share"}

@@ -1,4 +1,4 @@
-import styles from "../moduleStyles/Step.module.css";
+import SCSS from "../moduleStyles/Step.module.scss";
 
 function ToolTip({
   setShowTooltip,
@@ -27,7 +27,7 @@ function ToolTip({
   index: number;
 }) {
   return (
-    <div className={styles.tooltip}>
+    <div className={SCSS.tooltip}>
       {step.screenshotUrl ? (
         <>
           <button

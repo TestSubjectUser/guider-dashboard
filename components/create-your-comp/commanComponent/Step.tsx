@@ -5,7 +5,7 @@ import { StepProps } from "../utils/types";
 import EditableHeader from "./EditableHeader";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
-import styles from "../moduleStyles/Step.module.css";
+import SCSS from "../moduleStyles/Step.module.scss";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({
@@ -98,12 +98,12 @@ const Step = ({
       {index === 0 && <AddComp index={0} addStep={addStep} />}
       <div
         onMouseLeave={() => setShowTooltip(false)}
-        className={styles.step}
+        className={SCSS.step}
         id={index.toString()}
         key={index}
       >
         {
-          <div className={styles.stepActionContainer}>
+          <div className={SCSS.stepActionContainer}>
             <button title="Delete this step" onClick={() => deleteStep(index)}>
               <img
                 width="20"
@@ -135,8 +135,8 @@ const Step = ({
           />
         )}
 
-        <div className={styles.stepHeader}>
-          <div className={styles.stepNumber}>{index + 1}</div>
+        <div className={SCSS.stepHeader}>
+          <div className={SCSS.stepNumber}>{index + 1}</div>
           <EditableHeader
             textValue={step.title}
             textColor=""
@@ -153,7 +153,7 @@ const Step = ({
             }
           />
         </div>
-        <div className={styles.stepDescription}>
+        <div className={SCSS.stepDescription}>
           <EditableHeader
             textValue={step.description}
             textColor="gray"
@@ -174,7 +174,7 @@ const Step = ({
         {/* below all code works only if image exists. with relative coords*/}
         {step.screenshotUrl && (
           <div
-            className={styles.imageContainer}
+            className={SCSS.imageContainer}
             style={{ position: "relative", overflow: "hidden" }}
           >
             <div style={{ position: "relative", display: "inline-block" }}>
@@ -187,7 +187,7 @@ const Step = ({
                   "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
                 }
                 alt={step.title}
-                className={styles.stepImage}
+                className={SCSS.stepImage}
                 onLoad={() => setImageLoaded(true)}
                 style={{
                   transition: "transform 0.5s ease-out",
@@ -218,9 +218,9 @@ const Step = ({
             </div>
             {imageLoaded && (
               <div
-                className={styles.imageActionContainer}
+                className={SCSS.imageActionContainer}
                 // className={
-                //   isLoading ? styles.disabledButton : styles.imageActionContainer
+                //   isLoading ? SCSS.disabledButton : SCSS.imageActionContainer
                 // }
               >
                 <button title="Zoom In" onClick={() => zoomHandler(0.2)}>

@@ -1,0 +1,81 @@
+$white: #ffffff;
+$border-color: #e5e7eb;
+$text-primary: rgb(51, 71, 91);
+$hover-bg: #e5f5f8;
+$primary-color: rgb(0, 164, 189);
+$drop-box-color: #2da9e1;
+
+.sidebar {
+  width: 25%;
+  background-color: $white;
+  border-right: 1px solid $border-color;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 54px);
+  color: $text-primary;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  &Header {
+    padding: 1rem;
+    border-bottom: 1px solid $border-color;
+
+    h2 {
+      font-size: 1.125rem;
+      margin: 0;
+    }
+  }
+
+  &List {
+    padding-left: 0.125rem;
+    list-style: none;
+    margin: 0;
+
+    li {
+      cursor: pointer;
+      padding: 0.5rem 0.9375rem;
+      font-size: 0.8rem;
+      transition: background-color 0.3s ease;
+      position: relative;
+
+      &:hover {
+        background-color: $hover-bg;
+      }
+
+      &.active {
+        background-color: $hover-bg;
+        font-weight: bold;
+        color: $text-primary;
+        border-left: 4px solid $primary-color;
+      }
+    }
+  }
+
+  .step-dragger {
+    position: absolute;
+    left: 0.3125rem;
+    top: 0.625rem;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    cursor: grab;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+
+  .drop-target {
+    border: 2px dashed $drop-box-color !important;
+    margin: 0.625rem 0;
+  }
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+}

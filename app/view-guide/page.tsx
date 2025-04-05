@@ -1,4 +1,4 @@
-import styles from "./guide.module.css";
+import SCSS from "./guide.module.scss";
 import GuideContent from "./GuideContent";
 import { doc, getDoc } from "firebase/firestore";
 import GuideAvailableDocs from "./GuideAvailableDocs";
@@ -23,7 +23,7 @@ export default async function Page({
     const data = docSnap.exists() ? (docSnap.data() as GuideDataProps) : null;
 
     if (!data) {
-      return <div className={styles.container}>Guide not found</div>;
+      return <div className={SCSS.container}>Guide not found</div>;
     }
     const sanitizedData = {
       ...data,
@@ -35,6 +35,6 @@ export default async function Page({
 
     return <GuideContent data={sanitizedData} />;
   } catch (error) {
-    return <div className={styles.container}>Error loading guide</div>;
+    return <div className={SCSS.container}>Error loading guide</div>;
   }
 }

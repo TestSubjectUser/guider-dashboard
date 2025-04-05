@@ -1,4 +1,4 @@
-import styles from "../moduleStyles/createGuide.module.css";
+import SCSS from "../moduleStyles/createGuide.module.scss";
 
 function Popup({
   popupUrl,
@@ -16,12 +16,12 @@ function Popup({
   };
 
   return (
-    <div className={styles.model}>
-      <div className={styles.modal}>
-        <div className={styles.modalHeader}>
+    <div className={SCSS.model}>
+      <div className={SCSS.modal}>
+        <div className={SCSS.modalHeader}>
           <span>Publish guide</span>
         </div>
-        <div className={styles.modalBody}>
+        <div className={SCSS.modalBody}>
           <p>Who can see this guide?</p>
           <label>
             <input type="radio" name="visibility" defaultChecked />
@@ -31,23 +31,23 @@ function Popup({
         <input type="radio" name="visibility" />
         <span>Only users within my HubSpot account</span>
       </label> */}
-          <div className={styles.linkModel}>
-            <div className={styles.linkContainer}>
+          <div className={SCSS.linkModel}>
+            <div className={SCSS.linkContainer}>
               <input type="text" value={popupUrl} readOnly />
             </div>
-            <div className={styles.copyLinkContainer}>
-              <button className={styles.copyLinkBtn} onClick={copyToClipboard}>
+            <div className={SCSS.copyLinkContainer}>
+              <button className={SCSS.copyLinkBtn} onClick={copyToClipboard}>
                 Copy link
               </button>
             </div>
           </div>
         </div>
-        <div className={styles.modalFooter}>
-          <button className={styles.cancelBtn} onClick={onClose}>
+        <div className={SCSS.modalFooter}>
+          <button className={SCSS.cancelBtn} onClick={onClose}>
             Cancel
           </button>
           {/* redirect to final guide page OR ... */}
-          <button className={styles.publishBtn} onClick={visitGuide}>
+          <button className={SCSS.publishBtn} onClick={visitGuide}>
             Visit guide
           </button>
         </div>

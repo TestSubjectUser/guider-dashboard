@@ -1,0 +1,250 @@
+$primary-color: rgb(255, 89, 66);
+$primary-hover: rgb(238, 48, 27);
+$secondary-color: rgb(44, 169, 225);
+$text-color: #33475b;
+$light-gray: #e0e0e0;
+$border-color: #c4c4c4;
+$modal-bg: rgba(232, 222, 222, 0.8);
+$backdrop-bg: rgba(0, 0, 0, 0.6);
+$white: #ffffff;
+$mobile-nav-bg: #506e91;
+$blink-color: rgba(255, 0, 0, 0.5);
+
+.container {
+  display: flex;
+  height: calc(100vh - 54px);
+  overflow: hidden;
+}
+
+.mainContent {
+  width: 75%;
+  padding: 32px;
+  overflow-y: auto;
+  background-color: #fff;
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.guideHeader {
+  p {
+    margin: 0;
+    color: gray;
+    font-size: 0.875rem;
+  }
+}
+
+.steps {
+  margin-top: 32px;
+}
+
+.delMoveDevider {
+  display: flex;
+  justify-content: space-between;
+}
+
+.moveIcon {
+  cursor: pointer;
+}
+
+.deleteButton {
+  visibility: hidden;
+  color: $primary-color;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.875rem;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.blinkingBubble {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: $blink-color;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: grab;
+
+  @keyframes blink {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(1.5);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+.model {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $backdrop-bg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  .modal {
+    background-color: $white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 40%;
+    min-width: 250px;
+    z-index: 1001;
+    &Header {
+      background-color: $secondary-color;
+      color: $white;
+      padding: 16px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      & span {
+        font-size: 1.125rem;
+        font-weight: 600;
+      }
+    }
+
+    &Body {
+      padding: 24px;
+    }
+
+    &Footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px;
+      border-top: 1px solid $light-gray;
+      button {
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+      }
+      .cancelBtn {
+        background-color: $light-gray;
+        color: $text-color;
+        margin-right: 8px;
+      }
+      .publishBtn {
+        background-color: $primary-color;
+        color: $white;
+
+        &:hover {
+          background-color: $primary-hover;
+        }
+      }
+    }
+  }
+}
+
+.popover {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: $modal-bg;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.swapContainer {
+  visibility: hidden;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background-color: $white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+}
+
+.linkContainer {
+  width: 75%;
+}
+
+.linkModel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding-top: 10px;
+  & input {
+    width: 100%;
+    text-decoration: none;
+    border: none;
+    border-bottom: 1px solid $border-color;
+    border-left: 1px solid $border-color;
+    border-bottom-left-radius: 5px;
+  }
+}
+
+.copyLinkContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.swapIcon {
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+
+.addComp {
+  opacity: 0.3;
+  display: flex;
+  transition: opacity 0.3s ease-in-out !important;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebar {
+    display: none;
+  }
+  .topNavbar {
+    display: none;
+    font-size: 0.875rem;
+    font-weight: normal;
+    padding: 0px 0px;
+  }
+  .mobileActionButtons {
+    gap: 5px;
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    bottom: 5px;
+    right: 5px;
+    background-color: $mobile-nav-bg;
+    padding: 5px;
+    border-radius: 8px;
+    & button {
+      gap: 5px;
+    }
+  }
+}

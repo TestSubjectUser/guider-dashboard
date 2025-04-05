@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ShimmerStep from "./commanComponent/ShimmerStep";
 import { useGuideData } from "./customHooks/useGuideData";
-import styles from "./moduleStyles/createGuide.module.css";
+import SCSS from "./moduleStyles/createGuide.module.scss";
 import EditableHeader from "./commanComponent/EditableHeader";
 import GuideList from "./commanComponent/GuideList";
 
@@ -82,18 +82,18 @@ const CreateComponent = () => {
         isLoading={isLoading}
         handleGuidetitleordescPublish={handlePublish}
       />
-      <div className={styles.container}>
+      <div className={SCSS.container}>
         <Sidebar
           activeStep={activeStep}
           stepsData={stepsData}
           setStepsData={setStepsData}
         />
-        <div className={styles.mainContent}>
+        <div className={SCSS.mainContent}>
           {showPopup && (
             <Popup popupUrl={popupUrl} onClose={() => handleShowPopup(false)} />
           )}
 
-          <div className={styles.guideHeader}>
+          <div className={SCSS.guideHeader}>
             {/* Guide Title */}
             <p>Title of the guide</p>
             <EditableHeader
@@ -121,7 +121,7 @@ const CreateComponent = () => {
             </>
           )}
 
-          <div className={styles.steps}>
+          <div className={SCSS.steps}>
             {stepsData.map((step, index) => (
               <div key={index} id={`step-${index}`}>
                 {deletingSteps.includes(index) ? (

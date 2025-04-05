@@ -1,0 +1,90 @@
+$navbar-bg: #253342;
+$nav-text: white;
+$button-hover: rgba(255, 255, 255, 0.3);
+$publish-btn: rgb(255, 89, 66);
+$publish-btn-hover: rgb(238, 48, 27);
+$disabled-bg: #ccc;
+$mobile-bg: #506e91;
+
+.topNavbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $navbar-bg;
+  padding: 10px 20px;
+  color: $nav-text;
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  & button:disabled {
+    cursor: not-allowed;
+  }
+
+  .navLeft,
+  .navRight {
+    display: flex;
+    gap: 10px;
+  }
+
+  .navTitle {
+    font-size: small;
+    display: flex;
+    align-items: center;
+  }
+
+  .navButton {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: $button-hover;
+    }
+  }
+
+  .publishButton {
+    background-color: $publish-btn;
+    color: #ffffff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: $publish-btn-hover;
+    }
+    &.disabled {
+      background-color: $disabled-bg;
+      cursor: not-allowed;
+    }
+  }
+}
+.mobileActionButtons {
+  display: none;
+}
+@media only screen and (max-width: 600px) {
+  .topNavbar {
+    display: none;
+    font-size: small;
+    font-weight: normal;
+    padding: 0px 0px;
+  }
+  .mobileActionButtons {
+    gap: 5px;
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    bottom: 5px;
+    right: 5px;
+    background-color: $mobile-bg;
+    padding: 5px;
+    border-radius: 8px;
+  }
+  .mobileActionButtons button {
+    gap: 5px;
+  }
+}

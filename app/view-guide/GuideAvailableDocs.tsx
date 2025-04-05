@@ -17,18 +17,14 @@ function GuideAvailableDocs() {
   }, []);
 
   return (
-    <div className="">
+    <div>
       <h1>Guides you can visit</h1>
       {guides.length === 0
         ? "No guides available"
         : guides.map((guide: any) => (
-            <Link
-              key={guide.id}
-              href={`/view-guide?id=${guide.id}`}
-              className=""
-            >
-              <h3 className="">{guide.guideTitle}</h3>
-              <p className="">{guide.guideDescription}</p>
+            <Link key={guide.id} href={`/view-guide?id=${guide.id}`}>
+              <h3>{guide.guideTitle}</h3>
+              <p>{guide.guideDescription}</p>
             </Link>
           ))}
     </div>

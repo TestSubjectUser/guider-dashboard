@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { GuideDataImagesProps } from "./utils/types";
-import styles from "./moduleStyles/Sidebar.module.css";
+import SCSS from "./moduleStyles/Sidebar.module.scss";
 
 export const Sidebar = ({
   activeStep,
@@ -49,11 +49,11 @@ export const Sidebar = ({
   };
 
   return (
-    <div className={styles.sidebar}>
-      <div className={styles.sidebarHeader}>
+    <div className={SCSS.sidebar}>
+      <div className={SCSS.sidebarHeader}>
         <h2>Guide Creator</h2>
       </div>
-      <ul className={styles.sidebarList}>
+      <ul className={SCSS.sidebarList}>
         {stepsData.map((step, index) => (
           <div key={index}>
             {index === 0 && <h4>{step.tabTitle}</h4>}
@@ -79,7 +79,7 @@ export const Sidebar = ({
               <li
                 id={index.toString()}
                 key={index}
-                className={activeStep === index ? styles.active : ""}
+                className={activeStep === index ? SCSS.active : ""}
                 onClick={() => handleClick(index)}
                 style={{
                   border: hoverIndex === index ? "2px dashed #2da9e1" : "",
@@ -90,14 +90,12 @@ export const Sidebar = ({
                   justifyContent: "space-between",
                 }}
               >
-                {/* {`${index + 1}. ${step.title}`} */}
                 {`${index + 1}. ${
                   step.title.length > 30
                     ? step.title.substring(0, 30) + "..."
                     : step.title
                 }`}
                 <span>::: </span>
-                {/* <p className={styles.stepDragger}>::</p> */}
               </li>
             </a>
           </div>
