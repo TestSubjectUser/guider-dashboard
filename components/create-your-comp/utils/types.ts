@@ -22,7 +22,7 @@ export type GuideDataProps = {
   guideTitle: string;
   guideDescription: string;
   guideImages: GuideDataImagesProps;
-  timestamp: Date;
+  timestamp: string;
 };
 
 export interface StepProps {

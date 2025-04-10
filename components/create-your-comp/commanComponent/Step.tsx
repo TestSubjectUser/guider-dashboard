@@ -6,6 +6,7 @@ import EditableHeader from "./EditableHeader";
 import { BlinkingBubble } from "./BlinkingBubble";
 import ChangeImagePopup from "./ChangeImagePopup";
 import SCSS from "../moduleStyles/Step.module.scss";
+import Image from "next/image";
 
 // const Step: React.FC<StepProps> = ({
 const Step = ({
@@ -139,7 +140,7 @@ const Step = ({
           <div className={SCSS.stepNumber}>{index + 1}</div>
           <EditableHeader
             textValue={step.title}
-            textColor=""
+            textColor="#33475b"
             textSize=""
             placeholderValue="enter title for this step..."
             setText={(newText) =>
@@ -156,8 +157,8 @@ const Step = ({
         <div className={SCSS.stepDescription}>
           <EditableHeader
             textValue={step.description}
-            textColor="gray"
-            textSize=""
+            textColor="#33475b"
+            textSize="x-small"
             placeholderValue="add description for this step..."
             setText={(newText) =>
               updateStep(
@@ -224,37 +225,29 @@ const Step = ({
                 // }
               >
                 <button title="Zoom In" onClick={() => zoomHandler(0.2)}>
-                  <img
+                  <Image
                     width="20"
                     height="20"
-                    src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-in.png"
+                    src="/assets/zoom-in.png"
                     alt="zoom-in"
                   />
                 </button>
                 <button title="Zoom Out" onClick={() => zoomHandler(-0.2)}>
-                  <img
+                  <Image
                     width="20"
                     height="20"
-                    src="https://img.icons8.com/sf-black-filled/64/FFFFFF/zoom-out.png"
+                    src="/assets/zoom-out.png"
                     alt="zoom-out"
                   />
                 </button>
                 <button title="Change Image" onClick={handleSwapClick}>
-                  <img
+                  <Image
                     width="20"
                     height="20"
-                    src="https://img.icons8.com/sf-black-filled/64/FFFFFF/edit-image.png"
+                    src="/assets/edit-image.png"
                     alt="edit-image"
                   />
                 </button>
-                {/* <button title="Remove Image">
-                  <img
-                    width="20"
-                    height="20"
-                    src="https://img.icons8.com/glyph-neue/64/FFFFFF/remove-image.png"
-                    alt="remove-image"
-                  />
-                </button> */}
               </div>
             )}
           </div>

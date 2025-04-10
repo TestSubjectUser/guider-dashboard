@@ -3,7 +3,8 @@
   flex-direction: column;
   width: 75%;
   overflow-y: auto;
-  align-items: center;
+  // align-items: center;
+  margin: 25px;
 }
 
 .topNavbar {
@@ -11,10 +12,10 @@
   justify-content: space-between;
   align-items: center;
   background-color: #253342;
-  padding: 10px 20px;
+  padding: 5px 20px;
   color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 600;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -26,16 +27,22 @@
   }
 
   .navButton {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: transparent;
     color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    border: 1px solid white;
+    padding: 10px 12px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
     cursor: pointer;
-
     &:hover {
       background-color: rgba(255, 255, 255, 0.3);
     }
+  }
+
+  .navLogo {
+    background-color: transparent;
+    border: none;
   }
 
   .publishButton {
@@ -44,6 +51,8 @@
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
+    font-weight: 600;
+    font-size: 10px;
     cursor: pointer;
   }
 }
@@ -57,8 +66,11 @@
   width: 25%;
   display: block;
   position: sticky;
-  top: 58px;
-  height: calc(100vh - 51px);
+  background-color: white;
+  border-right: 1px solid #e5e7eb;
+  color: #33475b;
+  top: 50px;
+  height: calc(100vh - 50px);
 
   .sidebarHeader {
     padding: 16px;
@@ -99,11 +111,17 @@
     width: 100%;
   }
 }
+.lastUpdated {
+  margin: 0px;
+  font-size: small;
+  margin-bottom: 20px;
+}
 
 .guideTitle {
   font-size: 2rem;
   margin: 0;
   margin-bottom: 16px;
+  color: #33475b;
 }
 .guideDescription {
   font-size: 1.25rem;
@@ -117,9 +135,9 @@
 
   .stepContainer {
     margin-bottom: 10px;
-    &:hover {
-      background-color: rgba(98, 94, 94, 0.05);
-    }
+    // &:hover {
+    //   background-color: rgba(98, 94, 94, 0.05);
+    // }
   }
 
   .tabTitle {
@@ -135,10 +153,11 @@
   }
   .imageTitle {
     margin: 0;
+    color: #33475b;
   }
   .imageIndex {
     margin: 0;
-    margin-left: 12px;
+    // margin-left: 12px;
     background-color: #e5f5f8;
     color: #33475b;
     font-weight: 600;
@@ -154,8 +173,16 @@
   }
   .stepImage {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     overflow: hidden;
+    img {
+      max-width: 50vw;
+      object-fit: contain;
+      max-height: 450px;
+      @media only screen and (max-width: 786px) {
+        max-width: 80vw;
+      }
+    }
   }
   .bubble {
     width: 20px;
@@ -167,6 +194,45 @@
     animation: blink 1s infinite;
   }
 
+  .getStartedContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    padding: 32px;
+    background-color: rgb(51, 71, 91);
+    padding-inline: 60px;
+    border-radius: 4px;
+    gap: 20px;
+    .getStarted {
+      background-color: rgb(255, 122, 89);
+      border-radius: 3px;
+      font-weight: 600;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 7px;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(255, 89, 66);
+      }
+      p {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .svgIcon {
+        fill: white;
+        inline-size: 18px !important;
+        block-size: 18px !important;
+      }
+    }
+  }
   @keyframes blink {
     0% {
       opacity: 1;

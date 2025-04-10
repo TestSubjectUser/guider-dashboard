@@ -31,6 +31,10 @@ $drop-box-color: #2da9e1;
     list-style: none;
     margin: 0;
 
+    h4 {
+      margin-bottom: 5px;
+    }
+
     li {
       cursor: pointer;
       padding: 0.5rem 0.9375rem;

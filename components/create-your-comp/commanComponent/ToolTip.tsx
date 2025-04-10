@@ -1,3 +1,4 @@
+import Image from "next/image";
 import SCSS from "../moduleStyles/Step.module.scss";
 
 function ToolTip({
@@ -40,10 +41,10 @@ function ToolTip({
             }}
           >
             Remove Image
-            <img
+            <Image
               width="20"
               height="20"
-              src="https://img.icons8.com/material-rounded/24/FFFFFF/remove-image.png"
+              src="/assets/remove-image.png"
               alt="remove-image"
             />
           </button>
@@ -61,10 +62,10 @@ function ToolTip({
               }}
             >
               Remove Bubble
-              <img
+              <Image
                 width="20"
                 height="20"
-                src="https://img.icons8.com/ios-filled/50/FFFFFF/circled-x.png"
+                src="/assets/circled-x.png"
                 alt="circled-x"
               />
             </button>
@@ -87,10 +88,10 @@ function ToolTip({
               }}
             >
               Add Bubble
-              <img
+              <Image
                 width="20"
                 height="20"
-                src="https://img.icons8.com/ios-filled/50/FFFFFF/circled.png"
+                src="/assets/circled.png"
                 alt="circled"
               />
             </button>
@@ -113,10 +114,10 @@ function ToolTip({
           }}
         >
           Add Image
-          <img
+          <Image
             width="20"
             height="20"
-            src="https://img.icons8.com/material-rounded/24/FFFFFF/add-image.png"
+            src="/assets/add-image.png"
             alt="add-image"
           />
         </button>

@@ -41,6 +41,16 @@ $blink-color: rgba(255, 0, 0, 0.5);
   }
 }
 
+.errorMessage {
+  text-align: center;
+  padding: 2rem;
+  color: #ff4545;
+  & a {
+    color: rgb(44, 169, 225);
+    text-decoration: underline;
+  }
+}
+
 .steps {
   margin-top: 32px;
 }

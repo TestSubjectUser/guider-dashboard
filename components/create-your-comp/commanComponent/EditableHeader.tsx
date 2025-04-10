@@ -3,7 +3,7 @@ import { HeaderProps } from "../utils/types";
 
 function EditableHeader({
   textValue = "enter text...",
-  textColor = "black",
+  textColor = "#33475b",
   textSize = "1rem",
   placeholderValue = "enter text...",
   setText,

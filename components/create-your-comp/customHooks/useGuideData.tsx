@@ -12,6 +12,7 @@ export const useGuideData = (screenshotId?: string | null) => {
   const [deletingSteps, setDeletingSteps] = useState<number[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [popupUrl, setPopupUrl] = useState("");
+  const [notFound, setNotFound] = useState(false);
 
   const hanldeIsLoading = (value: boolean) => setIsLoading(value);
   const handleGuideTitle = (value: string) => setGuideTitle(value);
@@ -20,6 +21,7 @@ export const useGuideData = (screenshotId?: string | null) => {
   const handleShowPopup = (value: boolean) => setShowPopup(value);
 
   useEffect(() => {
+    if (!screenshotId) return;
     const fetchData = async () => {
       setIsLoading(true);
       setIsFetching(true);
@@ -34,6 +36,7 @@ export const useGuideData = (screenshotId?: string | null) => {
             setStepsData(docSnap.data().guideImages);
           } else {
             // TODO: not found with id toast
+            setNotFound(true);
           }
         } else {
           // TODO: id is null toast
@@ -123,6 +126,7 @@ export const useGuideData = (screenshotId?: string | null) => {
         guideTitle: guideTitle || "",
         guideDescription: guideDescription || "",
         guideImages: stepsData,
+        timestamp: new Date(),
       });
       // TODO: toast notification
       setPopupUrl("http://localhost:3000/view-guide?id=" + screenshotId);
@@ -134,6 +138,7 @@ export const useGuideData = (screenshotId?: string | null) => {
   };
 
   return {
+    notFound,
     isLoading,
     stepsData,
     guideTitle,

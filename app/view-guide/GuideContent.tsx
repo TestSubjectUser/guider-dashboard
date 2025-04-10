@@ -43,20 +43,38 @@ export default function GuideContent({ data }: Props) {
     <div>
       <div className={SCSS.topNavbar}>
         <div className={SCSS.navLeft}>
-          <button disabled className={SCSS.navButton}>
+          <button className={SCSS.navLogo}>
             <img
-              width="12"
-              height="12"
-              src="https://img.icons8.com/ios-filled/50/FFFFFF/menu-2.png"
-              alt="menu-2"
+              alt="CrmOne Logo"
+              loading="lazy"
+              width="35"
+              // height="48"
+              decoding="async"
+              data-nimg="1"
+              className={SCSS.navLogo}
+              // srcset="https://cdnf.prospectconnect.ai/assets/images/logos/crmonelogo.svg?w=128&amp;q=75 1x, https://cdnf.prospectconnect.ai/assets/images/logos/crmonelogo.svg?w=256&amp;q=75 2x"
+              src="https://cdnf.prospectconnect.ai/assets/images/logos/crmonelogo.svg?w=256&amp;q=75"
+              // style="color: transparent;"
             />
-            crm logo
           </button>
         </div>
 
         <div className={SCSS.navRight}>
-          <button title="to last published version" className={SCSS.navButton}>
-            Copy link
+          <button
+            className={SCSS.navButton}
+            title="copy view-guide link"
+            onClick={(event) => {
+              navigator.clipboard.writeText(window.location.href);
+              const button = event.currentTarget;
+              const originalText = button.innerText;
+
+              button.innerText = "Copied!";
+              setTimeout(() => {
+                button.innerText = originalText;
+              }, 500);
+            }}
+          >
+            Copy Guide Link
           </button>
 
           <button className={`${SCSS.publishButton}`}>
@@ -97,6 +115,9 @@ export default function GuideContent({ data }: Props) {
         </aside>
 
         <main className={SCSS.container}>
+          <p className={SCSS.lastUpdated}>
+            Last updated: {new Date(data.timestamp).toDateString()}
+          </p>
           <h1 className={SCSS.guideTitle}>{data.guideTitle}</h1>
           <p className={SCSS.guideDescription}>{data.guideDescription}</p>
           <div className={SCSS.stepsContainer}>
@@ -120,32 +141,52 @@ export default function GuideContent({ data }: Props) {
                     style={{ position: "relative" }}
                   >
                     <div className={SCSS.stepImage}>
-                      <img
-                        src={image.screenshotUrl}
-                        alt={image.title}
+                      <div
                         style={{
-                          maxWidth: "75vw",
-                          objectFit: "contain",
-                          maxHeight: "450px",
-                          transition: "transform 0.5s ease-out",
-                          transform: `scale(${image.scale ?? 1})`,
-                          transformOrigin: `${image.relativeCoordinates?.x}% ${image.relativeCoordinates?.y}%`,
+                          position: "relative",
+                          display: "inline-block",
                         }}
-                      />
-                      {image.relativeCoordinates && (
-                        <div
-                          className={SCSS.bubble}
+                      >
+                        <img
+                          src={image.screenshotUrl}
+                          alt={image.title}
                           style={{
-                            top: `${image.relativeCoordinates.y}%`,
-                            left: `${image.relativeCoordinates.x}%`,
+                            transition: "transform 0.5s ease-out",
+                            transform: `scale(${image.scale ?? 1})`,
+                            transformOrigin: `${image.relativeCoordinates?.x}% ${image.relativeCoordinates?.y}%`,
                           }}
-                        ></div>
-                      )}
+                        />
+                        {image.relativeCoordinates && (
+                          <div
+                            className={SCSS.bubble}
+                            style={{
+                              top: `${image.relativeCoordinates.y}%`,
+                              left: `${image.relativeCoordinates.x}%`,
+                            }}
+                          ></div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
             ))}
+            <div className={SCSS.getStartedContainer}>
+              Create your own step-by-step guide for free with Guide Creator
+              <button className={SCSS.getStarted}>
+                <p>Get Started</p>
+                <svg
+                  aria-label="Link opens in a new window"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 32 32"
+                  focusable="false"
+                  data-icon-name="ExternalLink"
+                  className={SCSS.svgIcon}
+                >
+                  <path d="M26.91 5.78c-.07-.16-.16-.3-.28-.41a1.1 1.1 0 0 0-.4-.27c-.14-.06-.3-.09-.47-.09h-7.72c-.7 0-1.26.56-1.27 1.26 0 .7.57 1.27 1.27 1.27h4.64L11.86 18.35a1.272 1.272 0 0 0 1.8 1.8L24.47 9.34v4.64c0 .7.57 1.27 1.27 1.27s1.27-.57 1.27-1.27V6.27c0-.17-.03-.33-.09-.47Zm-4.57 11.91c-.7 0-1.27.57-1.27 1.27v5.15c0 .19-.16.35-.35.35H7.89c-.19 0-.35-.16-.35-.35V11.27c0-.19.16-.35.35-.35h5.15c.7 0 1.27-.57 1.27-1.27s-.57-1.27-1.27-1.27H7.89c-1.59 0-2.88 1.3-2.89 2.89v12.84a2.9 2.9 0 0 0 2.89 2.9h12.86c1.6 0 2.9-1.3 2.9-2.9v-5.14c0-.7-.57-1.27-1.27-1.27h-.03Z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
         </main>
       </div>

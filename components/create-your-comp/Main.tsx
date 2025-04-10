@@ -1,5 +1,6 @@
 "use client";
 import "./index.css";
+import Link from "next/link";
 import { Sidebar } from "./Sidebar";
 import TopNavbar from "./TopNavbar";
 import Step from "./commanComponent/Step";
@@ -7,41 +8,38 @@ import Popup from "./commanComponent/Popup";
 import AddComp from "./commanComponent/AddComp";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import GuideList from "./commanComponent/GuideList";
 import ShimmerStep from "./commanComponent/ShimmerStep";
 import { useGuideData } from "./customHooks/useGuideData";
 import SCSS from "./moduleStyles/createGuide.module.scss";
 import EditableHeader from "./commanComponent/EditableHeader";
-import GuideList from "./commanComponent/GuideList";
 
 const CreateComponent = () => {
   const searchParams = useSearchParams();
   const screenshotId = searchParams.get("id");
   const [activeStep, setActiveStep] = useState(0);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
-  const guideData = screenshotId ? useGuideData(screenshotId) : null;
-
-  if (!screenshotId) {
-    return <GuideList />;
-  }
+  const guideData = useGuideData(screenshotId);
 
   const {
+    popupUrl,
+    notFound,
     isLoading,
-    hanldeIsLoading,
+    stepsData,
+    showPopup,
     guideTitle,
+    isFetching,
+    addStep,
+    deleteStep,
+    updateStep,
+    setStepsData,
+    deletingSteps,
+    handlePublish,
+    hanldeIsLoading,
+    handleShowPopup,
     handleGuideTitle,
     guideDescription,
     handleGuideDescription,
-    stepsData,
-    setStepsData,
-    updateStep,
-    addStep,
-    deleteStep,
-    handlePublish,
-    deletingSteps,
-    showPopup,
-    handleShowPopup,
-    popupUrl,
-    isFetching,
   } = guideData!;
 
   // initialize imageRefs
@@ -78,72 +76,93 @@ const CreateComponent = () => {
 
   return (
     <>
-      <TopNavbar
-        isLoading={isLoading}
-        handleGuidetitleordescPublish={handlePublish}
-      />
-      <div className={SCSS.container}>
-        <Sidebar
-          activeStep={activeStep}
-          stepsData={stepsData}
-          setStepsData={setStepsData}
-        />
-        <div className={SCSS.mainContent}>
-          {showPopup && (
-            <Popup popupUrl={popupUrl} onClose={() => handleShowPopup(false)} />
-          )}
-
-          <div className={SCSS.guideHeader}>
-            {/* Guide Title */}
-            <p>Title of the guide</p>
-            <EditableHeader
-              textValue={guideTitle}
-              textColor=""
-              textSize="1.5rem"
-              placeholderValue="Add title of your guide..."
-              setText={handleGuideTitle}
+      {!screenshotId && <GuideList />}
+      {screenshotId && (
+        <>
+          <TopNavbar
+            isLoading={isLoading}
+            handleGuidetitleordescPublish={handlePublish}
+          />
+          <div className={SCSS.container}>
+            <Sidebar
+              activeStep={activeStep}
+              stepsData={stepsData}
+              setStepsData={setStepsData}
             />
-            {/* Guide Description */}
-            <p>Description of the guide</p>
-            <EditableHeader
-              textValue={guideDescription}
-              textColor="rgb(44, 169, 225)"
-              textSize="1.15rem"
-              placeholderValue="What is this guide about?"
-              setText={handleGuideDescription}
-            />
-          </div>
+            <div className={SCSS.mainContent}>
+              {showPopup && (
+                <Popup
+                  popupUrl={popupUrl}
+                  onClose={() => handleShowPopup(false)}
+                />
+              )}
 
-          {isFetching && (
-            <>
-              <ShimmerStep />
-              <ShimmerStep />
-            </>
-          )}
+              {!isFetching && notFound && (
+                <div className={SCSS.errorMessage}>
+                  <h3>Guide Not Found</h3>
+                  <p>
+                    The requested guide does not exist. Please check the URL.
+                  </p>
+                  <Link href="/dashboard">Return to Dashboard</Link>
+                </div>
+              )}
 
-          <div className={SCSS.steps}>
-            {stepsData.map((step, index) => (
-              <div key={index} id={`step-${index}`}>
-                {deletingSteps.includes(index) ? (
-                  <ShimmerStep />
-                ) : (
-                  <Step
-                    key={index}
-                    step={step}
-                    index={index}
-                    imageRefs={imageRefs}
-                    setIsLoading={hanldeIsLoading}
-                    updateStep={updateStep}
-                    addStep={addStep}
-                    deleteStep={deleteStep}
+              {!isFetching && !notFound && (
+                <div className={SCSS.guideHeader}>
+                  {/* Guide Title */}
+                  <p>Title of the guide</p>
+                  <EditableHeader
+                    textValue={guideTitle}
+                    textColor="#33475b"
+                    textSize="1.5rem"
+                    placeholderValue="Add title of your guide..."
+                    setText={handleGuideTitle}
                   />
-                )}
-              </div>
-            ))}
-            {!stepsData.length && <AddComp index={0} addStep={addStep} />}
+                  {/* Guide Description */}
+                  <p>Description of the guide</p>
+                  <EditableHeader
+                    textValue={guideDescription}
+                    textColor="rgb(44, 169, 225)"
+                    textSize="1.15rem"
+                    placeholderValue="What is this guide about?"
+                    setText={handleGuideDescription}
+                  />
+                </div>
+              )}
+
+              {isFetching && (
+                <>
+                  <ShimmerStep />
+                  <ShimmerStep />
+                </>
+              )}
+              {!isFetching && !notFound && (
+                <div className={SCSS.steps}>
+                  {stepsData.map((step, index) => (
+                    <div key={index} id={`step-${index}`}>
+                      {deletingSteps.includes(index) ? (
+                        <ShimmerStep />
+                      ) : (
+                        <Step
+                          key={index}
+                          step={step}
+                          index={index}
+                          imageRefs={imageRefs}
+                          setIsLoading={hanldeIsLoading}
+                          updateStep={updateStep}
+                          addStep={addStep}
+                          deleteStep={deleteStep}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  {!stepsData.length && <AddComp index={0} addStep={addStep} />}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };
@@ -173,13 +192,13 @@ export default CreateComponent;
  * 19. ✅ add step without bubble if coordinates undefined
  * 20. ✅ on schreenshot step added as well, but without bubble
  * 21. ✅ step buttons(zoom, delete, swap) on hover only
- * 22. add copy link button on guide as well
+ * 22. ✅ add copy link button on guide as well
  * 23. ✅ (optional)add step without image
  * 23. ✅ DND
  * 23. ✅ working on other browser and in incognito mode as well.
  * 24. (optional)automatic expiry period which deletes image from server and DB
  * 25. ✅ Error Handling for apis
- * 26. stop capturing btn in ectension popup & control panel
+ * 26. ✅ stop capturing btn in ectension popup & control panel
  * 27. minimize ref use
  * 28. ✅ do not pass setState function
  * 30. edit state without passing element.target, by passing name in input field
@@ -188,10 +207,11 @@ export default CreateComponent;
  * 33. ✅ homepage (dashboard, view-guide) initial pages.
  * 34. ✅ better folder struct.
  * 35. longer screenshot or selected screenshot.
- * 36. and add custom step to create guide at last of the guide.
+ * 36. ✅ and add custom step to create guide at last of the guide.
  * 37. ✅ add topnavbar in guide-view
  * 38. popup on screenshot capturing
  * 38. control panel displays for initial 10 seconds.
+ * 39. ✅ last updated date
  * added code till commit "rendering view-guide server side" to builder-preview-next (aws package not in there.)
  */
 

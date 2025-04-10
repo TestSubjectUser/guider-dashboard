@@ -1,14 +1,11 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import Main from "../../components/create-your-comp/Main";
-function page() {
+
+function DashboardPage() {
   return (
-    <div>
-      {/* <Dashboard /> */}
-      <Suspense fallback={<div>Loading...</div>}>
-        <Main />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Main />
+    </Suspense>
   );
 }
-
-export default page;
+export default DashboardPage;
