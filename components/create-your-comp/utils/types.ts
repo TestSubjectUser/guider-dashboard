@@ -35,6 +35,7 @@ export interface StepProps {
   };
   index: number;
   imageRefs: React.RefObject<(HTMLImageElement | null)[]>;
+  isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   updateStep: (
     index: number,

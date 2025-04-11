@@ -13,6 +13,11 @@ export const useGuideData = (screenshotId?: string | null) => {
   const [showPopup, setShowPopup] = useState(false);
   const [popupUrl, setPopupUrl] = useState("");
   const [notFound, setNotFound] = useState(false);
+  const [initialData, setInitialData] = useState<{
+    guideTitle: string;
+    guideDescription: string;
+    stepsData: GuideDataImagesProps;
+  } | null>(null);
 
   const hanldeIsLoading = (value: boolean) => setIsLoading(value);
   const handleGuideTitle = (value: string) => setGuideTitle(value);
@@ -31,9 +36,15 @@ export const useGuideData = (screenshotId?: string | null) => {
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            setGuideTitle(docSnap.data()?.guideTitle);
-            setGuideDescription(docSnap.data()?.guideDescription);
-            setStepsData(docSnap.data().guideImages);
+            const data = docSnap.data();
+            setGuideTitle(data?.guideTitle || "");
+            setGuideDescription(data?.guideDescription || "");
+            setStepsData(data.guideImages || []);
+            setInitialData({
+              guideTitle: data?.guideTitle || "",
+              guideDescription: data?.guideDescription || "",
+              stepsData: data.guideImages || [],
+            });
           } else {
             // TODO: not found with id toast
             setNotFound(true);
@@ -136,7 +147,14 @@ export const useGuideData = (screenshotId?: string | null) => {
     }
     setIsLoading(false);
   };
-
+  const hasUnpublishedChanges = () => {
+    if (!initialData) return false;
+    return (
+      guideTitle !== initialData.guideTitle ||
+      guideDescription !== initialData.guideDescription ||
+      JSON.stringify(stepsData) !== JSON.stringify(initialData.stepsData)
+    );
+  };
   return {
     notFound,
     isLoading,
@@ -156,5 +174,6 @@ export const useGuideData = (screenshotId?: string | null) => {
     hanldeIsLoading,
     handleGuideTitle,
     handleGuideDescription,
+    hasUnpublishedChanges,
   };
 };

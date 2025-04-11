@@ -39,6 +39,7 @@ const CreateComponent = () => {
     handleShowPopup,
     handleGuideTitle,
     guideDescription,
+    hasUnpublishedChanges,
     handleGuideDescription,
   } = guideData!;
 
@@ -82,6 +83,7 @@ const CreateComponent = () => {
           <TopNavbar
             isLoading={isLoading}
             handleGuidetitleordescPublish={handlePublish}
+            hasUnpublishedChanges={hasUnpublishedChanges}
           />
           <div className={SCSS.container}>
             <Sidebar
@@ -148,6 +150,7 @@ const CreateComponent = () => {
                           step={step}
                           index={index}
                           imageRefs={imageRefs}
+                          isLoading={isLoading}
                           setIsLoading={hanldeIsLoading}
                           updateStep={updateStep}
                           addStep={addStep}

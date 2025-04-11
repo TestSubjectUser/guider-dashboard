@@ -13,6 +13,7 @@ const Step = ({
   step,
   index,
   imageRefs,
+  isLoading,
   setIsLoading,
   updateStep,
   addStep,
@@ -104,7 +105,10 @@ const Step = ({
         key={index}
       >
         {
-          <div className={SCSS.stepActionContainer}>
+          <div
+            className={SCSS.stepActionContainer}
+            style={isLoading ? { pointerEvents: "none", opacity: 0.75 } : {}}
+          >
             <button title="Delete this step" onClick={() => deleteStep(index)}>
               <img
                 width="20"
@@ -219,6 +223,9 @@ const Step = ({
             </div>
             {imageLoaded && (
               <div
+                style={
+                  isLoading ? { pointerEvents: "none", opacity: 0.75 } : {}
+                }
                 className={SCSS.imageActionContainer}
                 // className={
                 //   isLoading ? SCSS.disabledButton : SCSS.imageActionContainer

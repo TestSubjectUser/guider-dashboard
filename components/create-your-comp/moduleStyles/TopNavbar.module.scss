@@ -6,6 +6,10 @@ $publish-btn-hover: rgb(238, 48, 27);
 $disabled-bg: #ccc;
 $mobile-bg: #506e91;
 
+.topNavbarWrapper {
+  transition: opacity 0.3s ease;
+}
+
 .topNavbar {
   display: flex;
   justify-content: space-between;

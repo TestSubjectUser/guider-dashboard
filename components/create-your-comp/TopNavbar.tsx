@@ -3,13 +3,23 @@ import SCSS from "./moduleStyles/TopNavbar.module.scss";
 function TopNavbar({
   isLoading,
   handleGuidetitleordescPublish,
+  hasUnpublishedChanges,
 }: {
   isLoading: boolean;
   handleGuidetitleordescPublish: () => void;
+  hasUnpublishedChanges: () => boolean;
 }) {
+  const hasChanges = hasUnpublishedChanges();
   return (
     <>
-      <div className={SCSS.topNavbar}>
+      <div
+        className={SCSS.topNavbar}
+        style={
+          !hasChanges || isLoading
+            ? { pointerEvents: "none", opacity: 0.9 }
+            : {}
+        }
+      >
         <div className={SCSS.navLeft}>
           <button
             className={SCSS.navButton}
@@ -19,11 +29,14 @@ function TopNavbar({
                 window.location.href.replace("dashboard", "view-guide")
               );
               const button = event.currentTarget;
+              button.disabled = true;
               const originalText = button.innerText;
 
               button.innerText = "Copied!";
               setTimeout(() => {
                 button.innerText = originalText;
+                button.disabled = false;
+                button.blur();
               }, 500);
             }}
           >
@@ -40,7 +53,11 @@ function TopNavbar({
         </div>
 
         <div className={SCSS.navRight}>
-          <div className={SCSS.navTitle}>Guide Creator</div>
+          <div className={SCSS.navTitle}>
+            {hasChanges
+              ? "You have made unpublished changes."
+              : "No unpublished changes"}
+          </div>
           <button
             title="to last published version"
             className={SCSS.navButton}
